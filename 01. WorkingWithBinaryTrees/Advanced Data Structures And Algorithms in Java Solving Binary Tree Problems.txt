@@ -1,0 +1,99 @@
+Question: Which of the following is true about a balanced binary tree?
+[ ] The number of leaves is equal to the number of internal nodes
+[ ] The height of the left sub-tree is exactly equal to the height of the right sub-tree
+[ ] The longest path from root to leaf is no more than 5
+[x] The height of the left sub-tree differs by no more than one from the height of the right sub-tree
+
+
+Question: How would you implement the code to mirror a binary tree?
+[ ] Iteratively have all left child nodes point to right child nodes and vice versa
+[ ] Use a stack to swap left and right children
+[x] Recursively have all left child nodes point to right child nodes and vice versa
+[ ] Use a queue to swap left and right children
+
+Question: Which of the following is a base case check that we perform in the hasPathSum() recursive algorithm?
+[x] If the current node is null return false
+[ ] If the current node is a leaf node return true
+[ ] If the current node is the root node return true
+[x] If the current node is a leaf node check whether it is equal to the current sum that we are tracking
+
+Question: What recursive calculation would you perform to count the number of nodes in a binary tree?
+[ ] Number of nodes in right sub-tree + number of nodes in left sub-tree
+[ ] Number of nodes in left sub-tree
+[ ] Number of nodes in right sub-tree
+[x] 1 + Number of nodes in right sub-tree + number of nodes in left sub-tree
+
+Question: What is the correct way to number the nodes in a complete binary tree?
+[ ] The root node is at index N, where N is the number of nodes
+[ ] The root node is at index -1
+[x] The root node is at index 0
+[x] Every node is related using a math computation with its parent
+
+Question: Which of the following is an example of a perfect binary tree?
+[x] A tree with just the root node
+[ ] A tree where all leaf nodes are at level 3
+[ ] A tree where an internal node has only one child
+[x] A tree where the root node has one left child and one right child, and there are no other nodes
+
+
+Question: Which of the following is true about a perfect binary tree?
+[ ] There are no leaf nodes in a full binary tree
+[ ] A special binary tree in which every parent has exactly one child
+[x] A special binary tree in which every parent has exactly two children
+[x] All child nodes are at the same level
+
+
+Question: What is the base case for the count nodes recursion?
+[x] To check if current node is null and return 0
+[ ] To check if current node is null and return 1
+[ ] To check if current node is not null and return 0
+[ ] To check if current node is not null and return 1
+
+Question: The maximum depth of a binary tree is defined as which of the following?
+[ ] The number of internal nodes
+[ ] The average length of a path from the root node to leaf nodes
+[ ] The number of leaf nodes
+[x] The longest path from the root node to a leaf node
+
+Question: How would you check if a path from the root node to a leaf node amounts to a certain value?
+[ ] Use a linear algorithm which sums all path subsets in a tree
+[x] Use a recursive algorithm which tracks the current sum to check against while traversing down the tree
+[ ] Use a queue data structure to track the sums
+[ ] Use an iterative algorithm which calculates the sum of all paths and check if one matches
+
+Question: How would you calculate the maximum depth of a binary tree?
+[x] By recursively computing the longest path from a specific node
+[ ] By adding all paths to a queue and finding the longest one
+[ ] By performing breadth-first traversal on a binary tree
+[ ] By adding all paths to a stack and finding the top path
+
+Question: Which of the following is true about a full binary tree?
+[ ] All nodes have exactly two children
+[ ] Nodes can have just one child
+[x] Nodes can have no children or exactly two children
+[ ] Nodes have no children
+
+Question: What is the mirror of a binary tree?
+[ ] The leaf nodes become the root node
+[ ] The parent nodes become the child nodes
+[x] Every node has its left and right child swapped
+[ ] All left nodes become the parent node
+
+Question: Which of the following are checks that you might make in your code when checking for a full binary tree?
+[ ] Checking the number of leaves in the tree
+[x] Checking whether a node has a left child and a right child
+[ ] Checking the number of internal nodes in the tree
+[ ] Checking the height of a tree
+
+Question: Which of the following statements are true about a complete binary tree?
+[ ] It is a full binary tree
+[ ] It is a perfect binary tree
+[x] All leaf nodes need not be at the same level
+[x] The last level is filled from the left
+
+
+Question: Which of the following would you use to check whether a binary tree is balanced?
+[ ] A list tracking the depths of leaf nodes in a tree
+[ ] A stack tracking the heights of all nodes in a tree
+[x] A map tracking the height of all nodes in a tree
+[ ] A queue tracking the heights of internal nodes in a tree

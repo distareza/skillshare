@@ -1,0 +1,47 @@
+Question: What is the time complexity of the operation to look up a node in a binary search tree?
+[ ] O(1)
+[x] O(lg N)
+[ ] O(N)
+[ ] O(N2)
+
+Question: Where will you find the largest value in a BST?
+[ ] The left most leaf node
+[ ] Can be any of the leaf nodes
+[x] The right most leaf node
+[ ] The root node
+
+Question: What is the time complexity of the operation to insert into a binary search tree?
+[ ] O(N)
+[x] O(lg N)
+[ ] O(N2)
+[ ] O(1)
+
+Question: What are the constraints that make a binary tree a binary search tree?
+[x] All right child nodes are greater than parent nodes
+[ ] All child nodes are smaller than parent nodes
+[ ] All parent nodes are smaller than child nodes
+[x] All left child nodes are less than or equal to parent nodes
+
+Question: While inserting a node into a BST, how do you decide whether the node goes into the left sub-tree or the right sub-tree?
+[x] For any node, nodes with a smaller value go in the left sub-tree
+[ ] For any node, nodes with a larger value go in the left sub-tree
+[ ] We traverse to the right most sub-tree for any node
+[ ] We traverse to the left most sub-tree for any node
+
+Question: Which of the following violate a binary search tree constraint?
+[x] There is a left child for a node larger than the parent
+[ ] There are nodes in the tree with just a left child
+[ ] There is a right child for a node larger than the parent
+[ ] There are nodes in the tree with just a right child
+
+Question: Where will you find the smallest value in a BST?
+[ ] The root node
+[ ] The right most leaf node
+[x] The left most leaf node
+[ ] Can be any of the leaf nodes
+
+Question: While looking up a node in a binary search tree how do you know that a node does not exist?
+[x] You encounter a null reference without having found the node
+[ ] The root node is null
+[ ] All node values are larger than what you are looking for
+[ ] All node values are smaller than what you are looking for

@@ -1,0 +1,12 @@
+
+Binary Tree
+	Balanced: 	The left and right subtrees of every node differ in height by no more than 1.
+	Full: 		All nodes except leaf nodes have 2 children
+	Complete:
+				All nodes except for the level before the last must have 2 children.
+				All nodes in the last level are as far left as possible.
+				
+Summary:
+		Complete trees: must be balanced; can be full
+		Full trees: can be balanced; can be complete
+		Balanced trees: can be complete; can be full

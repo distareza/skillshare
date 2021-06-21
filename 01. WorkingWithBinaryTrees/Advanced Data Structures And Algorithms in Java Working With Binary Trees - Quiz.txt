@@ -1,0 +1,96 @@
+Question: What would you process first in pre-order traversal?
+[x] The current node
+[ ] The right child
+[ ] The root node
+[ ] The left child
+
+Question: Which data structure would you use to implement breadth-first traversal?
+[ ] Stack
+[ ] Heap
+[ ] Array
+[x] Queue
+
+Question: Which of the following statements is true about in-order traversal?
+[x] The left-subtree is processed before the root node
+	The root node is processed before the left and right sub-trees
+[x] The right-subtree is processed before the root node
+	The left-subtree is processed after the root node
+[x] The right-subtree is processed after the root node
+
+Question: What statement about depth-first traversal is true?
+[ ]	The right-most leaf node is always processed last
+[ ]	The root node is always processed last
+[ ]	You visit nodes at the same level one-after another
+[x] You go as deep as possible into the tree to visit nodes
+
+Question: What would you process last in pre-order traversal?
+[ ] The left child
+[ ] The root node
+[ ] The current node
+[x] The right child
+
+Question: Which of the following are techniques that can be used to traverse a binary tree?
+[ ] Rolling traversal
+[x] Breadth-first traversal
+[x] Depth-first traversal
+[ ] Linear traversal
+
+
+Question: Which implementation of depth-first traversal is easier to read and understand?
+[ ] Using a Queue
+[ ] Using iteration
+[x] Using recursion
+[ ] Using a Stack
+
+Question: Which of the following is true for a binary tree?
+[ ] Every node has at least two children
+[x] It is a hierarchical structure
+[x] Every node has at most two children
+[x] Nodes may not have children at all
+[ ] It is a linear structure
+
+Question: Which of the following statements is true about pre-order traversal?
+[ ] The right-subtree is processed before the root node
+[x] The right-subtree is processed after the root node
+[x] The left-subtree is processed after the root node
+[x] The root node is processed before the left and right sub-trees
+[ ] The left-subtree is processed before the root node
+
+Question: Which data structure would you use to implement depth-first traversal?
+[ ] Queue
+[ ] Array
+[x] Stack
+[ ] Heap
+
+Question: What characteristics would you implement when you want to represent a node in a binary tree that can hold any kind of data?
+[ ] Have the Node class hold a reference to the parent node
+[ ] Have the Node class hold a list of child nodes
+[x] Make the Node class generic
+[x] Have the Node class hold a reference separately to the left and right child nodes
+
+
+Question: What statements about breadth-first traversal are true?(Choose two)
+[ ] You go as deep as possible into the tree to visit nodes
+[x] The right-most leaf node is always processed last
+[x] You visit nodes at the same level one-after another
+[ ] The root node is always processed last
+
+Question: What would you process last in post-order traversal?
+[ ] The right child
+[x] The current node
+[ ] The root node
+[ ] The left child
+
+Question: What would you process first in post-order traversal?
+[ ] The current node
+[ ] The root node
+[ ] The right child
+[x] The left child
+
+
+Question: Which of the following statements is true about post-order traversal?
+[x] The right-subtree is processed before the root node
+[ ] The root node is processed before the left and right sub-trees
+[x] The left-subtree is processed before the root node
+[ ] The left-subtree is processed after the root node
+[ ] The right-subtree is processed after the root node

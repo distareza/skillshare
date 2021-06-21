@@ -1,0 +1,57 @@
+JDBC: An Introduction to Java Database Connectivity
+
+Question: Out of the following statements about JDBC and JDBC drivers, which ones are TRUE?
+[x] A Java app needs different drivers to work with different databases
+[ ] JDBC only permits reading from a database
+[x] JDBC includes APIs to communicate with a database
+[ ] JDBC only works with NoSQL databases
+
+Question: From the following, pick the two objects which can be used to establish a connection to a database.
+[x] DataSource
+[x] DriverManager
+[ ] MySQLSource
+[ ] CallableStatemen
+
+Question: Which of these is NOT a property of a JDBC ResultSet?
+[x] It is scrollable by default
+[ ] It is read-only by default
+[ ] It has a cursor pointing to a "current" row
+[ ] It remains connected to the database throughout its life
+
+
+Question: Which of these is an example of a connected RowSet?
+[ ] JoinRowSet
+[ ] WebRowSet
+[x] JdbcRowSet
+[ ] CachedRowSet
+
+Question: Which of these JDBC mechanisms allows us to define checkpoints for a transaction?
+[ ] RollbackPoint
+[ ] CheckPoint
+[ ] CommitPoint
+[x] Savepoint
+
+Question: Which of these statements about MySQL Workbench is TRUE?
+[ ] It is a shell for MySQL
+[ ] It is a MySQL driver for Java applications
+[x] It is a visual tool for MySQL
+[ ] It is only available for MacOS
+
+Question: Which of these JDBC objects is used to manage a database session?
+[ ] Session
+[x] Connection
+[ ] DBSession
+[ ] JDBCSession
+
+Question: Out of the following, which one is the MySQL JDBC driver?
+[x] Connector/J
+[ ] MySQL Workbench
+[ ] Connector/NET
+[ ] MySQL ODBC
+
+Question: Which of the following steps are required to integrate a Maven project with the Connector/J driver?
+[ ] Adding a dependency on version 14 of the maven compiler plugin
+[ ] Using version 14 of Java or higher
+[x] Adding the connector as a dependency in the pom.xml
+[ ] Adding the connector as a plugin in the pom.xml
+

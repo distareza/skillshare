@@ -1,0 +1,71 @@
+package com.jdbc.resultset;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Savepoint;
+
+import com.jdbc.util.MySqlJdbcUtil;
+
+public class TransactionOperation03 {
+
+	public static void main(String[] args) throws Exception {
+
+		
+		Connection con = MySqlJdbcUtil.getDataSource().getConnection();
+		
+		Savepoint savepoint = null;
+		try {
+			
+			con.setAutoCommit(false);
+			
+			PreparedStatement pstmt = con.prepareStatement("insert into Products values (?, ?, ?)");
+
+
+			saveProducts(pstmt, 101, "Mother Board", 79);
+			saveProducts(pstmt, 102, "Mouse", 15);
+			saveProducts(pstmt, 103, "HDMI Cable", 12);
+			savepoint = con.setSavepoint("SavePointOne");
+			
+			saveProducts(pstmt, 104, "Keyboard", 12);
+			saveProducts(pstmt, 105, "USB Cable", 3);
+			savepoint = con.setSavepoint("SavePointTwo");
+			
+			saveProducts(pstmt, 106, "VGA Cable", 3);
+			saveProducts(pstmt, 102, "Touch Pad", 20);
+			savepoint = con.setSavepoint("SavePointThree");
+			
+
+			System.out.println("Successfully update data");
+			con.commit();
+		} catch (SQLException ex) {
+			System.err.println("SQL State : " + ex.getSQLState());
+			System.err.println("Message : " + ex.getMessage());
+			System.err.println("Vendor: " + ex.getErrorCode());
+			ex.printStackTrace();
+			
+			if (savepoint != null) {
+				con.rollback(savepoint); 
+				con.commit(); // Only Save data before last save point is commit
+				
+				System.err.println("Error Detected. roll back to latest save point " + savepoint.getSavepointName()  + "...");
+			} else {
+				System.err.println("Error detected, rollback everything...");
+				con.rollback();
+			}
+			con.rollback();
+			System.err.println("Transaction rollback");
+		} finally {
+			con.close();
+		}
+
+	}
+	
+	private static void saveProducts(PreparedStatement pstmt, int productId, String productName, double price) throws Exception {
+		pstmt.setInt(1, productId);
+		pstmt.setString(2, productName);
+		pstmt.setDouble(3, price);
+		pstmt.executeUpdate();		
+	}
+
+}

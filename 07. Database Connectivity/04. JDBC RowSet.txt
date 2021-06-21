@@ -1,0 +1,80 @@
+JDBC: RowSet
+
+Question: Which of the following invocations returns an implementation of a JdbcRowSet?
+[x] RowSetProvider.newFactory().createJdbcRowSet()
+[ ] JdbcRowSet.get()
+[ ] JdbcRowSet.getImplementation()
+[ ] new java.sql.JdbcRowSetImplementation()
+
+Question: Which TWO of the following statements about JoinRowSets are TRUE?
+[x] They can join more than two RowSet instances
+[x] They can join RowSet instances while disconnected from the database
+[ ] A JoinRowSet is always connected to the database
+[ ] JoinRowSet implementations can only support inner joins
+
+Question: Which section of a WebRowSet's XML representation includes the contents of its rows?
+[ ] column-definition
+[ ] metadata
+[x] data
+[ ] properties
+
+Question: What is the name of the method which must be overridden by a class which implements a Predicate?
+[ ] filter()
+[ ] filterOut()
+[ ] applyPredicate()
+[x] evaluate()
+
+Question: From the following, select the function which includes a RowSet instance and matches a column to a JoinRowSet.
+[ ] join(<RowSet>, <match_column>)
+[ ] joinTable(<RowSet>, <match_column>)
+[x] addRowSet(<RowSet>, <match_column>)
+[ ] insert(<RowSet>, <match_column>)
+
+Question: Which TWO of the following RowSets implement the WebRowSet?
+[x] JoinRowSet
+[x] FilteredRowSet
+[ ] JdbcRowset
+[ ] CachedRowSet
+
+Question: From the following methods, which one can be invoked using a CachedRowSet to push through changes to the underlying database?
+[ ] commit()
+[x] acceptChanges()
+[ ] updateDB()
+[ ] push()
+
+Question: Which of these methods of a CachedRowSet can be used to load it with the contents of a ResultSet?
+[ ] loadFromRS()
+[ ] load()
+[x] populate()
+[ ] fill()
+
+Question: Given a JdbcRowSet instance called myJdbcRS, which of these invocations will always take you to the 17th row of the RowSet?
+[ ] myJdbcRS.first(17)
+[ ] myJDBCRs.next(16)
+[ ] myJdbcRS.relative(16)
+[x] myJdbcRS.absolute(17)
+
+Question: Which of these functions of a RowSet instance can be used to link it to a SQL query string?
+[ ] executeQuery(<query_string>)
+[ ] runQuery(<query_string>)
+[x] setCommand(<query_string>)
+[ ] selectQuery(<query_string>)
+
+Question: Out of the following, which statement about a JbdcRowSet is FALSE?
+[x] It's auto-commit feature cannot be disabled
+[ ] It can be used to delete rows from a table
+[ ] It remains connected to the database until it is closed
+[ ] It's auto-commit property is enabled by default
+
+Question: Given an instance of a Predicate called myPredicate and a FilteredRowSet object called myFiltereredRS, how can we apply myPredicate to myFilteredRS?
+[ ] myFilteredRS.predicate = myPredicate
+[x] myFilteredRS.setFilter(myPredicate)
+[ ] myPredicate.rowSet(myFilteredRS)
+[ ] myPredicate.apply(myFilteredRS)
+
+
+Question: Out of the following which operation can NOT be performed on a FilteredRowSet?
+[ ] Adding a row which passes through the filter
+[ ] Deleting a row
+[ ] Pushing updates to the database
+[x] Adding a row which does not pass through the filter

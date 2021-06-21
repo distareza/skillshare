@@ -1,0 +1,127 @@
+Advanced Data Structures & Algorithms in Java: Sorting & Searching Algorithms
+
+Question: When choosing sorting algorithms, which points should you take into account?
+[x] Time complexity of the sort
+[x] Whether the sort is adaptive
+[x] Whether the sort is stable
+[x] Space complexity of the sort
+
+Question: What is the time complexity of selection sort?
+[ ] O(N)
+[ ] O(lg N)
+[ ] O(1)
+[x] O(N2)
+
+Question: Which of the following programming structures is used to perform selection sort?
+[x] Nested for loops
+[ ] A stack
+[x] A swap utility
+[ ] Non-nested for loops
+
+Question: What is the time complexity of bubble sort?
+[x] O(N2)
+[ ] O(1)
+[ ] O(N)
+[ ] O(lg N)
+
+Question: What are the similarities between a bubble sort and selection sort?
+[ ] Both sorts are adaptive
+[x] Both compare elements pairwise
+[x] Both have the same time and space complexity
+[ ] They halve the list at every step
+
+Question: What is an advantage that bubble sort has over selection sort?
+[x] Bubble sort is adaptive
+[ ] Bubble sort has better space complexity
+[ ] Bubble sort is faster
+[ ] Bubble sort has better time complexity
+
+Question: What is the time complexity of an insertion sort?
+[x] O(N2)
+[ ] O(1)
+[ ] O(N)
+[ ] O(lg N)
+
+Question: Which of the following statements are true about insertion sort?
+[x] It is an adaptive sort, allowing us to stop early
+[x] The size of the sorted list grows with every iteration
+[ ] Every iteration halves the size of the list we have to work with
+[ ] The largest element in the unsorted list is mapped to the end at every iteration
+
+Question: What is the time complexity of Shell sort?
+[x] < O(N2)
+[ ] O(N2)
+[ ] O(N)
+[ ] > O(N2)
+
+
+Question: What sorting implementation does Shell sort rely on?
+[ ] Heap sort
+[ ] Bubble sort
+[x] Insertion sort
+[ ] Selection sort
+
+Question: What is the time complexity of merge sort?
+[ ] O(N2)
+[ ] O(1)
+[ ] O(N)
+[x] O(N lg N)
+
+Question: The split and merge portions of a merge sort make up what kind of algorithm?
+[x] Divide and conquer
+[ ] Tried and tested
+[ ] Pick and choose
+[ ] Rinse and repeat
+
+
+Question: What are the factors we rely on when performing merge sort?
+[x] Two sorted lists can be merged to form a single sorted list
+[x] A list with a single element is a sorted list
+[ ] A sorted list can be grown incrementally one element at a time
+[ ] A list can be sorted around a pivot element
+
+Question: What is the time complexity of quick sort?
+[ ] O(1)
+[x] O(N lg N)
+[ ] O(N)
+[ ] > O(N2)
+
+
+Question: Which of the following techniques does quick sort use to sort lists?
+[x] Divide and conquer algorithm
+[ ] Halves lists using list length
+[x] Partitions lists using a pivot element
+[ ] Merges two sorted lists together
+
+
+Question: Which of the following statements are true about binary search?
+[x] Has time complexity O(lg N)
+[ ] Can work with unsorted lists
+[x] Roughly halves the length of a list in each iteration
+[ ] Compares elements against the last element in the list
+
+
+Question: What key advantage does linear search have over other search algorithms?
+[x] It can work with unsorted lists
+[ ] It can work with very long lists
+[ ] It can work with sorted lists
+[ ] It can work with lists with duplicate elements
+
+Question: How does binary search follow divide and conquer during the search operation?
+[ ] Based on the element being searched for tries to partition the list closer to the first or last element
+[ ] Uses the last element as the pivot element to partition the list
+[x] Uses the mid element as the pivot element to partition the list
+[ ] Uses the first element as the pivot element to partition the list
+
+Question: What is the time complexity of jump search?
+[ ] > O(N2)
+[ ] O(lg N)
+[ ] O(N)
+[x] O(sqrt(N))
+
+Question: How is interpolation an improvement over binary search?
+[ ] By partitioning using the mid element as the partition improves the algorithm
+[ ] By partitioning using the last element as the partition improves the algorithm
+[x] By partitioning using an element closer to the first or the last based on search value improves the algorithm
+[ ] By partitioning using the first element as the partition improves the algorithm
+

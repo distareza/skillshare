@@ -1,0 +1,227 @@
+Advanced Data Structures & Algorithms in Java: Getting Started with Graphs
+
+ A graph is a data structure that is used to represent relationships between entities. 
+ The primary function of a graph is to model relationships.
+ 
+ Graph Component :
+	1. Vertex or Node of a Graph used to represent entities (Model Entities)
+	2. Edge  is used to connect vertices together or to express relationships. (Model Relationships)
+		
+  Directed Graph : a flown relation between node with edge arrow, 
+  Undirected Graph : no flown or flown both way relation between nodes with stright line edge
+  
+  In degree (Undirected Graph)	: number of edges that relate to particular node/vertex
+  In degree (Directed Graph) 	: number of edges that has destination or lead to particular node/vertex
+  
+  Path : series of edges connecting the source and the destination
+  Cycle Graph : series of edges that having loop path connection 
+  Acyclic : A graph with no Cycle
+  Connected Graph : get to all nodes that exist in the graph
+  Tree Graph : a connected Acyclic Graph with having orietated 1 root to multi level child path
+  
+  All Edges in A Directed Graph are directed Edges
+  Directed acyclic graphs can also be used to specify dependencies between tasks. 
+  Tasks which are dependent on others can only be performed after the dependent tasks are complete.
+  
+  Weighted Graph : a graph having a weight or number associated with each edge 
+  
+  The Graph Representation 
+  1. Adjancency Matrix 
+  2. Adjancency List
+  3. Adjancency Set
+  
+  Adjencency Matrix : 
+	Use a matrix (table) with rows and columns represents the vertices
+	It is a square matrix, number of rows = number of columns = number of vertices
+	Every cell represents the relationship between vertices (edge)
+	
+	Graph				Adjacency Directed Matrix		Adjacency Undirected Matrix
+	(A) →  (B)               A B C D E                            A B C D E 
+         ↓    ↓            A 0 1 0 0 0                          A 0 1 0 0 0
+	    (C) ← (D)          B 0 0 1 1 0                          B 1 0 1 1 0
+	     ↓    ↓            C 0 0 0 0 1                          C 0 0 0 1 1
+	      (E)              D 0 0 1 0 1                          D 0 0 1 0 1
+                           E 0 0 0 0 0                          E 0 0 1 1 0
+						   
+						   
+						   
+  Adjencency List
+	Every Vertix is a node : may contain data, also contains pointer
+	Points to a linked list : linkedlist contains all adjacent node
+	Adjacent nodes : if vertex V connects to vertex U, then U is present in V's linked list
+	
+					  Adjacency Directed List		Adjacency Undirected List
+						(A) -> (B)                    (A) -> (B)
+						(B) -> (C) -> (D)             (B) -> (C) -> (D) -> (A)
+						(C) -> (E)                    (C) -> (E) -> (B) -> (D)
+						(D) -> (C) -> (E)             (D) -> (C) -> (E) -> (B)
+						(E)                           (E) -> (C) -> (D)
+						
+	It is not best representations of graphs
+	the order of the vertices in the adjancency list metter
+	the same graph can have many representations
+	makes it difficult to compare graphs to see if they're the same
+	To deleting a node involves looking throuch all the adjacency list to remove the node from all list
+	
+  Adjencency Set
+	Adjencency Set is similar to adjencancy List, however the same graph will not be represented in different ways.
+	
+	The differences between Adjacency Matrix Vs Adjancency List and Adjanceny Set
+	Adjancency Matrix
+	1.	This work well when the graph is well connected,
+		A well connected graph with a large number of nodes and a large number of edges
+	2.  The adjacency matrix takes up a lot of space 
+		Graph with V vertices, the order of space required is V square.
+		Worth it if you have a densely connected graph
+	
+	Adjancency List And Adjancency Set
+	1.	A sparse graph with few connections between nodes might be more efficiently represented using an adjancency list or set
+		There are just a few nodes in your graph and just a few edges connecting these nodes
+	2.	Only use up space for connections that actually exists in your graph
+		For a sparsely connected graph, you might want to be a little more space efficient
+		
+						Adjacency Matrix 	Adjacency List 		Adjacency Set
+	Space					V^2					E + V				E + V
+	Is edge Present			1				Degree of V			LG(Degree of V)
+	Iterate over edges		V				Degree of V			Degree of V
+	
+Graph Traversal	
+	Two techniques that you can use to traverse the nodes in the graph
+	1. Depth-first traversal : Go deep before go broad
+	2. Breadth-first traversal : Start traversing from a particular node and radiate outwards, kind of in concentric circles
+	
+	Graph traversal algorithms are similar to the tree traversal algorithms, except:
+		In a tree there is just one path from the root node to a specific node in the tree : once encounter a node, it is not likely to encounter the same node once again.
+		In a graph there can exist multiple paths from one node to another.
+		a tree is an acyclic graph
+		a graph can have cycles
+
+	Graph Traversal		
+		1. multiple paths can lead from one node to another. 
+		2. a graph can have cycles so the same node can be visited multiple times.
+		3. Requires a Visited List to avoid infinite looping in a graph to keep track of the nodes that already visited. 
+		
+	
+	
+Graphs are the data structures that are used in mapping applications, to model social networks, transportation networks, 
+and all applications which involve entities and relationships between these entities.						
+						
+	
+Question: Which of the following are the two components that make up a graph?
+[x] Edge
+[x] Vertex
+[ ] Parent
+[ ] Child
+						  
+Match the use case with the kind of graph that you would choose to represent it:
+Undirected graph
+B:Friendship
+D:Telephone lines
+
+Directed graph
+A:Roads
+C:Followers
+
+Question: How is a graph related to a tree?
+[x] A graph with no cycles is a tree
+[ ] A directed graph is a tree
+[ ] A disjoint graph is a tree
+[ ] An undirected graph is a tree
+
+
+Question: How are weighted graphs different from unweighted graphs?
+[ ] All vertexes in a weighted graph have a weight assigned
+[x] All edges in a weighted graph have a weight assigned
+[ ] Some vertexes in a weighted graph have a weight assigned
+[ ] All weighted graphs are acyclic
+
+Question: How many rows and columns does an adjacency matrix have for a graph with V vertices and E edges?
+[ ] E rows and V columns
+[x] V rows and V columns
+[ ] E rows and E columns
+[ ] V rows and E columns
+
+Question: Why are adjacency lists not a great representation for graphs?
+[ ] Directed graphs cannot be represented
+[x] The same graph can have multiple representations
+[x] The order of the adjacent vertices in the list matter
+[ ] Occupies too much space
+
+Question: Which of the following is the space occupied by an adjacency set representation of a graph with V vertexes and E edges?
+[ ] E
+[ ] E^2
+[x] E + V
+[ ] V
+[ ] V^2
+
+Question: How would you represent the presence of an edge from vertex v1 to vertex v2 in the adjacency matrix representation of a graph?
+[ ] Specify true in the v2 index position of the list for v1
+[x] Specify 1 in the cell corresponding to row v1 and column v2
+[ ] Add v2 to the list associated with v1
+[ ] Add v2 to the map associated with v1
+
+Question: Which of the following is true for an adjacency matrix representation?
+[x] Getting the adjacent nodes is O(V)
+[ ] Space occupied is O€
+[x] Getting the indegree of a node is O(V)
+[ ] Checking whether an edge exists between two nodes is O(E)
+
+Question: Which of the following is true for the adjacency matrix representation for undirected graphs?
+[ ] Each time an edge is added we make only one entry in the matrix
+[x] Each time a node is added we add 2 rows to the matrix
+[ ] Each time a node is added, we add a row and a column to the matrix
+[x] Each time an edge is added, we make two entries in the matrix
+
+Question: Which of the following are true for weighted graphs, in the adjacency matrix representation?
+[ ] Every edge is represented using a value of 1
+[ ] All edges are assumed to have equal weight
+[ ] Only a subset of edges can be represented
+[x] Every edge is represented using the value of the weight
+
+
+Question: Which of the following calculates the space occupied in an adjacency list representation?
+[ ] O(E)
+[ ] O(V)
+[ ] O(V2)
+[x] O(E + V)
+
+Question: In the adjacency list representation of graphs, iterating over the adjacent nodes for a specific node is an operation that is represented by which of the following?
+[ ] O(E2)
+[ ] O(E + V)
+[ ] O(V2)
+[x] O(degree of V)
+
+Question: In the adjacency set representation of graphs, iterating over the adjacent nodes for a specific node is an operation that is represented by which of the following?
+[ ] O(E + V)
+[ ] O(V2)
+[ ] O(lg E)
+[x] O(degree of V)
+
+Question: What are the types of traversal possible in graphs?
+[ ] Edge-first traversal
+[ ] Node-first traversal
+[x] Breadth-first traversal
+[x] Depth-first traversal
+
+Question: What data structure do we need when we traverse graphs?
+[ ] A stack to keep track of the last node visited
+[ ] A queue to keep track of the order in which we visit nodes
+[x] A visited list to keep track of nodes visited so far
+[ ] A distance table to keep track of the distance of each node
+
+Question: Why might we need to start traversing from all nodes in a graph?
+[ ] The graph might be disjoint
+[ ] The graph might be a tree
+[x] The graph might be unconnected
+[ ] The graph might be directed
+
+
+
+
+
+
+
+
+
+
+

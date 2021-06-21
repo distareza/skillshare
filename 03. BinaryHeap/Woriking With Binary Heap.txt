@@ -1,0 +1,328 @@
+Priority Queue
+
+	Operation time complexity
+	
+	Any list-based or array-based solution tend to favor one operation over another. So some operations will be super fast, but other operations will be very slow.
+	1. Unorder Array :
+		Insertion  : O(1)	Fast
+		Accessing  : O(N)	Slow
+		Removing   : O(N) 	Slow
+		
+	2. Ordered Array:
+		Insetion 	: O(N)		Slow
+		Accessing	: O(1)		Fast
+		Removing 	: O(1)		Fast
+		
+	With the balanced binary search tree, the insertion and access are both moderately fast		
+	3. Balanced Binary Search Tree	
+		Insertion 	(for worst case) : O(Log N)		Moderate
+		Access		: O(Log N)						Moderate
+		Remove		: O(Log N)						Moderate
+		
+	Instead of using a balanced binary search tree, we can use the binary heap as our priority queue implementation	
+	we made access faster without compromising on the time complexity for insertion and remove operations
+	4. Balance Binary Heap
+		Insertion 	: O(Log N)		Moderate
+		Access		: O(1)			Fast
+		Remove		: O(Log N)		Moderate
+		
+Binary Heap & Heap Propertiey
+	The binary heap is essentially a binary tree with some special properties (Heap Property) by add additional constraints to the node values. 
+	The heap property :
+		Minimum (Min) Heap : Every node's value should be less than or equal to the value of its children.
+							 The smallest node value will be the root node of the binary tree
+		Maximum (Max) Heap : Every node's value should be greater than or equal to the value of it's children
+							 The largest element in the heap will be the root node.
+	
+	The Shape of Binary Heap is should be Complete binary Tree
+		The Heap should form a complete binary tree	(All levels except the last level should be completely filled)
+			A complete binary tree is a binary tree in which all levels are completely filled, except the lowest level which is filled from the left most node
+			
+		The lower levels need to be filled up first before we move on to filling up higher levels.
+			If H is the height of the tree, the leaf nodes should only be at level H or level H-1
+	
+	In Binary Shape :	
+					  5			LeveL 0 
+				  /	     \		|
+			     8        6		Level 1
+			   /   \     /  \  	| 
+			  9    12   11   7  Level 2
+	         / \	            |
+			15  10              Level 3
+			
+	In array shape:	[ 5, 8, 6, 9, 12, 11, 7, 15, 10 ]
+		index i : 	Has parent 		(i-1) / 2
+					Has left Child 	2i + 1
+					Has Right Child 2i + 2
+	
+Heapify Operation	
+	Heapify Operation is needed to ensure that the heap property is always satisfied,
+	Heapify Operation is the Process of finding the right position within a binary heap for any element in the heap.
+	if an element is placed in the wrong position in our binary heap, we'll try and find the right position for that element and swap it 
+	
+	1. Shift Down : The element has to be moved downwards in the heap towards the leaf nodes
+	2. Shift Up : The element has to be moved upwards in the heap towards the root node of the heap
+
+	example: 
+	  1. Node #13 is not meet criteria of heap property of Minimum Heap
+		Root Node value 13 is greather than its child Node #8 and #6
+					 13				
+				  /	     \			
+			     8        6		
+			   /   \     /  \  	
+			  9    12   11   7  
+	         / \	            
+			15  10              
+		
+		Because Node #6 is lower than #8, then Node #13 is swapt(Shift down) to Node #6 replace it as it root node
+					 6				
+				  /	     \			
+			     8        13		
+			   /   \     /  \  	
+			  9    12   11   7  
+	         / \	            
+			15  10              
+		
+		the Node #13 still greather than its children, then Node #13 need to swapt to Node #7	
+					 6				
+				  /	     \			
+			     8         7		
+			   /   \     /  \  	
+			  9    12   11   13  
+	         / \	            
+			15  10              
+		Now those Minimum Heap Tree is already meet Heap Property Criteria
+		
+	 2. Node #4 is not meet criteria of heap property of Min Heap
+			Leaf Node #4 is lower than its Parent Node #9
+					 6				
+				  /	     \			
+			     8         7		
+			   /   \     /  \  	
+			  9    12   11   13  
+	         / \	            
+			15  4
+			
+			the Node #4 is need to swap (Shift Up) until the tree is meet heap properties Criteria
+					 6				    			 4				
+				  /	     \			    		  /	     \			
+			     8         7	shift up   	     6         7		
+			   /   \     /  \  	  -->   	   /   \     /  \  	
+			  4    12   11   13         	  8    12   11   13  
+	         / \	                         / \	            
+			15  9		                	15  9
+		
+		
+	Insert Heap Tree Operation	
+		Below Initial Tree to add node #3
+		
+				 2			 		
+			  /	     \		        
+	         4         7	     
+		   /   \     /  \  	        
+		  6     8   11   17         
+		 / 	                        
+		15                          
+		
+		Always add from the left leaf, and do heafy operation until Heap Properties meet the Binary Heap critera
+				 2							 2							 2			
+			  /	     \	 shift up      	  /	     \	  shift up     	  /	     \		
+		     4         7	 -->         4         7	 -->         3         7	
+		   /   \     /  \  	           /   \     /  \  	           /   \     /  \  	
+		  6     8   11   17           3     8   11   17           4     8   11   17
+		 / \	                     / \	                     / \	            
+		15  3                       15  6                       15  6
+		
+	Remove Heap Tree Operation	
+		Below Initial Tree to delete node #2
+				 2			 		
+			  /	     \		        
+	         4         7	     
+		   /   \     /  \  	        
+		  6     8   11   17         
+		 / 	                        
+		15                          
+		
+		1st Remove the highest priority element in the heap which is essentially the root node.
+		2nd do Heapify Operation repeat until Heap Properties meet the criteria
+				 15			 				 4		        		 4		    
+			  /	     \	 shift down 	  /	     \	  shift down  /	     \	 
+	         4         7	 -->         15         7	-->      6         7	
+		   /   \     /  \  	           /   \     /  \  	       /   \     /  \  	
+		  6     8   11   17           6     8   11   17       15     8   11   17 
+		  	                        
+	               
+	               
+Heap Sort		
+	Uses to help sort element in ascending or decending order	
+	
+	Phases:
+	1st convert unsorted list or array into a heap (Heapify process)
+	next, uses heap to sort element
+		
+	uses heap to access max element and put it in the right position in the array
+	accesing max heap to the largest elemen takes instant O(1) time (fast)	
+	
+	example 
+	 Unsorted Array : [4, 6, 9, 2, 10, 56, 12, 5, 1, 17, 14]
+	 1. Convert to Heap Tree and do Heapify opeation ( Maximum Heap )
+                 4                                   4                         4                         4                         4                         4          
+             /        \   perform heapify from   /        \    Swap #17    /        \   Swap #2      /        \	  Swap #9      /        \	 Swap #12    /        \	
+            6          9    the last element    6          9    wth #14   6          9   with #5    6          9   with #12   6          12   with #56  6          56  
+          /   \       /  \       -->          /   \       /  \    -->   /   \       /  \   -->    /   \       /  \   -->    /   \       /  \   -->    /   \       /  \  
+         2     10    56  12  swap #10 with   2     14    56  12        2     17    56  12        5     17    56  12        5     17    56   9        5     17    12   9
+        / \   /  \	            #14         / \   /  \	              / \   /  \	            / \   /  \	              / \   /  \	            / \   /  \	     
+       5   1 17  14                        5   1 17  10              5   1 14  10              2   1 14  10              2   1 14  10              2   1 14  10        
+	   	
+                   4          	              4         	             4                           56                        56        
+	          /        \	Swap #6      /        \	   Swap #6      /        \	   Swap #4       /        \	  Swap #4      /        \	
+	         6          56   with #17   17         56  with #14    17         56    with #56    17         4   with #12   17         12  
+	       /   \       /  \   -->     /   \       /  \   -->     /   \       /  \    -->      /   \       /  \   -->    /   \       /  \ 
+	      5     17    12   9         5     6     12   9         5     14    12   9           5     14    12   9        5     14    4    9
+	     / \   /  \	                / \   /  \	               / \   /  \	                / \   /  \	              / \   /  \	     
+		2   1 14  10               2   1 14  10               2   1  6  10                 2   1  6  10              2   1  6  10        
+        	
+      after heapify process convert to heap tree : [ 56, 17, 12, 5, 14, 4, 9, 2, 1, 6, 10]
+	 
+    2. Sorting Heap Tree
+       Swap Largest Element (Priority Max Heap) to the last of an array
+	   Move the largest element to the correct position in the sorted array
+	   [ 56, 17, 12, 5, 14, 4, 9, 2, 1, 6, 10] --> [ 10, 17, 12, 5, 14, 4, 9, 2, 1, 6, 56]
+	   
+	   Now excluding last element, we do Heapify again
+	             10                            17                           17        
+             /        \	 	               /        \	 	            /        \	 	
+            17         12    swap #10    10         12    Swap #10    14         12   
+          /   \       /  \   with #17   /   \       /  \  with #14   /   \       /  \  
+         5     14    4    9 	-->    5     14    4    9    -->    5     10    4    9 
+        / \   /  	      	          / \   /  	      	           / \   /  	      	
+       2   1  6           	         2   1  6           	      2  1  6           	
+        	
+       [ 17, 14, 12, 5, 10, 4, 9, 2, 1, 6 | 56] 	
+        	
+       Swap again the largest element to the last of an array 	
+       [ 6, 14, 12, 5, 10, 4, 9, 2, 1 | 17, 56] 
+	   
+	   Repeat do the Heapify again for the unsorted array to get the maxium value for sorting and swaping process
+        	
+        Heapify : 		[ 6,  14, 12, 5, 10, 4, 9, 2, 1 | 17, 56] 
+						[ 14,  6, 12, 5, 10, 4, 9, 2, 1 | 17, 56] 
+						[ 14, 10, 12, 5,  6, 4, 9, 2, 1 | 17, 56] 
+        Swap Element : 	[ 1, 10, 12, 5,  6, 4, 9, 2 | 14, 17, 56] 
+        Heapify : 		[ 12, 10, 1, 5,  6, 4, 9, 2 | 14, 17, 56] 
+						[ 12, 10, 9, 5,  6, 4, 1, 2 | 14, 17, 56] 
+        Swap 			[  2, 10, 9, 5,  6, 4, 1 | 12 ,14, 17, 56]
+		Heapify : 		[ 10,  2, 9, 5,  6, 4, 1 | 12, 14, 17, 56] 
+						[ 10,  6, 9, 5,  2, 4, 1 | 12, 14, 17, 56] 
+		Swap			[  1,  6, 9, 5,  2, 4 | 10, 12, 14, 17, 56] 
+		Heapify			[  9,  6, 1, 5,  2, 4 | 10, 12, 14, 17, 56] 
+						[  9,  6, 4, 5,  2, 1 | 10, 12, 14, 17, 56] 
+		Swap			[  1,  6, 4, 5,  2 | 9, 10, 12, 14, 17, 56] 
+		Heapify			[  6,  1, 4, 5,  2 | 9, 10, 12, 14, 17, 56] 
+						[  6,  5, 4, 1,  2 | 9, 10, 12, 14, 17, 56] 
+		Swap			[  2,  5, 4, 1 | 6, 9, 10, 12, 14, 17, 56] 
+		Heapify			[  5,  2, 4, 1 | 6, 9, 10, 12, 14, 17, 56] 
+		Swap			[  1,  2, 4 | 5, 6, 9, 10, 12, 14, 17, 56] 
+		Heapify			[  4,  2, 1 | 5, 6, 9, 10, 12, 14, 17, 56] 
+		Swap			[  1,  2 | 4, 5, 6, 9, 10, 12, 14, 17, 56] 
+		Heapifty		[  2,  1 | 4, 5, 6, 9, 10, 12, 14, 17, 56] 
+		Swap			[  1,  2, 4, 5, 6, 9, 10, 12, 14, 17, 56] --> all element is fully sorted
+		
+		
+		Time complexity for heap sort is O(N Log N)
+		Heap Sort is treu for Best, Worst and Average Case
+		Heap Sort is Faster than quick sort in the worst case
+		
+		Heap Sort is not adaptive sort
+		Heap Sort is not stable sort
+		Does not need additional space, space complizity is O(1)
+
+		
+		
+Quiz :
+Question: Which of the following are common operations performed on the priority queue?
+[x] Access
+[x] Deletion
+[ ] Sorting
+[ ] Searching
+[x] Insertion	
+
+Question: What is the heap property for a maximum heap?
+[x] The root node has the largest value
+[ ] The values in the child nodes are larger than the parent node
+[ ] The root node has the smallest value
+[x] The value of the parent node is larger than the child nodes
+
+Question: What data structure we can use to represent a binary heap?
+[ ] A queue
+[ ] A stack
+[x] An array
+[ ] A deque
+		
+Question: Which of the following statements best defines the heapify operation?
+[ ] When the heap is not a complete binary tree, restructure the heap
+[x] When an element in the heap is in the wrong position, move it to the right position
+[ ] When the shape property of the heap is not met, reshape the heap
+[ ] When leaf nodes of the heap are not at the same level, rebalance the heap		
+
+Question: What is the time complexity of the insert operation in a heap?
+[ ] O(N2)
+[x] O(log N)
+[ ] O(N)
+[ ] O(1)
+
+Question: What are some of the operations that can be included in the heap base class for a maximum as well as a minimum heap?
+[x] siftUp
+[ ] siftDown
+[x] getLeftChildIndex
+[x] getParentIndex
+[ ] getRightChildIndex
+
+Question: Which of the following kinds of heaps are valid?
+[ ] Count heap
+[ ] Average heap
+[x] Minimum heap
+[x] Maximum heap
+[ ] Sum heap
+
+Question: In the siftUp() operation of a max heap when would you swap two elements?
+[ ] When the parent element is larger than the child
+[ ] When the left child is smaller than the parent
+[x] When a child element is larger than the parent
+[ ] When the right child is larger than the parent
+
+Question: Which of the following statements is true for the minimum heap?
+[x] The root node has the smallest element
+[ ] The leaf node at the extreme right has the largest element
+[ ] The leaf node at the extreme left has the smallest element
+[ ] The root node has the largest element
+
+Question: Which are the two phases in heap sort?
+[ ] Heapify and merge
+[ ] Partition and sort
+[ ] Divide and conquer
+[x] Heapify and sort
+
+Question: In an array representation of the heap how would you find the parent index for an element with index i?
+[x] (i - 1) / 2
+[ ] 2i + 2
+[ ] (i + 1) / 2
+[ ] 2i + 1
+
+Question: What does the sorting operation in the heap sort involve?
+[ ] Find the node indexes in the heap and sorting based on those indexes
+[ ] Finding the leaf nodes in the heap and sorting them
+[ ] Finding the pivot element using the heap and partitioning the list
+[x] Accessing the largest element in the heap and moving it to the right position
+
+Question: Which of the following statements about heap sort are true?
+[x] It has time complexity O(N log N)
+[ ] It takes no additional space
+[ ] It is an adaptive sort
+[x] It is a stable sort
+
+Question: While performing heap sort using a max heap, what kind of heapify operation do you need to implement?
+[ ] neither siftUp nor siftDown
+[ ] both siftUp and siftDown
+[ ] siftUp
+[x] siftDown

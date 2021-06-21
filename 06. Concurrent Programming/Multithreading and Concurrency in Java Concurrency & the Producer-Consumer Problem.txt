@@ -1,0 +1,43 @@
+Multithreading and Concurrency in Java: Concurrency & the Producer-Consumer Problem
+
+Question: Which of these functions can be invoked for a thread to block indefinitely on an object until it becomes available?
+[ ] resourceBlock()
+[x] wait()
+[ ] block()
+[ ] blockOnResource()
+
+Question: Which TWO of these functions can wake up a thread which is waiting on a resource?
+[ ] awaken()
+[x] notify()
+[x] notifyAll()
+[ ] wake()
+
+Question: Once a thread invokes wait() on a resource, what happens to the lock it acquired on it?
+[ ] The thread continues to hold the lock exclusively while it waits
+[ ] The lock is nullified
+[x] The lock is released by the thread
+[ ] The thread continues to hold the lock, but not exclusively
+
+Question: Which of these statements about the notify() function is TRUE?
+[ ] It interrupts one of the threads waiting on the related object
+[ ] It wakes up all of the threads waiting on the related object
+[x] It wakes up one of the threads waiting on the related object
+[ ] It terminates all of the threads waiting on the related object
+
+Question: Which of these functions is invoked to wake up a thread awaiting a condition?
+[ ] revive()
+[x] signal()
+[ ] wakeUp()
+[ ] awaken()
+
+Question: Which of these functions can be used by a thread to wait on a condition until a signal() is invoked to wake it up?
+[ ] conditionalSleep()
+[ ] sleep()
+[ ] conditionalWait()
+[x] await()
+
+Question: Which of these methods of the ArrayBlockingQueue can be used to add an item in a thread-safe manner?
+[x] put()
+[ ] insert()
+[ ] append()
+[ ] add()

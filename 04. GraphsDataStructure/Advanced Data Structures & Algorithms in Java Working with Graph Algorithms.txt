@@ -1,0 +1,350 @@
+Advanced Data Structures & Algorithms in Java: Working with Graph Algorithms
+
+Topological Sort
+	
+	Topological Sort is an ordering of vertices in a Directed Acyclic Graph (DAG)
+		in which each node comes before all of the nodes to which it has outgoing edges.
+	
+	example uses of DAG ( Directed Acyclic Graph) in real world:
+	- Ordering Task : Independent Task will be completed First, after which we process dependent task
+	- Applying Transformation : Big Data is processed in pipelines that are essensially DAGs - transformations to the data are applied in sequence
+	- Machine Learning : Deep Learning neural network model uses layers of neurons in which layers are applied in order to inputs - neural networks are also DAGs
+
+	example : 	(A) →  (B)    
+              	     ↓     ↓  
+              	    (E) ← (D)
+              	     ↓     ↓
+                       (C)		
+
+	Sort order : (A) → (B) → (D) → (E) → (C)
+		1. Task (A) should be completed First before Task (B)
+				(A) → (B)
+
+		2. Task (B) has to be completed First before Task (E) and (D)
+			     	   (B)
+			         ↓     ↓
+                    (E)   (D) 				
+		
+		3. Task (D) has to be Completed First before Task (E)
+              	    (E) ← (D)
+		
+		4. Task (E) and (D) have to both be completed before Task (C)
+              	    (E)   (D)
+                     ↓     ↓
+                       (C)					 
+		
+	Graph can have multiple Topological Sorts
+	example : 	(A) →  (B)    
+	          	     ↓     ↓  
+	          	    (E)   (D)
+	          	     ↓     ↓
+	                   (C)	
+	Sort Order can be : "(A) → (B) → (E) → (D) → (C)" or "(A) → (B) → (D) → (E) → (C)"
+						 
+	How to Define the first Node: 
+		- The First Node is always the one which has no incoming Edge, the node does not depend on other nodes
+		- The First Node is a node with a Zero (0) indegree 
+		
+	Topological sort is not possible for an Cycle Graph Because Cycle Graph not having a node with an indegree of zero.
+	Topological sort requires at least on nore that having indegree of zero
+	
+Topological Sort Algorithm
+	
+	example : 	(A) →  (B)    
+              	     ↓     ↓  
+              	    (E) ← (D)
+              	     ↓     ↓
+                       (C)		
+    In degree					   
+		(A) : 0  (No incoming edge) --> Must be the First / Start Node
+		(B) : 1  (There is 1 incoming edge from Node A)
+		(C) : 2  (There are 2 incoming edge from Node E and D) 
+		(D) : 1  (There is 1 incoming edge from Node B)
+		(E) : 2  (There are 2 incoming edge from Node B and D) 
+		
+	1. Find the Node that having 0 Indegree	, which Node A as start for Topological Sort
+	   Order : (A)
+	   
+	2. Remove Node A from Graph, and reduce the indegree of all its immediate neighbors
+		Graph 		Indegree
+	       (B)      (A) : 0
+	     ↓     ↓    (B) : 0  --> Immediate Neighbour of Nade (A), reduced the indegree value
+	    (E) ← (D)   (C) : 2
+	     ↓     ↓    (D) : 1
+	       (C)      (E) : 2 
+	   Order : (A) → (B)   
+	   
+	3. Remove Node B From Graph, and reduce the indegree of all its Immediate neighbors
+		Graph 		Indegree
+					(A) : 0
+	    (E) ← (D)   (B) : 0  
+	     ↓     ↓    (C) : 2
+	       (C)      (D) : 0 --> Reduced because immediate Neighbor of Node (B) 
+	                (E) : 1 --> Reduced because immediate Neighbor of Node (B)
+	   Because Node D having indegree of Zero, D set as starting vertex / node for next topological sort
+	   Order : (A) → (B) → (D)
+	   
+	4. Again, Remove Node D and reduce the indegree of all its immediate neighbors
+		Graph 		Indegree
+					(A) : 0
+	    (E)         (B) : 0  
+	     ↓          (C) : 1 --> Reduced because immediate Neighbor of Node (D) 
+	       (C)      (D) : 0 
+	                (E) : 0 --> Reduced because immediate Neighbor of Node (D)
+	   Because Node E having indegree of Zero, E set as starting vertex / node for next topological sort
+	   Order : (A) → (B) → (D) → (E)
+	   
+	5. Remove D and reduce the indegree of all its immediate neighbors
+		Graph 		Indegree
+					(A) : 0
+	                (B) : 0  
+	                (C) : 0 --> Reduced because immediate Neighbor of Node (E) 
+	       (C)      (D) : 0 
+	                (E) : 0 
+	   This completes our topology sort algorithm
+	   Order : (A) → (B) → (D) → (E) → (C)
+	
+Shortest Path Algorithm : 
+	Algorithm uses for finding the shortest path from source to destination 
+	Unweight Graph : to find the the fewest paths hops that traverses the edges, ( every weight is having equal value for each edge which is 1)
+	
+	Shortest Algorithm is essentially a breath-first traversal of all nodes in graph starting from the source code
+	Shortest Algorithm uses a distance table to keep track of distance from the source node
+	
+	Distance[vertex] = Distance[Last Vertex] + 1
+	
+	Running Time : 	O (V+E) ( Adjacency List )
+					O (V*V) ( Adjacency Matrix )
+					
+	Example : 
+		          (H) ← (C)
+		           ↑     ↓
+		    (A) → (E) → (B)
+		     ↑           ↓   
+		     |----------(D) ← (G) 
+		                 ↓ 
+		                (F)
+	Find the Shortest Graph Algorithm From B to H
+	1. Build Distance Table Contains an Entry for All vertices in Graph
+	
+	   Initialized the Distance Table with Empty Distance and Last Vertex
+		Vertex		Distance	Last Vertex
+		  A			  -1			[NULL]	
+		  B			  -1			[NULL]	
+		  C			  -1			[NULL]   
+		  D			  -1			[NULL]	
+		  E			  -1			[NULL]	
+		  F			  -1			[NULL]	
+		  G			  -1			[NULL]   
+		  H			  -1			[NULL]	
+		
+		Update distance to 0 for the Source Vertex and update Last Vertext with Source Vertex
+		Vertex		Distance	Last Vertex
+		  A			  -1			[NULL]	
+		  B			   0			  B	
+		  C			  -1			[NULL]   
+		  D			  -1			[NULL]	
+		  E			  -1			[NULL]	
+		  F			  -1			[NULL]	
+		  G			  -1			[NULL]   
+		  H			  -1			[NULL]	
+		
+		Fill in the Last Vertex Column with the Last vertices of its Adjacent Vertices ( The other List of Vertices/node that connected to that vertice/Node)
+		          (H) ← (C)
+		           ↑     ↓
+		    (A) → (E) → (B)
+		     ↑           ↓   
+		     |----------(D) ← (G) 
+		                 ↓ 
+		                (F)
+		Vertex		Adjacent Vertices
+		 A          [ D ]						
+		 B			[ E, C ] 
+		 C			<None - No Adjacent Vertex, No Vertex / Node is connected from Node C>
+		 D			[ B, G ]
+		 E			[ A ]
+		 F			[ D ]
+		 H			[ E ]
+
+		          (H) ← (C)
+		           ↑     ↓
+		    (A) → (E) → (B)
+		     ↑           ↓   
+		     |----------(D) ← (G) 
+		                 ↓ 
+		                (F)		 
+		 Count the Distance with following formula Distance[vertex] = Distance[Last Vertex] + 1
+		Vertex		Adjacent Vertices (Last Vertex)
+		 A          [ D ]				
+		 B			<skip>				
+		 C			-1					
+		 D			[ B, G ]			
+		 E			[ A ]				
+		 F			[ D ]
+		 H			[ E ]
+		 G			<skip> 			 	
+		 
+		 For Each vertex count how many vertex are availble from selected source
+		 Uses Queue to count the edge
+		 Vertex		Traversal Edge			Edge Count (Distance)
+		 A			B → D → A				 2
+		 B			0						 0
+		 C			N/A						-1
+		 D			B → D 					 1
+		 E			B → D → A → E			 3
+		 F		 	B → D → F				 2
+		 G			N/A						-1
+		 H			B → D → A → E → H		 4
+		 
+		The distance table will be different if your source node is different. 
+		So each time you change your source node, you'll need to recalculate the distance table. 
+		  
+		Vertex		Distance	Last Vertex  
+          A			   2			D	
+          B			   0			B
+          C			  -1			[NULL]   
+          D			   1			B
+          E			   3			A
+          F			   2			D
+          G			  -1			[NULL]   
+          H			   4			E
+		  
+	2. 	Back track all the very Last child Vertex, Destination H do back traversal from Table above to the seleted source
+		Uses Stack to back track the vertex
+		only 1 option is found : H ← E ← A ← D ← B 
+		Vertex		Last Vertex		Distance	
+		  A				 D             2		: ....... A ← D ← B
+		  B				 B			   0		:
+		  C			   [NONE]         -1		:
+		  D				 B             1		: ........... D ← B
+		  D				 G            -1		: 
+		  E				 A             3		: ... E ← A ← D ← B 
+		  F				 D             2		: F ← D ← B 
+		  G			   [NONE]         -1		:
+		  H				 E             4		: H ← E ← A ← D ← B 
+  
+		Sorted Path is :  B → D → A → E → H 
+		  
+Dijkstra Algorithm
+	Dijkstra's algorithm works with graphs that have weighted edges, but it does not handle negative weights. 
+	
+	The greedy algorithm tries to optimize locally and not globally.
+	
+	A greedy algorithm builds up a solution step-by-step.
+	At each step, it tries to find the best possible next step to take, which will take it towards a solution.
+	It does NOT looking at the overall problem that needs to be solved, it's only looking at the best possible next step.
+	It only considers the most obvious benefit of choosing the best possible next step.
+
+	Cons : 	
+	Greedy algorithms often fail to find the best or most optimal solution
+	They do not operate on all of the data in one go, so they may not see the big picture.
+	Greedy algorithms are widely used for optimization problems. 
+	
+	Greedy algorithms are often used in cases to find approximate solutions to very hard problems
+	
+	Relaxation process is where you update a distance to a node that you encountered before with a newer, smaller value.
+	
+	     2        2					
+	(A)  →   (B)  → (D)             
+	3↓	     5↓      ↑              
+	(C)  →   (E)  ---4              
+	     6                          
+	
+	Find Shortest Path with Dijktra Algorithm Source : A to Destintaion : D
+	Vertex 	Last Vertex Distance	
+	A			A		  0	
+	B			A		  2	
+	C			A		  3
+	D           B         4 ( 2 + 2 )
+	E           B         7 ( 2 + 5 )
+	
+	The algorithm's effecieny depends on how the priority queue is implemented, consist 2 opration : updating the queue and popping from the queue dtermines the running time
+	Binary Heaps are user for priority queue  	: O (E Log V)
+	Array for priority queue					: O (E + V*V)
+	
+	
+Question: What types of graphs do we use the topological sort algorithm in?
+[ ] Fully connected, undirected graphs
+[ ] Directed, connected graphs
+[x] Directed, acyclic graphs
+[ ] Undirected, unweighted graphs
+
+Question: For the topological sort algorithm, if there is an edge from node A to node B, and from node B to node C what does that mean?
+[ ] The node B should be processed before node A
+[x] The node A should be processed before node C
+[ ] B can be processed after C but must be processed before A
+[ ] The node C should be processed before node A
+
+Question: What is the data structure that you may need to use to implement the topological sort algorithm?
+[ ] A binary tree
+[ ] A map
+[ ] A stack
+[x] A queue
+
+Question: Which of the following use cases can apply the topological sort algorithm?
+[x] Schedule university courses so you take pre-requisites first
+[x] Perform tasks on an assembly line so tasks are performed after their dependencies
+[ ] Find the path with least traffic from source to destination
+[ ] Build a railway line to connect all cities for the least cost
+
+Question: When would you use the shortest path algorithm?
+[x] Find the path in a routing network with the least hops
+[ ] Perform tasks on an assembly line so tasks are performed after their dependencies
+[ ] Build a railway line to connect all cities for the least cost
+[ ] Schedule university courses so you take pre-requisites first
+
+Question: What does backtracking mean in the shortest path algorithm?
+[ ] Start by calculating the longest path from source to destination and then shortening it iteratively
+[x] After calculating the shortest path from the source to every node, we traverse backwards from destination to source
+[ ] For every step forward in the shortest path, we take a step backward to double check the path
+[ ] Moving backwards from the destination to the source to find the shortest path
+
+Question: What does the distance table data structure hold while performing the shortest path algorithm?
+[ ] An entry for every edge
+[ ] The list of vertices traversed from source to destination
+[x] An entry for every node
+[x] The shortest distance from the source node to every other node
+[x] The last vertex traversed from source to destination
+
+Question: What is the name of the algorithm used to find the shortest path in a weighted graph?
+[x] Dijkstra’s algorithm
+[ ] Shortest path algorithm
+[ ] Prim’s algorithm
+[ ] Topological sort algorithm
+
+Question: What is relaxation in Dijsktra’s algorithm?
+[ ] Detecting cycles in the graph
+[ ] Updating a path to a node with a new longer path
+[x] Updating a path to a node with a new shorter path
+[ ] Updating the neighboring vertices of a node
+
+Question: How do you calculate the shortest distance to a neighboring vertex in Dijkstra’s algorithm?
+[x] Distance[neighbor] = Distance[vertex] + EdgeWeight[vertex, neighbor]
+[ ] Distance[neighbor] = Distance[vertex] + 1
+[ ] Distance[neighbor] = Distance[vertex] + NumHops[vertex, neighbor]
+[ ] Distance[neighbor] = Distance[vertex]
+
+Question: What is the data structure that Dijkstra’s algorithm uses?
+[ ] A list
+[ ] A stack
+[ ] A queue
+[x] A distance table
+[ ] A map
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

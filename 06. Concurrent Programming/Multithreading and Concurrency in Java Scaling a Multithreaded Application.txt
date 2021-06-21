@@ -1,0 +1,68 @@
+Multithreading and Concurrency in Java: Scaling a Multithreaded Application
+
+Java ExecutorService to manage a pool of threads which can execute tasks concurrently. 
+A SheduledExecutorService enables tasks to be sheduled and also to run them on a recurring basis.
+Future object to keep track of asynchronous task executions. 
+The fork/join framework which adopts a divide and conquer approach to managing a large computation task. 
+
+Question: Which of these invocations returns an ExecutorService with exactly 4 worker threads?
+[x] Executors.newFixedThreadPool(4)
+[ ] new Thread(new ExecutorService(), 4)
+[ ] new ExecutorService(4)
+[ ] Thread.Executors(4)
+
+Question: Which of these is the method one must define in a Callable class?
+[ ] return()
+[ ] run()
+[x] call()
+[ ] exec()
+
+Question: Assume we create a ForkJoinPool with the following call:
+new ForkJoinPool();
+What is the number of parallel executions which can take place?
+[ ] 4
+[ ] 2
+[x] Equals the number of CPUs on the system
+[ ] 8
+
+Question: When scheduling a task with the schedule function of the ScheduledExecutorService, we supply 3 arguments. Which of these is NOT an argument which we provide.
+[ ] The delay before the scheduled task is run
+[ ] The task to schedule
+[ ] The time unit for the delay
+[x] The type of value returned by the task
+
+Question: Which of these functions of the ScheduledExecutorService is used to schedule a fixed time between the end of one execution of a task and the start of another?
+[ ] scheduleFinishToStart()
+[x] scheduleWithFixedDelay()
+[ ] scheduleAtFixedRate()
+[ ] runFinishToStart()
+
+Question: Which function in a RecursiveAction instance contains the logic to execute the task and also to break it up into smaller chunks?
+[x] compute()
+[ ] divideAndConquer()
+[ ] run()
+[ ] call()
+
+Question: What does a shutdownNow() call on an ExecutorService do to actively running threads?
+[x] It sets their interrupted flags
+[ ] It has no effect on them
+[ ] It causes them to raise a TerminatedException
+[ ] It terminates them
+
+Question: Which of these methods of a future object can be used to check whether it has completed execution?
+[ ] isProcessing()
+[ ] isDownloading()
+[x] isDone()
+[ ] cancel()
+
+Question: Which of these functions of a CountDownLatch will cause a thread to block until the count drops to 0?
+[x] await()
+[ ] isZero()
+[ ] isDone()
+[ ] countDown()
+
+Question: When an ExecutorService instance is shut down, what happens to tasks which were submitted to it, but haven't run yet?
+[x] They do get executed eventually
+[ ] They get executed and throw a ThreadNotScheduledException
+[ ] They are returned as a list of executable tasks
+[ ] They are never executed

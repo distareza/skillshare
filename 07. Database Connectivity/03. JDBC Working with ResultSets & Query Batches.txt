@@ -1,0 +1,80 @@
+JDBC: Working with ResultSets & Query Batches
+
+Question: Which of these concurrency values represents a ResultSet which can be modified?
+[ ] MODIFIABLE_RESULTSET
+[ ] CONCUR_RW
+[ ] RW_RESULTSET
+[x] CONCUR_UPDATABLE
+
+Question: Which TWO of these ResultSet types allow both forward and backward navigation?
+[x] TYPE_SCROLL_SENSITIVE
+[ ] TYPE_FORWARD_BACKWARD
+[ ] TYPE_FORWARD_ONLY
+[x] TYPE_SCROLL_INSENSITIVE
+
+Question: Assume we do not explicitly set a value for auto-commit for a Connection instance. We have a Statement created from that Connection which we use to perform an insert operation using executeUpdate. Assuming there is nothing wrong with the inserts, what is the outcome?
+[ ] The rows are inserted, but not committed
+[ ] An error is thrown as executeUpdate is not meant for inserts
+[ ] An error is thrown since we need to explicitly set a value for auto-commit
+[x] The rows are inserted and committed
+
+Question: Which of these is the method of a Statement instance which is used to run a batch of queries?
+[ ] makeBatch().executeUpdate()
+[ ] executeQuery()
+[x] executeBatch()
+[ ] executeUpdate(true)
+
+Question: Out of the following, which is a type of Exception thrown when at least one query in a batch causes an error?
+[x] BatchUpdateException
+[ ] PreparedException
+[ ] MultipleException
+[ ] ContraintException
+
+Question: What is the result when we invoke refreshRow() on a ResultSet whose type is CONCUR_READ_ONLY?
+[ ] It has no effect and no exception is thrown
+[x] An exception is thrown
+[ ] The row is deleted from the database
+[ ] The refresh takes place and no exception is thrown
+
+Question: Out of the following navigation operations, which one is supported by a TYPE_FORWARD_ONLY ResultSet?
+[x] next()
+[ ] first()
+[ ] last()
+[ ] absolute(1)
+
+Question: Which function of a ResultSet can be invoked to retrieve the latest contents of the current row from the database?
+[ ] getRow()
+[x] refreshRow()
+[ ] reload()
+[ ] updateRow()
+
+Question: Given a Connection instance named myConn, and a Statement instance myStmt, which of these invocations will create a Savepoint for the transaction?
+[ ] myStmt.saveChanges()
+[ ] myConn.save("savepoint")
+[ ] myStmt.createSavepoint("savepoint")
+[x] myConn.setSavepoint("savepoint")
+
+Question: Using a Connection object called myConn, which of these invocations will turn off the auto-commit feature?
+[x] myConn.setAutoCommit(false)
+[ ] myConn.disableAutoCommit()
+[ ] myConn.turnOff("auto-commit")
+[ ] myConn.set("auto-commit", false)
+
+Question: Out of the following operations on a ResultSet, which TWO perform navigations based on the current cursor position?
+[ ] first()
+[x] relative()
+[ ] absolute()
+[x] previous()
+
+Question: Given a Connection instance named myConn, and a Statement instance myStmt, which of these invocations will undo all uncommitted changes on a Connection?
+[ ] myStmt.undo()
+[x] myConn.rollback()
+[ ] myStmt.rollback()
+[ ] myConn.undo()
+
+
+Question: Which function can we invoke using a ResultSet to move the cursor to a point where a new row can be added to it?
+[ ] setInsert()
+[ ] rowInsert()
+[ ] addRow()
+[x] moveToInsertRow()

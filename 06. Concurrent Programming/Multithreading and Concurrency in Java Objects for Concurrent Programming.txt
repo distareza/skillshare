@@ -1,0 +1,87 @@
+Multithreading and Concurrency in Java: Objects for Concurrent Programming
+
+Semaphores
+	is to allow to specify an upper limit on the number of concurrent threads which can access a resource.
+	Semaphores are often used to restrict the number of threads than can access some (physical or logical) resource.
+	
+	Semaphores are a very useful instrument to regulate the amount traffic on particular resouce
+	for a thread in mutithread process can be granted exclusive access to a resource to ensure that there are no race conditions 
+	so that  the output of any application will be consistent.
+	
+	
+Permit Acquisition in Semaphores
+	the more permits that a thread can have, is more exclusive access that the thread can have access to a shared resources.
+	When implemented a multi-threading application, where in terms of acquiring a semaphore, not all threads are created equal. 
+	Permit Acquisition in Semaphores allows the flexibility of setting threads, which put a higher load on the resources to require more permits in order to acquire the SharedResource. 	
+	
+Shared Variables	
+	volatile keyword can guarantee visibility of any updates to a variable to all threads which share it.
+	
+Atomic Variables
+	a variable in multi-thread application can performed in atomic manner,
+	where a process to perform an update on a variable and immediately read the updated value.
+	By using a synchronization can be achive these condition, however that does come at a significant cost in terms of overall performance. 
+	If it is just a single variable whose updates and reads you wish to make Atomic, the best solution in this case is to make use of the built-in Atomic variables in Java.
+	
+ArrayList is not threadsafe collection
+	use Collections.synchronizedCollection(new ArrayList<>()) for threadsafe
+	
+Question: What is the argument to the constructor of a semaphore instance?
+[x] The number of permits linked to it
+[ ] A resource it is attached to
+[ ] The lock it is linked to
+[ ] The number of resources it is linked with	
+
+Question: What happens to a thread which invokes acquire() on a semaphore which has no permits to issue?
+[ ] The thread quits after throwing an exception
+[ ] The thread gives up on the semaphore and resumes execution
+[ ] The thread terminates gracefully
+[x] It waits until another thread releases the required number of permits
+
+Question: If a non-volatile resource shared by multiple threads is updated by one of them, which of these statements is TRUE?
+[x] There is no guarantee that the update is visible to other threads
+[ ] The updating thread raises an exception
+[ ] The updating thread will interrupt the other threads to propagate the update
+[ ] All threads immediately pick up the update
+
+Question: When an update is performed to a volatile variable, where is the new value written?
+[ ] To one of the connected disks
+[ ] The CPU cache of half of the CPUs on the system
+[ ] Only to the CPU cache of the updating thread
+[x] Main memory
+
+Question: Which of these AtocInteger functions performs an increment on the integer and then returns the updated value?
+[ ] return()
+[x] incrementAndGet()
+[ ] updateAndReturn()
+[ ] inc()
+
+Question: which of these invocations returns a synchronizedCollection backed by an ArrayList?
+[ ] synchronized(ArrayList<String>())
+[ ] (new ArrayList<String>).synchronize()
+[ ] (new ArrayList<String>).sync()
+[x] Collections.synchronizedCollection(new ArrayList<String>())
+
+Question: Which of these is a thread-safe variant of an ArrayList?
+[x] CopyOnWriteArrayList
+[ ] ThreadSafeList
+[ ] RunnableList
+[ ] ConcurrentList
+
+Question: Which TWO of these operations are iterators on CopyOnWriteArrayLists not permitted to perform?
+[x] next()
+[ ] remove()
+[ ] add()
+[x] hasNext()
+
+Question: Which TWO of these are valid differences between a HashMap and ConcurrentHashMap?
+[x] The ConcurrentHashMap is thread-safe, the HashMap is not
+[x] The iterator of the ConcurrentHashMap is fail-safe, it’s fail-fast for a HashMap
+[ ] The function to add an element to a ConcurrentHashMap is add(), but put() for a HashMap
+[ ] An iterator is available for a ConcurrentHashMap, not for a HashMap
+
+Question: Out of the following data structures, which TWO are synchronised?
+[x] Vector
+[ ] HashMap
+[x] Hashtable
+[ ] ArrayList

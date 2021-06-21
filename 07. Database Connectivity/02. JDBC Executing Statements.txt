@@ -1,0 +1,74 @@
+JDBC: Executing Statements
+
+Question: Which of these statements about registering a JDBC driver using Class.forName is TRUE?
+[ ] It is only required when connecting to a database using a Properties object
+[ ] It is not required for any version of MySQL
+[ ] It is required for any database connection from a Java app
+[x] It is not required for newer versions of JDBC
+
+Question: Given a Properties instance called myProps which of these invocations returns the value of a property named read_user?
+[ ] myProps.read_user.get()
+[x] myProps.getProperty("read_user")
+[ ] myProps.user.get("read_only")
+[ ] myProps.put("read_only")
+
+Question: Given an instance of com.mysql.cj.jdbc.MysqlDataSource called mySQLDS, which of these calls can be used to assign the database password of "mypwd" to the DataSource?
+[ ] mySQLDS.props("password", "mypwd")
+[ ] mySQLDS.set().password("mypwd")
+[x] mySQLDS.setPassword("mypwd")
+[ ] mySQLDS.set("password", "mypwd")
+
+Question: Which function of a Statement object can be used to run a CREATE TABLE query against a database?
+[ ] run()
+[ ] createTable()
+[x] execute()
+[ ] create()
+
+Question: What value type is returned when we run the execute() function of a Java Statement?
+[ ] int
+[x] boolean
+[ ] String
+[ ] ResultSet
+
+Question: What is the value returned by a call to the executeUpdate function of a Statement?
+[ ] A boolean conveying whether the execution was a success
+[ ] A ResultSet with the modified rows
+[x] An integer representing the number of modified rows
+[ ] null
+
+Question: Which of these SQL query types can NOT be used with the executeUpdate method of a Statement?
+[ ] UPDATE
+[ ] INSERT
+[ ] DELETE
+[x] SELECT
+
+Question: You have a DROP DATABASE query which you run using the executeUpdate function of a Statement. What is the integer value which is returned in the result?
+[ ] 1
+[ ] The sum of the number of rows across all tables in the deleted database
+[x] 0
+[ ] The number of tables in the deleted database
+
+Question: With a Connection object myConn, which of these calls can we make to return a Statement?
+[x] myConn.createStatement()
+[ ] myConn.get()
+[ ] myConn.returnStatement()
+[ ] myConn.create().statement()
+
+Question: Which of the following about Prepared statements is FALSE?
+[ ] It can be used to run INSERT statements using the executeUpdate function
+[ ] It can be initialised with a query string contain '?' for parameters
+[ ] It can be used to run SELECT statements using the executeQuery function
+[x] It formulates a new query plan for each execution
+
+Question: What method of a PreparedStatement is used to assign a double value to a parameter?
+[ ] setInt()
+[ ] setNumeric()
+[ ] setVarchar()
+[ ] setDouble()
+
+Question: Which method of a SQLException returns a vendor-defined code for an exception?
+[ ] printCode(),
+[ ] printMySQLCode()
+[ ] getVendorCode(),
+[x] getErrorCode()
+

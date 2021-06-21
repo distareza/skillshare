@@ -1,0 +1,388 @@
+Multithreading and Concurrency in Java: Introduction to Concurrent Programming
+	
+	Property of Multithread
+		Multiple tasks executed concurrently by the same process
+		The threads shared a context but run independently, the shared context could refer to commonly used data structures as well as space within main memory
+		Only one thread is being worked on at a given time
+		Concurrent threads are in a partially completed state
+	
+	Benefits of Multithread :
+		Each task makes at least inremental progress
+		Observers and users do not feel that a job is being ignored
+		Switching between task is relatively simple
+		idle time is utilized effeciently
+		
+	Application of Multithreading
+		I/O bound tasks (Database and filesystem)
+		Network bound tasks (Downloading and scraping)
+	
+	Multiprocess Property
+		Multi tasks executed concurrently by different process
+		Can make better use of available resources (CPU coreS)
+		Can combine multiprocessing and multithreading to improve effeciency
+		Ideal when processes are constantly occupied and not waiting
+		
+	Difference from multithread
+		Process cannot shared data in the same way as hreads
+		Communication between process can be complicated - may need a manager
+		The thread-off - overhiead vs parallellism
+		Switching between processes involves overhead
+
+	Application of Multiprocess
+		CPU bound task ( Numerical operation, Image processing )
+		
+	Concurrency in Java
+		Most implementation of JVM run as a single process
+		An app running in a JVM can spawn multiple thead
+		Thread in Java are called lightweight processes
+		OS processes can created using ProcessBuilder
+		
+	Implementing Thread in JAva
+		Implement Runnable  ( Can inherit from other classes )
+		Extend Thread ( Prevents inheritance, because java preventing multiple inheritence )
+		
+	Challanges with Concurrency
+		Race Condition, where the system's substantive behaviour is dependent on the sequence or timing of other uncontrollable events.
+		
+	Synchronization and Locks
+		Race condition can be avoid by implementing synchronization and locks 
+		
+	Role of Lock in conccurent process
+		Protect Critical resources
+		Only one thread / process can hold a lock at any given time
+		Ensuring consistency of data
+		Tasks an run conccurerently except when updating critical resources
+		
+	Synchronization in Java
+		The synchronized keyworkd grants exclusive access to code
+		A synchronized function can only be executed by one thread at a time - interleaving is not possible
+		A synchronized block / statement allows access to specific sections of code to be synchronized
+		These are implicit locks on a section of the code
+		
+	Explicit Locking
+		Java include a number of interfaces and lock implementation in java.util.concurrent.locks
+		A Condition interface includes metheds for thread to comminicate (wait(), notify(), signal(), etc)
+		A Lock interface containing methods to lock and unlock resources
+		Lock implementations such as 
+			ReentrantLock ( allow threads to acquire the same locks multiple times) and 
+			StampedLocks ( allow one thread to acquire a lock and other threads to release then hold on it)
+		
+	Semaphores
+		Semaphores are integer variables that are used to solve the critical section problem by using two atomic operations, 
+		wait and signal that are used for process synchronization. The definitions of wait and signal are as follows − Wait. 
+		The wait operation decrements the value of its argument S, if it is positive.
+		
+		Restrict the number of tasks using a resource
+		Use a counter to keep track of active tasks
+		tasks will increment/decrement the counter
+		Tasks requesting the resource will wait if the limit is reached
+		
+	Deadlocks
+		a Aeadlock is a state in which each member of a group is waiting for another member including itself to take action
+		
+	Conditions for a DeadLock
+		Mutual Exclusion : only one process can hold resource at a given time
+		Hold and wait : A process is holding at least one resource and is trying to acquire other resources that are held by other processes
+		Circular wait : Each process is waiting for another process to release a resource before it can proceed
+		No preemption : No process can preempt a resource being held by another
+		
+	Avoiding Deadlocks
+		Prevent even one of the 4 necessary condition from occuring
+		A process may request only one resource at a time
+		Enabling resource preemption is another option
+		Every option has a trade-off
+		
+	Concurrency Objects in Java
+		Lock Objects - interfaces and their implementations
+		Concurrent collections - thread safe data structure
+		Volatile and atomic variables for thread safe access to primitive types
+		Executors for thread pool management
+		
+	Locks and Semaphores	
+		JAva includes a number of interfaces and lock implementations in java.util.concurrent
+		Interfaces and lock implementations
+		Semaphores Class
+		TimeUnit enum for timing and delay operations
+		
+	Concurrent Collections :  So all of these data structures are thread-safe, which means that we don't need to explicitly define any form of locking mechanism to access it. 
+	All of that has already been baked in by Java.
+		ConcurrentHashMap : A synchronized HJashMap that does not lock the entire map - locks at a bucket level
+		CopyOnWriteArrayList : A thread-save ArrayList where mutative operations are performed on a copy of the underlying array
+		PriorityBlockingQueue : A unbounded blocking queue that has the same ordering rules as a PriorityQueue
+		ArrayBlockingQueue : A bounded blocking queue that is backed by an array
+		
+	Volatile Variable in Java :	by default variables in Java are non-volatile, which means that different threads are not guaranteed access to its latest value, even if it has been updated by a different thread
+		Declaring a variable to be volatile means that threads are guaranteed access to its latest value
+		Threds will read variables from memory and not from local cache
+		write to a volatile variable will update memory
+		Guarantees a happens-before relationship on operations
+		
+	Atomic Variables
+		Threads may access primitive types fro read/write operations that may need to be atomic
+		
+		Locks for Primitive Types	
+			Locks do solve the problem, but involve a lot of overhead - suspending and resuming threads
+			They make sense for larger blocks of code
+			Writing and maintaining extra code for locking / unlocking adds to complexity
+			Locks are pessimistic - they assume the worst and block other threads from a resource
+		
+		Atomic variables implement the Compare and Swap (CAS) technique, which is more optimistic
+		Threads don't block eaach other, but check the memory location before they write
+		A write is only performed if the current valuies is different from the expected value
+		CAS involves less overhead than locking
+		
+		Java includes : AtomicInteger, AtomicBollean, AtomicIntegerArray, etc
+		Atomic types include functions for atomic operations - getandAdd(), incrementAndGet(), etc
+		These are more light-weight than locks
+		Atomicity with fewer lines of code
+		
+	Executors and Thread Pools
+		Thread Pools : Group / Collections of Thread in a single unit
+		Executors : management service of Thread Pools
+			Limit the number of threads created
+			Tasks are submitted to the executor and not to individual workers
+			Task executions can be scheduled
+			Repeating tasks can also be submitted
+			
+	Tasks for an Executor
+		Runnable : task without returning a value
+		Callable : task with returning a value
+
+	Future Objects 
+		A future object in Java represents an asynchronous task execution and it allows us to keep an eye on this task, 
+		and in the case of a callable task, to also access its return value once it is available.
+		
+		Common operation in Future Object
+			Contains the future result of the executions
+			isDone() tell us if the task is complete
+			get() returns the result of the Callable and blocks if it is not yet available
+			Cancel() allows cancellation of the task
+	
+	Fork/Join Framework	
+		Fork/Join in Java is a divide-and-conquer approach to parallel programming, comparable to the MapReduce programming model
+		
+		Break down/fork a larger tasks into smaller sub-tasks that can be run asynchronously
+		A ForkJoinTasks includes logic to perform the sub-task if it is small enough or to break it up otherwise
+		ForJoinTasks are submitted to a ForkJoinPool, an Executor service for ForkJoinTasks
+		The framework handles the execution of tasks
+		
+		
+		
+		
+Question: Which of these is NOT a feature of multi-threaded programming?
+[ ] Periodic switching between tasks is required
+[ ] A process only works on a single thread at a given time
+[ ] Multiple tasks can make progress concurrently
+[x] Each thread can only work on light-weight tasks		
+
+Question: Which represents the function in a future object which can terminate its execution?
+[ ] quit()
+[ ] halt()
+[ ] kill()
+[x] cancel()
+		
+		
+Question: Which of the statements about semaphores is FALSE?
+[ ] Acquiring/Releasing a semaphore increments/decrements the associated counter
+[x] They block multithreaded applications from accessing a resource
+[ ] They can be used to limit the load on a shared resource
+[ ] They restrict the number of threads accessing a resource concurrently		
+		
+Question: From the following, pick the data structure which is a thread-safe version of a HashMap.
+[ ] ThreadMap
+[ ] CopyOnWriteArrayList
+[x] ConcurrentHashMap
+[ ] Vector		
+		
+		
+Question: Which of these is NOT a necessary condition for a deadlock?
+[ ] Circular Wait
+[ ] Mutual Exclusion
+[x] Get and Set
+[ ] No preemption		
+		
+Question: Which of these techniques is adopted by AtomicVariables when performing updates?
+[x] Compare and Swap
+[ ] Get and Set
+[ ] Increment and Swap
+[ ] Cut and Run		
+		
+Question: Out of the following, which one is a limitation of extending the Thread class over implementing the Runnable interface when defining a task in Java?
+[ ] It only applies when we run on hardware containing more than 4 CPU cores
+[ ] It involves more task-switching
+[ ] It prevents multiple threads from being created
+[x] It prevents inheritance from other classes		
+		
+Question: Out of the following, which TWO statements about the race condition are true?
+[ ] It can be fixed with multithreading
+[x] It can be prevented with synchronization
+[ ] It is the result of sequential execution of tasks
+[x] It can lead to inconsistent and unpredictable outcomes		
+		
+Question: Which of these is not a synchronization mechanism in Java?
+[ ] Synchronized blocks
+[x] Keys
+[ ] Synchronized functions
+[ ] Locks		
+		
+Question: What is the function that needs to be implemented by a class and implements the Callable interface?
+[x]  call()
+[ ]  exec()
+[ ]  run()
+[ ]  return()		
+		
+Question: Which of these is a source of inefficiency in the case of sequential executions of tasks which can be addressed by multithreading?
+[ ] The high proportion of active involvement in tasks
+[x] The idle time when waiting for an action to take place
+[ ] The overhead of sequential task execution
+[ ] The large number of tasks involved		
+		
+		
+		
+Multithreading and Concurrency in Java: Spawning & Launching Threads
+
+Question: Which of these methods creates an array out of given range of another array?
+[x] Arrays.copyOfRange()
+[ ] URL.range()
+[ ] String.subArray()
+[ ] Arrays.subArray()		
+		
+Question: Which of these functions can we invoke to check whether a thread's interrupt flag has been set?
+[ ] Thread.interrupt.flag()
+[ ] checkFlag()
+[ ] Thread.MainThread.flag()
+[x] isInterrupted()
+
+Question: What exception can be raised when a thread pauses with a call to Thread.sleep()?
+[x] InterruptedException
+[ ] ConcurrentException
+[ ] WakeUpException
+[ ] ThreadException
+
+Question: What is the value returned by a call to Thread.activeCount()?
+[x] The number of active threads in the current thread group and all its children
+[ ] 1 if the thread is running, 0 if it is waiting
+[ ] 1 if the thread is running or waiting, 0 if it is terminated
+[ ] true
+
+Question: What is the state of a Java thread which is currently being executed in the JVM?
+[ ] WAITING
+[x] RUNNABLE
+[ ] EXECUTING
+[ ] NEW
+
+Question: Which of these methods should be defined in a class which implements the Runnable interface?
+[ ] thread()
+[x] run()
+[ ] exec()
+[ ] runInThread()
+
+Question: What is the default priority level for a Java thread?
+[x] 5
+[ ] 10
+[ ] 0
+[ ] Equals the number of CPUs on the system
+
+Question: When the join() method of a thread is called without an argument, how long does the calling thread wait for the referenced thread before proceeding with its own execution?
+[ ] 1s
+[ ] 0s
+[ ] 60s
+[x] Indefinitely
+
+Question: After a thread is initialized, but before it is started, what does the invocation of isAlive() for the thread return?
+[ ] null
+[ ] true
+[ ] An Exception
+[x] false
+
+Question: When invoking the run() method of an initialised thread, which thread executes that task?
+[ ] It is randomly assigned to one of the active threads
+[x] The thread from which run() is invoked
+[ ] A new thread which is spawned for its execution
+[ ] The first thread initialized in the program
+
+Question: Which TWO of these operations on a Java thread may result in the throwing of an InterruptedException?
+[ ] setDaemon()
+[ ] getName()
+[x] sleep()
+[x] join()
+
+
+
+Multithreading and Concurrency in Java: Thread Synchronization & Locks
+
+Question: If we have multiple threads updating a shared resource without synchronization, which of the following statements holds TRUE?
+[ ] The final value of the shared resource is null
+[x] The final value of the shared resource is unpredictable
+[ ] Accessing the shared resource gives an error
+[ ] The final value of the shared resource is zero
+
+Question: Which TWO of these statements about synchronized functions are TRUE?
+[ ] It tries its best, does not guarantee, a thread exclusive access to the function
+[x] It guarantees a thread exclusive access to that function
+[ ] It gives a thread exclusive access to a function, but only on the Linux platform
+[x] It synchronizes access to the function through the holding object
+
+Question: Which of these is a valid difference between a synchronized block and a synchronized function?
+[x] A synchronized block allows us to regulate access to parts of a function
+[ ] A synchronized block can only be applied within constructor functions
+[ ] A synchronized function enables more fine-grained control over what to synchronize
+[ ] A synchronized block is a collection of synchronized functions
+
+
+Question
+ 
+Given a synchronized block defined in this manner:
+
+
+synchronized(x){
+...
+} 
+
+Which TWO of the following are TRUE?
+[x] The executing thread effectively acquires a lock on a section of code
+[ ] There cannot be a nested synchronized block within this block
+[ ] There will always be a deadlock if threads run concurrently
+[x] Only one thread can use object x to execute the code within the block
+
+Setting an order in which locks on resources can be acquired prevents which of these deadlock conditions?
+[ ] Mutual exclusion
+[ ] Concurrency
+[x] Circular wait
+[ ] No preemption
+
+Which TWO of these statements about Java locks are TRUE?
+[ ] A ReentrantLock cannot be held exclusively by a thread
+[x] java.util.concurrent.locks.Lock is an interface
+[x] A ReentrantLock is an implementation of java.util.concurrent.locks.Lock
+[ ] A ReentrantLock is an interface which must be implemented by all locks
+
+Which TWO of the following occur when a thread invokes tryLock() on a lock which is not held by another thread?
+[ ] The thread blocks indefinitely
+[x] The thread acquires the lock
+[x] A boolean true is returned
+[ ] A boolean false is returned		
+		
+What happens when a thread tries to acquire a ReentrantLock which it already holds?
+[ ] The thread goes into an indefinite wait
+[x] The thread acquires another hold on the same lock
+[ ] The thread throws an InterruptedException
+[ ] The thread releases its current hold on the lock		
+		
+What is the value returned when a writeLock() is invoked on a StampedLock instance?
+[ ] A boolean conveying whether the lock was acquired
+[ ] A ReentrantLock
+[ ] An error if the lock was unavailable
+[x] A numeric stamp value		
+		
+Let's say you have two threads, A and B, which run concurrently and use a StampedLock X to access resource. A holds a readLock on X when B requests a readLock on the same lock? What is the result?
+[ ] B terminates with a LockedException
+[ ] A is forced to give up the lock and hand it to B
+[x] B acquires the lock since a readLock() is non-exclusive
+[ ] B blocks until A releases the lock
+		
+		
+		
+		
+	
+	

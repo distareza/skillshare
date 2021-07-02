@@ -14,8 +14,8 @@ public class InsertExample {
         
         entityManager.getTransaction().begin();
         
-        Book firstBook = new Book(1234, "The Java Language Specification", "Gilad Barcha", 99);
-        Book secondBook = new Book(2222, "The Java Language Specification Second Edition", "Gilad Barcha", 119);
+        Book firstBook = new Book(1234, "The Java Language Specification", "Gilad Barcha", 99f);
+        Book secondBook = new Book(2222, "The Java Language Specification Second Edition", "Gilad Barcha", 119f);
         
         entityManager.persist(firstBook);
         entityManager.persist(secondBook);

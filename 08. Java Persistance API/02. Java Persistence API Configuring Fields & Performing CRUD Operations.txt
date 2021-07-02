@@ -1,0 +1,137 @@
+Java Persistence API: Configuring Fields & Performing CRUD Operations
+=============================================================================
+
+Question: Which of the following is a required annotation on a member variable of an entity object?
+[ ] @Required
+[ ] @Key
+[ ] @PrimaryKey
+[x] @Id
+
+Question: What annotation would you use to configure the name of the table associated with an entity?
+[ ] @Configure
+[x] @Table
+[ ] @UnderlyingTable
+[ ] @Rename
+
+Question: Which of the following is the default generation strategy for your primary key ids when you use the @GeneratedValue annotation?
+[ ] TABLE
+[ ] SEQUENCE
+[ ] IDENTITY
+[x] AUTO
+
+Question: Which of the following statements are true about the IDENTITY generation strategy?
+[ ] Uses an identity column to generate ids
+[x] Uses an auto-incremented database column to generate ids
+[ ] Uses a database sequence to generate ids
+[ ] Uses a table to generate ids
+
+Question: You have two entities both of which use the IDENTITY generation strategy for generating primary keys. Which of the following is true for the primary keys in these tables?
+[ ] They both will have primary key values that are mutually exclusive
+[ ] They use the same database sequence to generate primary keys
+[ ] They use the same database table to generate primary keys
+[x] They both may have the same values for primary keys
+
+Question: Which of the following is true for the generation strategy SEQUENCE for primary key generation?
+[ ] It uses an auto-incremented column to produce a sequence of primary keys
+[ ] It uses a shared table where sequential primary keys are stored
+[x] Multiple tables can use the same sequence generator
+[x] It uses a database sequence generator to generate primary keys
+
+Question: If you have configured a table that you want to use to generated primary keys using the TABLE generation strategy, which of the following statements is true?
+[x] While sharing a database tables every entity which uses the TABLE strategy needs to have an entry in the shared table
+[x] Multiple tables can share the same table for primary key generation
+[ ] Every entity which uses the TABLE strategy needs to have a separate table
+[ ] Each table has an auto-incremented column for primary keys
+
+Question: Which of the following statements about composite keys are true?
+[ ] An entity has a complicated key
+[ ] An entity has a key that is a basic data type such as string, integer, float etc.
+[x] An entity uses a nested object to hold multiple values which make up a key
+[x] An entity has keys made up of multiple fields
+
+Question: When the class representing the composite key does not have an @Embeddable annotation on it, how will you specify a composite key in the entity which references this object?
+[ ] Using @Composite
+[x] Using @EmbeddedId
+[ ] Using @Id
+[ ] It is not possible to specify the composite key, the @Embeddable annotation is required
+
+Question: Which of the following is true when you use the @IdClass annotation to specify composite keys?
+[ ] This annotation is to send up relationships and not to specify keys
+[ ] We do not need an additional class representing the composite key
+[x] We need an additional class representing the composite key
+[x] We need to use @Id annotations on composite key fields in the entity class
+
+Question: Which of the following annotations allows you to granularly configure how a column in a database table is set up?
+[x] @Column
+[ ] @Field
+[ ] @Table
+[ ] @Row
+
+Question: Which of the following properties can be used to configure a column in the JPA @Column annotation?
+[x] columnDefinition
+[ ] columnType
+[x] precision
+[x] scale
+[ ] columnLength
+
+Question: How will you specify that a column cannot contain null values in JPA?
+[ ] @Nullable
+[x] @Column(nullable=false)
+[ ] @NotNull
+[ ] @Table(nullable=false)
+
+Question: I have a member variable in my Entity object which does not map to any database table column. What should I do with that member variable?
+[ ] Annotate it using the @DoNotPersist annotation
+[ ] Move the field out into a nested object
+[ ] Do nothing, JPA + Hibernate will figure out that the column is not mapped
+[x] Annotate it using the @Transient annotation
+
+Question: Which of the following values are valid for the TemporalType enum used to configure datetime fields?
+[ ] YEAR
+[x] TIMESTAMP
+[x] TIME
+[ ] DATETIME
+[x] DATE
+
+Question: Which are the two types of large objects supported by JPA and JPA providers?
+[x] Byte large objects
+[ ] String large objects
+[ ] Integer large objcts
+[x] Character large objects
+
+Question: Within your programming language you want to model composition i.e. one object is composed or nested within another. However, the fields of the nested object map to database table columns of the outer entity. What annotation will you use?
+[ ] @Flatten
+[ ] @Nested
+[ ] @Compose
+[x] @Embedded
+
+Question: Which of the following are advantages of modelling relationships using embedded objects?
+[x] Can represent relationships using composition in the object-oriented world
+[ ] JPA providers are more performant with embedded objects
+[x] The same embeddable can be shared across multiple entities
+[ ] Easier to use embeddables rather than individual fields
+
+Question: While running an application using JPA you want to persist entries within a transaction. What methods do you need to use to do this?
+[x] entityManager.getTransaction().commit()
+[ ] entityManager.getTransaction().end()
+[ ] entityManager.getTransaction().start()
+[x] entityManager.getTransaction().begin()
+
+Question: What is the method on the EntityManager which is used to read entities from the underlying database?
+[x] entityManager.find(Book.class, 1)
+[ ] entityManager.read(Book.class, 1)
+[ ] entityManager.query(Book.class, 1)
+[ ] entityManager.retrieve(Book.class, 1)
+
+Question: What is the method on the EntityManager which is used to update entities in the underlying database?
+[ ] entityManager.change(book)
+[x] entityManager.merge(book)
+[ ] entityManager.update(book)
+[ ] entityManager.edit(book)
+
+Question: How can annotations on entity objects and fields be specified in JPA. Mark all options which are possible.
+[ ] Using a JSON file
+[x] Using annotations in code
+[ ] Using a CSV file
+[x] Using an XML file
+

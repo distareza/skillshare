@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<entity-mappings
+        xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
+        http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+                 version="1.0">
+	<description>JPA Using XML Entity Mapping</description>
+	<package>com.jpa.crud</package>
+	<entity class="com.jpa.crud.ReadExample2$Book" name="MyBook2">
+		<table name="book_read_02"/>
+		<attributes>
+			<id name="id">
+				<generated-value strategy="IDENTITY"/>
+			</id>
+			<basic name="author">
+				<column name="author" nullable="false"/>
+			</basic>
+			<basic name="title">
+				<column name="title" unique="true" nullable="false" length="55"/>
+			</basic>
+			<basic name="price">
+				<column name="price" precision="7" scale="4"/>
+			</basic>
+		</attributes>	
+	
+	</entity>
+
+</entity-mappings>

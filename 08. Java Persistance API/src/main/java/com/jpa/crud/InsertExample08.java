@@ -1,15 +1,11 @@
 package com.jpa.crud;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Persistence;
@@ -19,167 +15,129 @@ import javax.persistence.Table;
  * Demonstrate how to execute insert entity Book and Author with Composite Key using IdClass Annotation
  * A composite primary key, also called a composite key, is a combination of two or more columns to form a primary key for a table.
  * 
- * 	1.	Look how the table is drop and create back define in META-INF/persistence.xml 
+ * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+ * 		use drop-and-create only to implement testing environment
  * 
- *  2.	Look how the entities Book and Author is defining Table name with annotation @Table(name="")
+ *  2.	Observe how the entities Class is defining Table name with annotation @Table(name="")
+ *
+ *  3.	Observe How to assign a Composite Class using Simple Class (without using Annotation @Embeddable)
+ *  	However The Composite Key Class still should defines or overrides its hashCode and equals method
+ *  		
+ *  4.	observe that the annotation @IdClass is required on a Class that uses it to identified a Composite Primary Key (From Normal Simple Class) 
  *  
- *  3.	Look how the GeneratedValue is define in entity Books3 with different strategy assigning primary key generator
- *  		> AUTO 		: uses default sequence (hibrnate_sequence)
- *  		> IDENTITY  : uses auto increment of each table
- *  		> SEQUENCE  : uses definied sequence
- *  		> TABLE 	: uses definied table object as sequence generator
- *  
- *  4.	Demonstrate How to assign a Composite Key
- *  	Composite Key Object should defined or overrides its hashCode and equals method
- *  		> Assign the Embedded Object (@Embeddable) as Composite Primary Key in Entity Object
- *  		> Assign Simple Object as Composite Primary Key in Entity Object with annotation @EmbeddedId
- *  		> Defined the Simple Object as Composite Primary Key in Entity Object as addition annotation @IdClass, however the composite column should be defined as well
+ *  Demonstrate How to assign a Composite Key with different strategy :
+ *  		> 1. Assign the Embedded Object (@Embeddable) as Composite Primary Key in Entity Object
+ *  		> 2. Assign Simple Object as Composite Primary Key in Entity Object with annotation @EmbeddedId
+ *  		> 3. Defined the Simple Object as Composite Primary Key in Entity Object as addition annotation @IdClass, however the composite column should be defined as well
  *  
  *  
  */
 public class InsertExample08 {
 	
-	public static class BookKey implements Serializable {
+	public static class SongKey implements Serializable {
 		private static final long serialVersionUID = 1L;
 		
-		private Integer titleHash;
-		private Float price;
+		private String artistName;
+		private String songTitle;
 
-		public BookKey() {
-		}
-		
-		public BookKey(String title, Float price) {
-			this.titleHash = Objects.hash(title);
-			this.price = price;
+		public SongKey() {
 		}
 
-		public Float getPrice() {
-			return price;
-		}
-
-		public void setPrice(Float price) {
-			this.price = price;
+		public SongKey(String artistName, String songTitle) {
+			this.artistName = artistName;
+			this.songTitle = songTitle;
 		}
 
 		@Override
 		public int hashCode() {
-			return Objects.hash(titleHash, price);
+			return Objects.hash(artistName, songTitle);
 		}
 
 		@Override
 		public boolean equals(Object obj) {
 			if (obj == null) return false;
-			if (!(obj instanceof BookKey)) return false;
-			BookKey other = (BookKey) obj;
-			return titleHash.equals(other.titleHash) && price.equals(other.price);
+			if (!(obj instanceof SongKey)) return false;
+			SongKey other = (SongKey) obj;
+			return artistName.equals(other.artistName) && songTitle.equals(other.songTitle);
 		}
-		
 		
 	}
 
 	/**
 	 * demonstrate how to embeded Composite Key into Entity as its primary key / identifier
 	 * 
-	 * Spring JPA will run following query 
-	 *     create table book08 (
-	 *     		price float not null,
-	 *     		titleHash integer not null,
-	 *     		author varchar(255),
-	 *     		title varchar(255),
-	 *     		primary key (price, titleHash)
-	 *     ) engine=MyISAM
+		Hibernate: 
+		    
+		    create table hit_song (
+		       artistName varchar(255) not null,
+		        songTitle varchar(255) not null,
+		        albumName varchar(255),
+		        releasedYear integer,
+		        primary key (artistName, songTitle)
+		    ) engine=MyISAM
 	 *
-	 * primary key is a combination of the price and title hash,
+	 * primary key is a combination of two table
 	 * uses annotation IdClass
 	 *
 	 */
 	
 	@Entity
-	@Table(name = "book08")
-	@IdClass(value = BookKey.class)
-	public class Book {
+	@Table(name = "hit_song")
+	@IdClass(value = SongKey.class)
+	public class Songs {
 		
 		@Id
-		private Integer titleHash;
+		private String artistName;
 		@Id
-		private Float price;
+		private String songTitle;
 		
-		private String title;
-		private String author;
+		private String albumName;
+		private Integer releasedYear;
 
-		public Book() {
+		public Songs() {
 		}
 		
-		public Book(String title, String author, Float price) {
-			this.title = title;
-			this.author = author;
-			
-			this.titleHash = Objects.hash(title);
-			this.price = price;
+		public Songs(String songTitle, String artistName, String albumName, Integer releasedYear) {
+			this.artistName = artistName;
+			this.songTitle = songTitle;
+			this.albumName = albumName;
+			this.releasedYear = releasedYear;
 		}
 
-		public String getTitle() {
-			return title;
+		public String getArtistName() {
+			return artistName;
 		}
 
-		public void setTitle(String title) {
-			this.title = title;
+		public void setArtistName(String artistName) {
+			this.artistName = artistName;
 		}
 
-		public String getAuthor() {
-			return author;
+		public String getSongTitle() {
+			return songTitle;
 		}
 
-		public void setAuthor(String author) {
-			this.author = author;
+		public void setSongTitle(String songTitle) {
+			this.songTitle = songTitle;
+		}
+
+		public String getAlbumName() {
+			return albumName;
+		}
+
+		public void setAlbumName(String albumName) {
+			this.albumName = albumName;
+		}
+
+		public Integer getReleasedYear() {
+			return releasedYear;
+		}
+
+		public void setReleasedYear(Integer releasedYear) {
+			this.releasedYear = releasedYear;
 		}
 
 	}
-	
-	@Entity
-	@Table(name = "author08")
-	public class Author {
-		
-		private Integer id;
-		private String name;
-		private Date birthDate;
-
-		public Author() {
-		}
-		
-		public Author(String name, Date birthDate) {
-			this.name = name;
-			this.birthDate = birthDate;
-		}
-
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		public Integer getId() {
-			return id;
-		}
-
-		public void setId(Integer id) {
-			this.id = id;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Date getBirthDate() {
-			return birthDate;
-		}
-
-		public void setBirthDate(Date birthDate) {
-			this.birthDate = birthDate;
-		}
-		
-	}	
 	
 	public void runMain() {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("BookstoreDB_Unit");
@@ -188,20 +146,38 @@ public class InsertExample08 {
 		try {
 			entityManager.getTransaction().begin();
 
-			Book firstBook = new Book("The Java Language Specification", "Gilad Barcha", 99f);
-			Book secondBook = new Book("The Java Language Specification Second Edition", "Gilad Barcha", 119f);
-			Book thridBook = new Book("Core Java Volume I", "Cay S. Horstmann", 59f);
+			/**
+			 * 
+			Hibernate: 
+			    insert 
+			    into
+			        hit_song
+			        (albumName, releasedYear, artistName, songTitle) 
+			    values
+			        (?, ?, ?, ?)
+			 * 
+			 */
+			Songs firstSong = new Songs( "Save your Tears", "The Weeknd", "After Hours", 2020);
+			Songs secondSong = new Songs( "Just the Way You are", "Bruno Mars", "Doo-Wops & Hooligans", 2010);
+			Songs thridSong = new Songs( "Smell Like Teen Spirit", "Nirvana", "Nevermind", 1991);
 
-			entityManager.persist(firstBook);
-			entityManager.persist(secondBook);
-			entityManager.persist(thridBook);
+			entityManager.persist(firstSong);
+			entityManager.persist(secondSong);
+			entityManager.persist(thridSong);
 			
-			Author firstAuthor = new Author("Gilad Barcha", new GregorianCalendar(1980,  1, 0).getTime());
-			Author secondAuthor = new Author("James Goshling", new GregorianCalendar(1975,  2, 0).getTime());
-			
-			entityManager.persist(firstAuthor);
-			entityManager.persist(secondAuthor);			
+			/**
+			 * 
+		SELECT * FROM hit_song;
+		-------------------- ---------------------------- ---------------------------- ------------ 
+		artistName           songTitle                    albumName                    releasedYear 
+		-------------------- ---------------------------- ---------------------------- ------------ 
+		The Weeknd           Save your Tears              After Hours                  2020         
+		Bruno Mars           Just the Way You are         Doo-Wops & Hooligans         2010         
+		Nirvana              Smell Like Teen Spirit       Nevermind                    1991        
 
+			 * 
+			 */
+			
 		} catch (Exception ex) {
 			System.err.println("An error occurred: " + ex);
 			ex.printStackTrace();

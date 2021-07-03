@@ -8,32 +8,52 @@ import javax.persistence.Persistence;
 import javax.persistence.Table;
 
 /**
- * Demonstrate how to execute insert entity Book
- * 	1.	Look how the table is drop and create back define in META-INF/persistence.xml 
+ * Demonstrate how to execute insert entity 
+ * 
+ * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
- * 			the best way to implement testing environment
- *  2.	Look how the entities Books is defining Table name with annotation @Table(name="")
+ * 		use drop-and-create only to implement testing environment
+ * 
+ *  2.	Observe the @Entity Annotation is defined for the class Entity, 
+ *  	it will automatically create when the schema generation.table.action is set with one of this option "create", "update" or "drop-and-create"
+ *  	"drop-and-create" : means drop and create the tables for the entities, it is good for "testing environment"
+ *  	"create" : means create the tables for the entities (so it is assumed to not exist yet).
+ *  	"update" : means create table for the entities if it is not exists in DB yet.
+ *     
+ *  3.	Observer how the entities StoreAsset is defining Table name with annotation @Table(name="")
  * 
  * 
  */
 public class InsertExample01 {
 
+	/**
+	 * 
+	    create table asset (
+	       id integer not null,
+	        name varchar(255),
+	        price float,
+	        type varchar(255),
+	        primary key (id)
+	    )	 
+	 *
+	 */
+	
 	@Entity
-	@Table(name="book01")
-	public class Books {
+	@Table(name="asset")
+	public class Asset {
 		
 		private Integer id;
-		private String title;
-		private String author;
+		private String name;
+		private String type;
 		private Float price;
 
-		public Books() {
+		public Asset() {
 		}
 		
-		public Books(Integer id, String title, String author, Float price) {
+		public Asset(Integer id, String name, String type, Float price) {
 			this.id = id;
-			this.title = title;
-			this.author = author;
+			this.name = name;
+			this.type = type;
 			this.price = price;
 		}
 
@@ -45,21 +65,21 @@ public class InsertExample01 {
 		public void setId(Integer id) {
 			this.id = id;
 		}
-
-		public String getTitle() {
-			return title;
+		
+		public String getName() {
+			return name;
 		}
 
-		public void setTitle(String title) {
-			this.title = title;
+		public void setName(String name) {
+			this.name = name;
 		}
 
-		public String getAuthor() {
-			return author;
+		public String getType() {
+			return type;
 		}
 
-		public void setAuthor(String author) {
-			this.author = author;
+		public void setType(String type) {
+			this.type = type;
 		}
 
 		public Float getPrice() {
@@ -80,17 +100,26 @@ public class InsertExample01 {
 		try {
 			entityManager.getTransaction().begin();
 
-			Books firstBook = new Books(1234, "The Java Language Specification", "Gilad Barcha", 99f);
-			Books secondBook = new Books(2222, "The Java Language Specification Second Edition", "Gilad Barcha", 119f);
-			Books thridBook = new Books();
-			thridBook.setId(3331);
+			/**
+			 * 
+			    into
+			        asset
+			        (name, price, type, id) 
+			    values
+			        (?, ?, ?, ?)
+			 * 
+			 */
+			Asset firstAsset = new Asset(1, "BookShelf", "Furniture", 99f);
+			Asset secondAsset = new Asset(2, "LED TV 32 Inch", "Electronics", 229f);
+			Asset thirdAsset = new Asset(3, "Bicycle", "Sport", 59f);
 
-			entityManager.persist(firstBook);
-			entityManager.persist(secondBook);
-			entityManager.persist(thridBook);
+			entityManager.persist(firstAsset);
+			entityManager.persist(secondAsset);
+			entityManager.persist(thirdAsset);
 
 		} catch (Exception ex) {
 			System.err.println("An error occurred: " + ex);
+			ex.printStackTrace();
 		} finally {
 
 			entityManager.getTransaction().commit();

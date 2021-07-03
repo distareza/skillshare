@@ -41,7 +41,7 @@ public class InsertExample09 {
 	 * 
 	 * Spring JPA will run following query
 	 * 
-	 *      create table book09 (
+	 *      create table programming_book (
 	 *      	id integer not null auto_increment,
 	 *      	author_name VARCHAR(55) not null,
 	 *      	price float,
@@ -49,12 +49,12 @@ public class InsertExample09 {
 	 *      	primary key (id)
 	 *      )
 	 *
-	 *  	alter table book09 
+	 *  	alter table programming_book 
 	 *  		add constraint UK_7b6mhf3in8mqha0i47g2iq04w unique (book_title)	        
 	 *
 	 */	
 	@Entity
-	@Table(name = "book09")
+	@Table(name = "programming_book")
 	public class Book {
 		
 		@Id
@@ -118,19 +118,19 @@ public class InsertExample09 {
 	 * 
 	 * Spring JPA will run following query
 	 * 
-	 *	create table author09 (
+	 *	create table programming_author (
 	 *		id integer not null auto_increment,	
 	 *		birth_date datetime, 
 	 *		author_name VARCHAR(44),
 	 *		primary key (id)
 	 *  )
 	 *  
-	 *  alter table author09 
+	 *  alter table programming_author 
 	 *  	add constraint UK_gbk6pw1g8x97j2khr1ba6cywp unique (author_name) 
 	 *
 	 */	
 	@Entity
-	@Table(name = "author09")
+	@Table(name = "programming_author")
 	public class Author {
 		
 		@Id

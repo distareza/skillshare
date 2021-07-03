@@ -144,7 +144,7 @@ public class ReadExample {
 	}
 	
 	public void runMain() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("BookstoreDB_Unit");
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("ManualMapping_PUnit");
 		EntityManager entityManager = factory.createEntityManager();
 
 		try {

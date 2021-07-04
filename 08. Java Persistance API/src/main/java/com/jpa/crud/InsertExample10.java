@@ -1,8 +1,5 @@
 package com.jpa.crud;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -15,13 +12,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * Demonstrate how to execute insert entity Book and Author with Composite Key using IdClass Annotation
- * A composite primary key, also called a composite key, is a combination of two or more columns to form a primary key for a table.
- * 
- * 	1.	Look how the table is drop and create back define in META-INF/persistence.xml 
+ * Demonstrate how to exclude a column to map in an entity
+ *  
+ * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
  * 
- *  2.	Look how the entities Book and Author is defining Table name with annotation @Table(name="")
+ *  2.	Observe how the entities Book and Author is defining Table name with annotation @Table(name="")
  *  
  *  3.	Look how the GeneratedValue is define in entity Books3 with different strategy assigning primary key generator
  *  		> AUTO 		: uses default sequence (hibrnate_sequence)
@@ -29,12 +25,12 @@ import javax.persistence.Transient;
  *  		> SEQUENCE  : uses definied sequence
  *  		> TABLE 	: uses definied table object as sequence generator
  *  
- *  4.	Defined how to defined custom Column definition with @Column Annotation
+ *  4.	Observe how to defined custom Column definition with @Column Annotation
  *  		check how the column name can be altered or adjust,
  *  		Column Field Type, Column length
  *  		specify the Floating point precision (max digit) and scale ( n digit after decimal ) 
  *  
- *  5.	Demonstrate Transient Annotation, to exclude field in Entity Class from generated or mapped into Column for Generated Table in Database 
+ *  5.	Demonstrate Transient Annotation to exclude field in Entity Class from generated or mapped into Column for Generated Table in Database 
  *  
  *  
  */
@@ -44,7 +40,7 @@ public class InsertExample10 {
 	 * 
 	 * Spring JPA will run following query
 	 * 
-	 *      create table book10 (
+	 *      create table cooking_book (
 	 *      	id integer not null auto_increment,
 	 *      	author_name VARCHAR(55) not null,
 	 *      	price float,
@@ -57,7 +53,7 @@ public class InsertExample10 {
 	 *
 	 */	
 	@Entity
-	@Table(name = "book10")
+	@Table(name = "cooking_book")
 	public class Book {
 		
 		@Id
@@ -74,7 +70,7 @@ public class InsertExample10 {
 		private Float price;
 
 		@Transient
-		private boolean inStock;
+		private boolean inStock; // this field is not going to mapped into an table column
 		
 		public Book() {
 		}
@@ -129,69 +125,6 @@ public class InsertExample10 {
 		
 	}
 	
-	/**
-	 * 
-	 * Spring JPA will run following query
-	 * 
-	 *	create table author10 (
-	 *		id integer not null auto_increment,	
-	 *		birth_date datetime, 
-	 *		author_name VARCHAR(44),
-	 *		primary key (id)
-	 *  )
-	 *  
-	 *  alter table author10 
-	 *  	add constraint UK_gbk6pw1g8x97j2khr1ba6cywp unique (author_name) 
-	 *
-	 */	
-	@Entity
-	@Table(name = "author10")
-	public class Author {
-		
-		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
-		private Integer id;
-		
-		@Column(name = "author_name", unique = true, length = 44)
-		private String name;
-		
-		@Column(name = "birth_date")
-		private Date birthDate;
-
-		public Author() {
-		}
-		
-		public Author(String name, Date birthDate) {
-			this.name = name;
-			this.birthDate = birthDate;
-		}
-
-		public Integer getId() {
-			return id;
-		}
-
-		public void setId(Integer id) {
-			this.id = id;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Date getBirthDate() {
-			return birthDate;
-		}
-
-		public void setBirthDate(Date birthDate) {
-			this.birthDate = birthDate;
-		}
-		
-	}	
-	
 	public void runMain() {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("BookstoreDB_Unit");
 		EntityManager entityManager = factory.createEntityManager();
@@ -199,20 +132,24 @@ public class InsertExample10 {
 		try {
 			entityManager.getTransaction().begin();
 
-			Book firstBook = new Book("The Java Language Specification", "Gilad Barcha", 99.99999f); // --> the precision and scale is 7 and 4, the value will be rounded to 100.0f in database
-			Book secondBook = new Book("The Java Language Specification Second Edition", "Gilad Barcha", 119f);
-			Book thridBook = new Book("Core Java Volume I", "Cay S. Horstmann", 59.9999f); // --> the precision and scale is 7 and 4, the value will be as is 59.9999f in database
+			Book firstBook = new Book("Salt, Fat, Acid, Heat: Mastering the Elements of Good Cooking", "Samin Nosrat", 99.99999f); // --> the precision and scale is 7 and 4, the value will be rounded to 100.0f in database
+			Book secondBook = new Book("The Joy of Cooking", "Irma S. Rombauer", 119f);
+			Book thridBook = new Book("Mastering the Art of French Cooking", "Judith Jones", 59.9999f); // --> the precision and scale is 7 and 4, the value will be as is 59.9999f in database
 
 			entityManager.persist(firstBook);
 			entityManager.persist(secondBook);
 			entityManager.persist(thridBook);
 			
-			Author firstAuthor = new Author("Gilad Barcha", new GregorianCalendar(1980,  1, 0).getTime());
-			Author secondAuthor = new Author("James Goshling", new GregorianCalendar(1975,  2, 0).getTime());
-			
-			entityManager.persist(firstAuthor);
-			entityManager.persist(secondAuthor);			
+			/**
+			 * 
+id         author_name                price        book_title                                                               
+---------- -------------------------- ------------ ------------------------------------------------------------------------ 
+1          Samin Nosrat               100.0        Salt, Fat, Acid, Heat: Mastering the Elements of Good Cooking            
+2          Irma S. Rombauer           119.0        The Joy of Cooking                                                       
+3          Judith Jones               59.9999      Mastering the Art of French Cooking                                     
 
+			 * 
+			 */
 		} catch (Exception ex) {
 			System.err.println("An error occurred: " + ex);
 			ex.printStackTrace();

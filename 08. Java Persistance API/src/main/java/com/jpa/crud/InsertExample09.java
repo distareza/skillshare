@@ -14,15 +14,20 @@ import javax.persistence.Persistence;
 import javax.persistence.Table;
 
 /**
- * Demonstrate how to execute insert entity Book and Author with Composite Key using IdClass Annotation
- * A composite primary key, also called a composite key, is a combination of two or more columns to form a primary key for a table.
+ * Demonstrate how to setup a column definition in an entity
+ * 		overriding a column name,
+ * 		overriding a column field type,
+ * 		specifying a precision and scale
+ * 		specifying length of column
+ * 		specifying a null-able attribute?
+ * 		specifying a unique attribute 
  * 
- * 	1.	Look how the table is drop and create back define in META-INF/persistence.xml 
+ * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
  * 
- *  2.	Look how the entities Book and Author is defining Table name with annotation @Table(name="")
+ *  2.	Observe how the entities are defining Table name with annotation @Table(name="")
  *  
- *  3.	Look how the GeneratedValue is define in entity Books3 with different strategy assigning primary key generator
+ *  3.	Observe how the GeneratedValue is define in entity Class with different strategy assigning primary key generator
  *  		> AUTO 		: uses default sequence (hibrnate_sequence)
  *  		> IDENTITY  : uses auto increment of each table
  *  		> SEQUENCE  : uses definied sequence
@@ -118,19 +123,19 @@ public class InsertExample09 {
 	 * 
 	 * Spring JPA will run following query
 	 * 
-	 *	create table programming_author (
+	 *	create table programming_book_author (
 	 *		id integer not null auto_increment,	
 	 *		birth_date datetime, 
 	 *		author_name VARCHAR(44),
 	 *		primary key (id)
 	 *  )
 	 *  
-	 *  alter table programming_author 
+	 *  alter table programming_book_author 
 	 *  	add constraint UK_gbk6pw1g8x97j2khr1ba6cywp unique (author_name) 
 	 *
 	 */	
 	@Entity
-	@Table(name = "programming_author")
+	@Table(name = "programming_book_author")
 	public class Author {
 		
 		@Id
@@ -192,11 +197,36 @@ public class InsertExample09 {
 			entityManager.persist(secondBook);
 			entityManager.persist(thridBook);
 			
+			/**
+			 * 
+			 * 
+		SELECT * FROM programming_book
+		---------- --------------------------- ------------ ---------------------------------------------------- 
+		id         author_name                 price        book_title                                           
+		---------- --------------------------- ------------ ---------------------------------------------------- 
+		1          Gilad Barcha                100.0        The Java Language Specification                      
+		2          Gilad Barcha                119.0        The Java Language Specification Second Edition       
+		3          Cay S. Horstmann            59.9999      Core Java Volume I                                   
+			 * 
+			 */
+			
 			Author firstAuthor = new Author("Gilad Barcha", new GregorianCalendar(1980,  1, 0).getTime());
 			Author secondAuthor = new Author("James Goshling", new GregorianCalendar(1975,  2, 0).getTime());
 			
 			entityManager.persist(firstAuthor);
 			entityManager.persist(secondAuthor);			
+			
+			/**
+			 *
+			 * 
+SELECT * FROM programming_book_author
+---------- ------------------------- -------------------------------------------- 
+id         birth_date                author_name                                  
+---------- ------------------------- -------------------------------------------- 
+1          1980-01-31 00:00:00.0     Gilad Barcha                                 
+2          1975-02-28 00:00:00.0     James Goshling                               
+			 * 
+			 */
 
 		} catch (Exception ex) {
 			System.err.println("An error occurred: " + ex);

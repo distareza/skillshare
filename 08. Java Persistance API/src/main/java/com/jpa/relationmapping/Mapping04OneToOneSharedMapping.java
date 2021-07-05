@@ -12,7 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
@@ -20,7 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Demonstrate One To One Relationship Bidirectional Mapping with Mapped By parameter
+ * Demonstrate One To One Relationship with shared Primary key mapping 
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
@@ -55,43 +55,50 @@ import javax.persistence.TemporalType;
  *  8.	ReferencedColumnName attribute in @JoinColumn Annotation defined a reference a particular column from a table as foreign key constrain of other table, which not necessary to a primary key, however it must be unique column
  * 
  *  9. Notice One-To-One Bidirectional Mapping : the owning side defines the mapping the referencing side references the mapping
- *  	notice that Annotation @OneToOne is mapped on both table
- *  		Field in Entity #1 [transactionStatement] 	is set with @OneToOne annotation and added the mappedBy attribute with "reference field name of the Entity #2" ( TransactionStatements.bills )
- *  		Field in Entity #2 [bills] 					is set with @OneToOne annotation that provided the field reference for Entity #1  (Entity #2 --> Owning Entity)
+ *  	notice that Annotation @OneToOne is mapped on both table / entities
+ *  		Field Entity #1 [statement] is set along with @MapsId annotation indicating that the primary key of the reference Entity #2 will be shared  ( Entity #1 --> Owning Entity ), the PK of Entity #2 will also be PK Entity #1
+ *  		Field Entity #2 [bills] 	is set with additional "mappedBy" attribute with a "reference field/member name" of the Entity #2 ( statement )
+ *  
  *  
  *  Mapping : 
- *  	bills (id) <-> trans_statement (bill_Id)
+ *  	purchases_bills (statement_id) <-> purchases_statement (id)
  *
  */
-public class Mapping03OneToOneBidirectional {
+public class Mapping04OneToOneSharedMapping {
 
 	/**
 	 * 
-	 
 Hibernate: 
     
-    create table bills (
-       id integer not null auto_increment,
-        amount float,
-        primary key (id)
+    create table purchases_bills (
+       amount float,
+        statement_id integer not null,
+        primary key (statement_id)
     ) engine=MyISAM
     
+    	 
+    alter table purchases_bills 
+       add constraint FK7ptw0i96n7cwd9q7b6lg4vga5 
+       foreign key (statement_id) 
+       references purchases_statement (id)
+           
 	 * 
 	 *
 	 */
-	@Entity(name="Bills")
-	@Table(name="bills")
+	@Entity(name="PurhaseBills")
+	@Table(name="purchases_bills")
 	public static class Bills implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 		
 		@Id
-		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
+		
 		private Float amount;
 		
-		@OneToOne(mappedBy = "bills")
-		private TransactionStatements transactionStatement;
+		@OneToOne
+		@MapsId
+		private PurchasesStatement statement;
 		
 		public Bills() {
 		}
@@ -117,8 +124,18 @@ Hibernate:
 		}
 
 		
+		
+		public PurchasesStatement getStatement() {
+			return statement;
+		}
+
+		public void setStatement(PurchasesStatement statement) {
+			this.statement = statement;
+		}
+
 		@Override
 		public String toString() {
+			//return String.format(" { %d, %,.4f} ", this.id, this.amount);
 			return String.format(" { %d, %,.4f} ", this.id, this.amount);
 		}
 
@@ -129,26 +146,20 @@ Hibernate:
 	 *   
 Hibernate: 
     
-    create table trans_statement (
+    create table purchases_statement (
        id integer not null auto_increment,
         item varchar(255),
         payment_date date,
-        bill_Id integer,
         primary key (id)
     ) engine=MyISAM
-    
-    alter table trans_statement 
-       add constraint FKag569c5ryu5mx57ck8b43njps 
-       foreign key (bill_Id) 
-       references bills (id)   
        
 	 *       
 	 *   notice : "invoice_id" is reference key    
 	 *
 	 */
-	@Entity(name = "TransStatements")
-	@Table(name = "trans_statement")
-	public static class TransactionStatements implements Serializable {
+	@Entity(name = "PurchasesStatements")
+	@Table(name = "purchases_statement")
+	public static class PurchasesStatement implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
@@ -161,14 +172,13 @@ Hibernate:
 		@Temporal(TemporalType.DATE)
 		private Date payementDate;
 		
-		@OneToOne
-		@JoinColumn(name = "bill_Id")
+		@OneToOne(mappedBy = "statement")
 		private Bills bills;
 
-		public TransactionStatements() {
+		public PurchasesStatement() {
 		}
 
-		public TransactionStatements(String product, Date paymentDate) {
+		public PurchasesStatement(String product, Date paymentDate) {
 			this.item = product;
 			this.payementDate = paymentDate;
 		}
@@ -232,56 +242,57 @@ Hibernate:
 			/**
 			 *
 			 
-	    select
-	        mapping03o0_.id as id1_25_0_,
-	        mapping03o0_.bill_Id as bill_Id4_25_0_,
-	        mapping03o0_.item as item2_25_0_,
-	        mapping03o0_.payment_date as payment_3_25_0_,
-	        mapping03o1_.id as id1_3_1_,
-	        mapping03o1_.amount as amount2_3_1_ 
-	    from
-	        trans_statement mapping03o0_ 
-	    left outer join
-	        bills mapping03o1_ 
-	            on mapping03o0_.bill_Id=mapping03o1_.id 
-	    where
-	        mapping03o0_.id=?
+    select
+        mapping04o0_.id as id1_26_0_,
+        mapping04o0_.item as item2_26_0_,
+        mapping04o0_.payment_date as payment_3_26_0_,
+        mapping04o1_.statement_id as statemen2_25_1_,
+        mapping04o1_.amount as amount1_25_1_ 
+    from
+        purchases_statement mapping04o0_ 
+    left outer join
+        purchases_bills mapping04o1_ 
+            on mapping04o0_.id=mapping04o1_.statement_id 
+    where
+        mapping04o0_.id=?
 	         
 			 * 
 			 */
-			TransactionStatements orderOne = em.find(TransactionStatements.class, 1);
+			PurchasesStatement orderOne = em.find(PurchasesStatement.class, 1);
 			System.out.println(orderOne);
 			
-			TransactionStatements orderTwo = em.find(TransactionStatements.class, 2);
+			PurchasesStatement orderTwo = em.find(PurchasesStatement.class, 2);
 			System.out.println(orderTwo);
 			
 			
-			List<TransactionStatements> trxs = em.createQuery("SELECT a FROM TransStatements a", TransactionStatements.class).getResultList();
+			List<PurchasesStatement> trxs = em.createQuery("SELECT a FROM PurchasesStatements a", PurchasesStatement.class).getResultList();
 			System.out.println(trxs);
 			
-			List<Bills> bills = em.createQuery("SELECT a FROM Bills a", Bills.class).getResultList();
+			List<Bills> bills = em.createQuery("SELECT a FROM PurhaseBills a", Bills.class).getResultList();
 			System.out.println(bills);
 			
 			/**
 			 * 
+			 * 
 
-select * from bills;
----------- ------------ 
-id         amount       
----------- ------------ 
-1          182.55       
-2          5.0          
-3          129.15       
-4          30.0         
+select * from purchases_bills;
+------------ ------------ 
+statement_id amount       
+------------ ------------ 
+10           182.55       
+12           5.0          
+13           129.15       
+14           30.0         
 
-select * from trans_statement;
----------- ------------------------------- ----------------- ---------- 
-id         item                            payment_date      bill_Id    
----------- ------------------------------- ----------------- ---------- 
-1          Electricity Usage               2020-12-05        1          
-2          Water Charges                   2020-12-01        2          
-3          Internet Broadband Charge       2020-12-07        3          
-4          Phone Usage                     2020-12-15        4          
+select * from purchases_statement;
+---------- ---------------------- ---------------- 
+id         item                   payment_date     
+---------- ---------------------- ---------------- 
+10         Electricity Usage      2020-12-05       
+12         Water Charges          2020-12-01       
+13         Internet Charge        2020-12-07       
+14         Phone Usage            2020-12-15       
+
 
 
 			 * 
@@ -296,7 +307,7 @@ id         item                            payment_date      bill_Id
 	
 	
 	public static void main(String[] args) {
-		new Mapping03OneToOneBidirectional().runMain();
+		new Mapping04OneToOneSharedMapping().runMain();
 	}
 
 }

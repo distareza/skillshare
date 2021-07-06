@@ -145,3 +145,15 @@ INSERT INTO my_5th_order (id, order_date) values(10, '2021-05-07');
 INSERT INTO my_5th_order (id, order_date) values(11, '2020-11-13');
 INSERT INTO my_5th_order (id, order_date) values(12, '2019-04-02');
 
+-- initialize data for com.jpa.relationmapping.Mapping12PersistManyEntitiesInOrder
+INSERT INTO my_6th_products (id, name, quantity, order_id, order_persistence) values (1, 'iPhone 6S', 			1,	10,	0);
+INSERT INTO my_6th_products (id, name, quantity, order_id, order_persistence) values (2, 'Nike Sneakers', 		2,	10,	1);
+INSERT INTO my_6th_products (id, name, quantity, order_id, order_persistence) values (3, 'iMac 24-inc M1', 		1,	10,	2);
+INSERT INTO my_6th_products (id, name, quantity, order_id, order_persistence) values (4, 'iPhone 12', 			1,	11, 0);
+INSERT INTO my_6th_products (id, name, quantity, order_id, order_persistence) values (5, 'Original AirPod',		3,	12, 0);
+INSERT INTO my_6th_products (id, name, quantity, order_id, order_persistence) values (6, 'Apple Watch 6', 		2,	12, 1);
+INSERT INTO my_6th_order (id, order_date) values(10, '2021-05-07');
+INSERT INTO my_6th_order (id, order_date) values(11, '2020-11-13');
+INSERT INTO my_6th_order (id, order_date) values(12, '2019-04-02');
+
+

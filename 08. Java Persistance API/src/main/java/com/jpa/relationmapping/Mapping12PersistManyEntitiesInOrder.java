@@ -13,14 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Demonstrate One To Many Relationship , Retrieve Many Entities in Order
+ * Demonstrate One To Many Relationship , Persists Many Entities in Order
  * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owning Entity which references in Non Owning Entity 
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
@@ -53,36 +53,40 @@ import javax.persistence.TemporalType;
  *    	
  *  7. Observe , we can specified the Name of @JoinColuumn Annotation with following specified attribute: name as "the foreign key" of the reference target entities
  *  
- *  8. Observe , @OrderBy Annotation allows to specify order in which reference entity will be retrieve
+ *  8. Observe , @OrderColumn Annotation allows to specify the name of the column in the reference entities which will hold the order in which the references associated with an Owning Entities
+ *  	Hibernate reponsible for retrieveing in order, maintaining updated information in the right persistence order
  *  
  *  Mapping : 
  *  	my_products (order_id) --< my_order (order_id)
  *		
  *
  */
-public class Mapping11RetrieveManyEntitiesInOrder {
+public class Mapping12PersistManyEntitiesInOrder {
 
 	/**
 	 * 
-	 
+	 * Notice column "order_presistence" is automatically create by Hibernate, that is introduced by @OrderCoumn on the Owning Entity 
+	 * 
 Hibernate: 
     
-    create table my_5th_products (
+    create table my_6th_products (
        id integer not null auto_increment,
         name varchar(255),
         quantity integer,
         order_id integer,
+        order_persistence integer,
         primary key (id)
-    ) engine=MyISAM	 
-	 
-    alter table my_5th_products 
-       add constraint FK77uwwjq3w3jh90nbxujc6mqxp 
+    ) engine=MyISAM
+    	 
+    alter table my_6th_products 
+       add constraint FK1fel7fx1rnqr5g690vy85sqr5 
        foreign key (order_id) 
-       references my_5th_order (id)	 
+       references my_6th_order (id)
+           	 
 	 *
 	 */
-	@Entity(name="MyProducts5")
-	@Table(name="my_5th_products")
+	@Entity(name="MyProducts6")
+	@Table(name="my_6th_products")
 	public static class Product implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
@@ -138,16 +142,16 @@ Hibernate:
 	 * 
 Hibernate: 
     
-    create table my_5th_order (
+    create table my_6th_order (
        id integer not null auto_increment,
         order_date date,
         primary key (id)
-    ) engine=MyISAM              
-              
+    ) engine=MyISAM
+                  
 	 *
 	 */
-	@Entity(name = "MyOrder5")
-	@Table(name = "my_5th_order")
+	@Entity(name = "MyOrder6")
+	@Table(name = "my_6th_order")
 	public static class Order implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -158,7 +162,7 @@ Hibernate:
 		
 		@OneToMany
 		@JoinColumn(name = "order_id")
-		@OrderBy("name ASC")
+		@OrderColumn(name = "order_persistence")
 		private List<Product> products;
 		
 		@Column(name = "order_date")
@@ -217,29 +221,24 @@ Hibernate:
 			
 			/**
 			 * 
-			 * Observe How the 2nd Query is being generated and the order is based on product.name ascendingly
+			 * Observe How the 2nd Query is being generated 
 			 * 
 Hibernate: 
     select
-        mapping11r0_.id as id1_27_0_,
-        mapping11r0_.order_date as order_da2_27_0_ 
+        mapping12p0_.id as id1_29_0_,
+        mapping12p0_.order_date as order_da2_29_0_ 
     from
-        my_5th_order mapping11r0_ 
+        my_6th_order mapping12p0_ 
     where
-        mapping11r0_.id=?
-Hibernate: 
+        mapping12p0_.id=?
+
     select
-        products0_.order_id as order_id4_28_0_,
-        products0_.id as id1_28_0_,
-        products0_.id as id1_28_1_,
-        products0_.name as name2_28_1_,
-        products0_.quantity as quantity3_28_1_ 
+        mapping12p0_.id as id1_29_0_,
+        mapping12p0_.order_date as order_da2_29_0_ 
     from
-        my_5th_products products0_ 
+        my_6th_order mapping12p0_ 
     where
-        products0_.order_id=? 
-    order by
-        products0_.name asc
+        mapping12p0_.id=?
                 
 			 * 
 			 */
@@ -263,30 +262,29 @@ output :
 			 * 
 			 */
 
-			List<Order> orders = em.createQuery("SELECT a FROM MyOrder5 a", Order.class).getResultList();
+			List<Order> orders = em.createQuery("SELECT a FROM MyOrder6 a", Order.class).getResultList();
 			System.out.println(orders);
 			/**
 			 * 
 
 Hibernate: 
     select
-        mapping11r0_.id as id1_27_,
-        mapping11r0_.order_date as order_da2_27_ 
+        mapping12p0_.id as id1_29_,
+        mapping12p0_.order_date as order_da2_29_ 
     from
-        my_5th_order mapping11r0_
+        my_6th_order mapping12p0_
 Hibernate: 
     select
-        products0_.order_id as order_id4_28_0_,
-        products0_.id as id1_28_0_,
-        products0_.id as id1_28_1_,
-        products0_.name as name2_28_1_,
-        products0_.quantity as quantity3_28_1_ 
+        products0_.order_id as order_id4_30_0_,
+        products0_.id as id1_30_0_,
+        products0_.order_persistence as order_pe5_0_,
+        products0_.id as id1_30_1_,
+        products0_.name as name2_30_1_,
+        products0_.quantity as quantity3_30_1_ 
     from
-        my_5th_products products0_ 
+        my_6th_products products0_ 
     where
-        products0_.order_id=? 
-    order by
-        products0_.name asc
+        products0_.order_id=?
 
 
 			 * 			
@@ -301,7 +299,7 @@ Hibernate:
 	
 	
 	public static void main(String[] args) {
-		new Mapping11RetrieveManyEntitiesInOrder().runMain();
+		new Mapping12PersistManyEntitiesInOrder().runMain();
 	}
 
 }

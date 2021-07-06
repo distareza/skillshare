@@ -11,6 +11,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
@@ -18,7 +20,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Demonstrate One To Many Relationship Unidirectinal Mapping ( with default Table Join mapping )
+ * Demonstrate One To Many Relationship Unidirectinal Mapping Join Table, with custom defined name
  * Hibernate modeled the mapping using separate Table to join both of Entities
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
@@ -49,25 +51,31 @@ import javax.persistence.TemporalType;
  *  
  *  6. Observe Annotation OneToMany is defined on Collections method or fields in Entity Class
  *    	
- *  7. Observe Join Table is default to  (  Table Name of Owning Entity + "_" + Table Name of Owned Entity , example : "products_order" + "_" + "products" )	
- *  	the join table having 2 foreign key relation 
- *  		1. Owning Entity Primary Key ( OneToMany Method name of Owning Entity + "_" + Owned Entity PK, example : "products" + "_" + "id")
- *  		2. Owned Entity Primary Key ( Owning Entity Name + "_" + its Primary Key , example : "ProductOrder" + "_" + "id" )
+ *  7. Observe , instead uses Join Table is default naming schema , we can specified the Name of Join Tables and its fields uses @JoinTable Annotation with following specified attribute:
+ *		@OneToMany
+ *		@JoinTable(
+ *						name = "<mapping table name>",
+ *						joinColumns = { @JoinColumn( name = "<mapping source field name>", referencedColumnName = "<primary key of source entity>") },
+ *						inverseJoinColumns = { @JoinColumn( name = "<mapping target field name>", referencedColumnName = "<primary key of target entity>") }
+ *		) 
+ *  	the join table must having 2 foreign key relation 
+ *  		1. Owning Entity Primary Key ( source Entity )
+ *  		2. Owned Entity Primary Key ( target Entity )
  *  
  *  Mapping : 
- *  	products_order (id) --< products_order_products -- products (id)
+ *  	my_products (id) --< my_mapping_products_order -- my_products_order (id)
  *		
- *		products_order_products (ProductOrder_id, products_id)
+ *		my_mapping_products_order (order_id, product_id)
  *
  */
-public class Mapping06OneToManyUnidirectional {
+public class Mapping07OneToManyJoinTables {
 
 	/**
 	 * 
 
 Hibernate: 
     
-    create table products (
+    create table my_products (
        id integer not null auto_increment,
         name varchar(255),
         quantity integer,
@@ -76,8 +84,8 @@ Hibernate:
               
 	 *
 	 */
-	@Entity(name="Products")
-	@Table(name="products")
+	@Entity(name="MyProducts")
+	@Table(name="my_products")
 	public static class Product implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
@@ -132,33 +140,36 @@ Hibernate:
 	/**
 	 * 
 
-    create table products_order (
+Hibernate: 
+    
+    create table my_products_order (
        id integer not null auto_increment,
         order_date date,
         primary key (id)
     ) engine=MyISAM
     
     
-    create table products_order_products (
-       ProductOrder_id integer not null,
-        products_id integer not null
+    create table my_mapping_products_order (
+       order_id integer not null,
+        product_id integer not null
     ) engine=MyISAM
       
-
-    alter table products_order_products 
-       add constraint FK2it7bty5vhoo98a3xldy5vttm 
-       foreign key (products_id) 
-       references products (id)
+    alter table my_mapping_products_order 
+       add constraint FKhwlh8ugl0hgxcrg5h5e6ok48k 
+       foreign key (product_id) 
+       references my_products (id)
+    
+    alter table my_mapping_products_order 
+       add constraint FKsfw9ee3kjc66jlf7bv4t1dl4 
+       foreign key (order_id) 
+       references my_products_order (id)
        
-    alter table products_order_products 
-       add constraint FKnsus52twf00jtietlxrkvdy4t 
-       foreign key (ProductOrder_id) 
-       references products_order (id)
+       
               
 	 *
 	 */
-	@Entity(name = "ProductOrder")
-	@Table(name = "products_order")
+	@Entity(name = "MyProductOrder")
+	@Table(name = "my_products_order")
 	public static class Order implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -168,6 +179,11 @@ Hibernate:
 		private Integer id;
 		
 		@OneToMany
+		@JoinTable(
+						name = "my_mapping_products_order",
+						joinColumns = { @JoinColumn( name = "order_id", referencedColumnName = "id") },
+						inverseJoinColumns = { @JoinColumn( name = "product_id", referencedColumnName = "id") }
+		)
 		private List<Product> products;
 		
 		@Column(name = "order_date")
@@ -226,27 +242,49 @@ Hibernate:
 			
 			/**
 			 * 
+
+Hibernate: 
     select
-        products0_.ProductOrder_id as ProductO1_23_0_,
-        products0_.products_id as products2_23_0_,
-        mapping06o1_.id as id1_21_1_,
-        mapping06o1_.name as name2_21_1_,
-        mapping06o1_.quantity as quantity3_21_1_ 
+        mapping07o0_.id as id1_24_0_,
+        mapping07o0_.order_date as order_da2_24_0_ 
     from
-        products_order_products products0_ 
-    inner join
-        products mapping06o1_ 
-            on products0_.products_id=mapping06o1_.id 
+        my_products_order mapping07o0_ 
     where
-        products0_.ProductOrder_id=?
+        mapping07o0_.id=?
+        
+Hibernate: 
+    select
+        products0_.order_id as order_id1_22_0_,
+        products0_.product_id as product_2_22_0_,
+        mapping07o1_.id as id1_23_1_,
+        mapping07o1_.name as name2_23_1_,
+        mapping07o1_.quantity as quantity3_23_1_ 
+    from
+        my_mapping_products_order products0_ 
+    inner join
+        my_products mapping07o1_ 
+            on products0_.product_id=mapping07o1_.id 
+    where
+        products0_.order_id=?
+        
 			 * 
 			 */
 			
-			List<Order> orders = em.createQuery("SELECT a FROM ProductOrder a", Order.class).getResultList();
+			Order orderOne = em.find(Order.class, 10);
+			System.out.println(orderOne);
+			
+			List<Order> orders = em.createQuery("SELECT a FROM MyProductOrder a", Order.class).getResultList();
 			System.out.println(orders);
-
 			/**
 			 * 
+
+		output : 
+		[	
+			{ 10, [{ 1, iPhone 6S, 1 }, { 2, Nike Sneakers, 2 }, { 3, iMac 24-inc M1, 1 }], 2021-05-07 }, 
+			{ 11, [{ 4, iPhone 12, 1 }], 2020-11-13 }, 
+			{ 12, [{ 5, Original AirPod, 3 }, { 6, Apple Watch 6, 2 }], 2019-04-02 }
+		]
+			
 		select * from products;
 		---------- -------------------- ---------- 
 		id         name                 quantity   
@@ -289,7 +327,7 @@ Hibernate:
 	
 	
 	public static void main(String[] args) {
-		new Mapping06OneToManyUnidirectional().runMain();
+		new Mapping07OneToManyJoinTables().runMain();
 	}
 
 }

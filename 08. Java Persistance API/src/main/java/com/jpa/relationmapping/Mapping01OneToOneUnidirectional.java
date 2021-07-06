@@ -19,6 +19,8 @@ import javax.persistence.TemporalType;
 
 /**
  * Demonstrate One To One Relationship Unidirectional Mapping (with a primary key)
+ * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owning Entity which references in Non Owning Entity 
+ * 	
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
@@ -46,9 +48,7 @@ import javax.persistence.TemporalType;
  *  		Temporal (TemporalType.DATE) --> Store Only Date without Time info
  *  		Temporal (TemporalType.TIME) --> Store Only Time without Date info
  *  
- *  6.	Notice Annotation @OneToOne that describe in Order Entity Class
- * 
- * 	7.	To retrieve both table that join together uses @JoinColumn Annotation
+ *  6.	Notice Annotation @OneToOne that declare in one of method/fields of "Orders" Entity Class to reference as foreign key to Owned Entity "Invoices"
  * 
  *  Mapping : 
  *  	Invoices (id) <-> Orders (invoice_id)

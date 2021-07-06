@@ -37,3 +37,57 @@ INSERT INTO purchases_statement (id, item, payment_date) values (10, 'Electricit
 INSERT INTO purchases_statement (id, item, payment_date) values (12, 'Water Charges', 		'2020-12-01');
 INSERT INTO purchases_statement (id, item, payment_date) values (13, 'Internet Charge', 		'2020-12-07');
 INSERT INTO purchases_statement (id, item, payment_date) values (14, 'Phone Usage', 			'2020-12-15');
+
+-- initialize data for com.jpa.relationmapping.Mapping05OneToOneJoinTable
+INSERT INTO purchases_invoice (id, amount) values (1, 1335);
+INSERT INTO purchases_invoice (id, amount) values (2, 849);
+INSERT INTO purchases_invoice (id, amount) values (3, 1398);
+INSERT INTO purchases_invoice (id, amount) values (4, 477);
+INSERT INTO purchases_order (id, product, quantity, order_date) values (10, 'iMac 24-inch M1', 	1, '2021-05-07');
+INSERT INTO purchases_order (id, product, quantity, order_date) values (11, 'iPhone 12', 		1, '2020-11-13');
+INSERT INTO purchases_order (id, product, quantity, order_date) values (12, 'Apple Watch 6', 	2, '2019-04-02');
+INSERT INTO purchases_order (id, product, quantity, order_date) values (13, 'Original AirPod', 	3, '2020-08-31');
+INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (1, 10);
+INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (2, 11);
+INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (3, 12);
+INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (4, 13);
+
+
+-- initialize data for com.jpa.relationmapping.Mapping06OneToManyUnidirectional
+INSERT INTO products (id, name, quantity) values (1, 'iPhone 6S', 		1);
+INSERT INTO products (id, name, quantity) values (2, 'Nike Sneakers', 	2);
+INSERT INTO products (id, name, quantity) values (3, 'iMac 24-inc M1', 	1);
+INSERT INTO products (id, name, quantity) values (4, 'iPhone 12', 		1);
+INSERT INTO products (id, name, quantity) values (5, 'Original AirPod', 3);
+INSERT INTO products (id, name, quantity) values (6, 'Apple Watch 6', 	2);
+INSERT INTO products_order(id, order_date) values(10, '2021-05-07');
+INSERT INTO products_order(id, order_date) values(11, '2020-11-13');
+INSERT INTO products_order(id, order_date) values(12, '2019-04-02');
+INSERT INTO products_order_products(ProductOrder_id, products_id) values(10, 1);
+INSERT INTO products_order_products(ProductOrder_id, products_id) values(10, 2);
+INSERT INTO products_order_products(ProductOrder_id, products_id) values(10, 3);
+INSERT INTO products_order_products(ProductOrder_id, products_id) values(11, 4);
+INSERT INTO products_order_products(ProductOrder_id, products_id) values(12, 5);
+INSERT INTO products_order_products(ProductOrder_id, products_id) values(12, 6);
+
+
+-- initialize data for com.jpa.relationmapping.Mapping07OneToManyUnidirectionalJoinTables
+INSERT INTO my_products (id, name, quantity) values (1, 'iPhone 6S', 		1);
+INSERT INTO my_products (id, name, quantity) values (2, 'Nike Sneakers', 	2);
+INSERT INTO my_products (id, name, quantity) values (3, 'iMac 24-inc M1', 	1);
+INSERT INTO my_products (id, name, quantity) values (4, 'iPhone 12', 		1);
+INSERT INTO my_products (id, name, quantity) values (5, 'Original AirPod', 3);
+INSERT INTO my_products (id, name, quantity) values (6, 'Apple Watch 6', 	2);
+INSERT INTO my_products_order(id, order_date) values(10, '2021-05-07');
+INSERT INTO my_products_order(id, order_date) values(11, '2020-11-13');
+INSERT INTO my_products_order(id, order_date) values(12, '2019-04-02');
+INSERT INTO my_mapping_products_order(order_id, product_id) values(10, 1);
+INSERT INTO my_mapping_products_order(order_id, product_id) values(10, 2);
+INSERT INTO my_mapping_products_order(order_id, product_id) values(10, 3);
+INSERT INTO my_mapping_products_order(order_id, product_id) values(11, 4);
+INSERT INTO my_mapping_products_order(order_id, product_id) values(12, 5);
+INSERT INTO my_mapping_products_order(order_id, product_id) values(12, 6);
+
+
+
+

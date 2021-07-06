@@ -21,6 +21,7 @@ import javax.persistence.TemporalType;
 
 /**
  * Demonstrate One To One Relationship Bidirectional Mapping with Mapped By parameter
+ * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owneing Entity which references in Non Owning Entity 
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
@@ -48,7 +49,7 @@ import javax.persistence.TemporalType;
  *  		Temporal (TemporalType.DATE) --> Store Only Date without Time info
  *  		Temporal (TemporalType.TIME) --> Store Only Time without Date info
  *   
- * 	6.	Notice Annotation @OneToOne that describe in Order Entity Class
+ * 	6.	Notice Annotation @OneToOne that declare at method/fields in both Entity Classes to reference as foreign key 
  * 
  * 	7.	To retrieve both table that join together uses @JoinColumn Annotation
  *  

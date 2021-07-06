@@ -123,7 +123,6 @@ INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(11, 4);
 INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(12, 5);
 INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(12, 6);
 
-
 -- initialize data for com.jpa.relationmapping.Mapping10OneToManyJoinColumn
 INSERT INTO my_4th_products (id, name, quantity, order_id) values (1, 'iPhone 6S', 			1,	10);
 INSERT INTO my_4th_products (id, name, quantity, order_id) values (2, 'Nike Sneakers', 		2,	10);
@@ -135,4 +134,14 @@ INSERT INTO my_4th_order (id, order_date) values(10, '2021-05-07');
 INSERT INTO my_4th_order (id, order_date) values(11, '2020-11-13');
 INSERT INTO my_4th_order (id, order_date) values(12, '2019-04-02');
 
+-- initialize data for com.jpa.relationmapping.Mapping11RetrieveManyEntitiesInOrder
+INSERT INTO my_5th_products (id, name, quantity, order_id) values (1, 'iPhone 6S', 			1,	10);
+INSERT INTO my_5th_products (id, name, quantity, order_id) values (2, 'Nike Sneakers', 		2,	10);
+INSERT INTO my_5th_products (id, name, quantity, order_id) values (3, 'iMac 24-inc M1', 	1,	10);
+INSERT INTO my_5th_products (id, name, quantity, order_id) values (4, 'iPhone 12', 			1,	11);
+INSERT INTO my_5th_products (id, name, quantity, order_id) values (5, 'Original AirPod',	3,	12);
+INSERT INTO my_5th_products (id, name, quantity, order_id) values (6, 'Apple Watch 6', 		2,	12);
+INSERT INTO my_5th_order (id, order_date) values(10, '2021-05-07');
+INSERT INTO my_5th_order (id, order_date) values(11, '2020-11-13');
+INSERT INTO my_5th_order (id, order_date) values(12, '2019-04-02');
 

@@ -13,13 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Demonstrate One To Many Relationship Unidirectinal Mapping Join Column
+ * Demonstrate One To Many Relationship , Retrieve Many Entities in Order
  * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owning Entity which references in Non Owning Entity 
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
@@ -52,6 +53,8 @@ import javax.persistence.TemporalType;
  *    	
  *  7. Observe , we can specified the Name of @JoinColuumn Annotation with following specified attribute: name as "the foreign key" of the reference target entities
  *  
+ *  8. Observe , @OrderBy Annotation allows to specify order in which reference entity will be retrieve
+ *  
  *  Mapping : 
  *  	my_products (order_id) --< my_order (order_id)
  *		
@@ -61,24 +64,11 @@ public class Mapping11RetrieveManyEntitiesInOrder {
 
 	/**
 	 * 
-Hibernate: 
-
-    create table my_4th_products (
-       id integer not null auto_increment,
-        name varchar(255),
-        quantity integer,
-        order_id integer,
-        primary key (id)
-    ) engine=MyISAM
-   
-    alter table my_4th_products 
-       add constraint FKj80hub064fkvhb4yr44x2lh65 
-       foreign key (order_id) 
-       references my_4th_order (id)              
+	 
 	 *
 	 */
-	@Entity(name="MyProducts4")
-	@Table(name="my_4th_products")
+	@Entity(name="MyProducts5")
+	@Table(name="my_5th_products")
 	public static class Product implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
@@ -132,18 +122,11 @@ Hibernate:
 	
 	/**
 	 * 
-Hibernate: 
-    
-    create table my_4th_order (
-       id integer not null auto_increment,
-        order_date date,
-        primary key (id)
-    ) engine=MyISAM
               
 	 *
 	 */
-	@Entity(name = "MyOrder4")
-	@Table(name = "my_4th_order")
+	@Entity(name = "MyOrder5")
+	@Table(name = "my_5th_order")
 	public static class Order implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -154,6 +137,7 @@ Hibernate:
 		
 		@OneToMany
 		@JoinColumn(name = "order_id")
+		@OrderBy("name ASC")
 		private List<Product> products;
 		
 		@Column(name = "order_date")
@@ -212,56 +196,58 @@ Hibernate:
 			
 			/**
 			 * 
+			 * Observe How the 2nd Query is being generated and the order is based on product.name ascendingly
+			 * 
 Hibernate: 
     select
-        mapping10o0_.id as id1_25_0_,
-        mapping10o0_.order_date as order_da2_25_0_ 
+        mapping11r0_.id as id1_27_0_,
+        mapping11r0_.order_date as order_da2_27_0_ 
     from
-        my_4th_order mapping10o0_ 
+        my_5th_order mapping11r0_ 
     where
-        mapping10o0_.id=?
+        mapping11r0_.id=?
 Hibernate: 
     select
-        products0_.order_id as order_id4_26_0_,
-        products0_.id as id1_26_0_,
-        products0_.id as id1_26_1_,
-        products0_.name as name2_26_1_,
-        products0_.quantity as quantity3_26_1_ 
+        products0_.order_id as order_id4_28_0_,
+        products0_.id as id1_28_0_,
+        products0_.id as id1_28_1_,
+        products0_.name as name2_28_1_,
+        products0_.quantity as quantity3_28_1_ 
     from
-        my_4th_products products0_ 
+        my_5th_products products0_ 
     where
-        products0_.order_id=?
+        products0_.order_id=? 
+    order by
+        products0_.name asc
                 
 			 * 
 			 */
 			
 			Order orderOne = em.find(Order.class, 10);
 			System.out.println(orderOne);
+
+			/**
+			 * 
+output : 
+{ 10, [{ 3, iMac 24-inc M1, 1 }, { 1, iPhone 6S, 1 }, { 2, Nike Sneakers, 2 }], 2021-05-07 }
+			 * 
+			 */
 			
-			List<Order> orders = em.createQuery("SELECT a FROM MyOrder4 a", Order.class).getResultList();
+			Order orderTwo = em.find(Order.class, 12);
+			System.out.println(orderTwo);
+			/**
+			 * 
+output :
+{ 12, [{ 6, Apple Watch 6, 2 }, { 5, Original AirPod, 3 }], 2019-04-02 }
+			 * 
+			 */
+
+			List<Order> orders = em.createQuery("SELECT a FROM MyOrder5 a", Order.class).getResultList();
 			System.out.println(orders);
 			/**
 			 * 
 
-select * from my_4th_products;
----------- ----------------------- ---------- ---------- 
-id         name                    quantity   order_id   
----------- ----------------------- ---------- ---------- 
-1          iPhone 6S               1          10         
-2          Nike Sneakers           2          10         
-3          iMac 24-inc M1          1          10         
-4          iPhone 12               1          11         
-5          Original AirPod         3          12         
-6          Apple Watch 6           2          12         
 
-
-select * from my_4th_order;
----------- -----------------
-id         order_date       
----------- -----------------
-10         2021-05-07       
-11         2020-11-13       
-12         2019-04-02       
 
 
 			 * 			

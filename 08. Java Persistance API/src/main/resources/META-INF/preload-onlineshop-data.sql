@@ -53,7 +53,7 @@ INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (3, 12
 INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (4, 13);
 
 
--- initialize data for com.jpa.relationmapping.Mapping06OneToManyUnidirectional
+-- initialize data for com.jpa.relationmapping.Mapping06OneToMany
 INSERT INTO products (id, name, quantity) values (1, 'iPhone 6S', 		1);
 INSERT INTO products (id, name, quantity) values (2, 'Nike Sneakers', 	2);
 INSERT INTO products (id, name, quantity) values (3, 'iMac 24-inc M1', 	1);
@@ -71,7 +71,7 @@ INSERT INTO products_order_products(ProductOrder_id, products_id) values(12, 5);
 INSERT INTO products_order_products(ProductOrder_id, products_id) values(12, 6);
 
 
--- initialize data for com.jpa.relationmapping.Mapping07OneToManyUnidirectionalJoinTables
+-- initialize data for com.jpa.relationmapping.Mapping07OneToManyJoinTables
 INSERT INTO my_products (id, name, quantity) values (1, 'iPhone 6S', 		1);
 INSERT INTO my_products (id, name, quantity) values (2, 'Nike Sneakers', 	2);
 INSERT INTO my_products (id, name, quantity) values (3, 'iMac 24-inc M1', 	1);
@@ -89,5 +89,50 @@ INSERT INTO my_mapping_products_order(order_id, product_id) values(12, 5);
 INSERT INTO my_mapping_products_order(order_id, product_id) values(12, 6);
 
 
+-- initialize data for com.jpa.relationmapping.Mapping08OneToManyEagerLoading
+INSERT INTO my_2nd_products (id, name, quantity) values (1, 'iPhone 6S', 		1);
+INSERT INTO my_2nd_products (id, name, quantity) values (2, 'Nike Sneakers', 	2);
+INSERT INTO my_2nd_products (id, name, quantity) values (3, 'iMac 24-inc M1', 	1);
+INSERT INTO my_2nd_products (id, name, quantity) values (4, 'iPhone 12', 		1);
+INSERT INTO my_2nd_products (id, name, quantity) values (5, 'Original AirPod', 3);
+INSERT INTO my_2nd_products (id, name, quantity) values (6, 'Apple Watch 6', 	2);
+INSERT INTO my_2nd_order (id, order_date) values(10, '2021-05-07');
+INSERT INTO my_2nd_order (id, order_date) values(11, '2020-11-13');
+INSERT INTO my_2nd_order (id, order_date) values(12, '2019-04-02');
+INSERT INTO my_2nd_mapping_products_order (order_id, product_id) values(10, 1);
+INSERT INTO my_2nd_mapping_products_order (order_id, product_id) values(10, 2);
+INSERT INTO my_2nd_mapping_products_order (order_id, product_id) values(10, 3);
+INSERT INTO my_2nd_mapping_products_order (order_id, product_id) values(11, 4);
+INSERT INTO my_2nd_mapping_products_order (order_id, product_id) values(12, 5);
+INSERT INTO my_2nd_mapping_products_order (order_id, product_id) values(12, 6);
+
+-- initialize data for com.jpa.relationmapping.Mapping09OneToManyLazyLoading
+INSERT INTO my_3rd_products (id, name, quantity) values (1, 'iPhone 6S', 		1);
+INSERT INTO my_3rd_products (id, name, quantity) values (2, 'Nike Sneakers', 	2);
+INSERT INTO my_3rd_products (id, name, quantity) values (3, 'iMac 24-inc M1', 	1);
+INSERT INTO my_3rd_products (id, name, quantity) values (4, 'iPhone 12', 		1);
+INSERT INTO my_3rd_products (id, name, quantity) values (5, 'Original AirPod', 3);
+INSERT INTO my_3rd_products (id, name, quantity) values (6, 'Apple Watch 6', 	2);
+INSERT INTO my_3rd_order (id, order_date) values(10, '2021-05-07');
+INSERT INTO my_3rd_order (id, order_date) values(11, '2020-11-13');
+INSERT INTO my_3rd_order (id, order_date) values(12, '2019-04-02');
+INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(10, 1);
+INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(10, 2);
+INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(10, 3);
+INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(11, 4);
+INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(12, 5);
+INSERT INTO my_3rd_mapping_products_order (order_id, product_id) values(12, 6);
+
+
+-- initialize data for com.jpa.relationmapping.Mapping10OneToManyJoinColumn
+INSERT INTO my_4th_products (id, name, quantity, order_id) values (1, 'iPhone 6S', 			1,	10);
+INSERT INTO my_4th_products (id, name, quantity, order_id) values (2, 'Nike Sneakers', 		2,	10);
+INSERT INTO my_4th_products (id, name, quantity, order_id) values (3, 'iMac 24-inc M1', 	1,	10);
+INSERT INTO my_4th_products (id, name, quantity, order_id) values (4, 'iPhone 12', 			1,	11);
+INSERT INTO my_4th_products (id, name, quantity, order_id) values (5, 'Original AirPod',	3,	12);
+INSERT INTO my_4th_products (id, name, quantity, order_id) values (6, 'Apple Watch 6', 		2,	12);
+INSERT INTO my_4th_order (id, order_date) values(10, '2021-05-07');
+INSERT INTO my_4th_order (id, order_date) values(11, '2020-11-13');
+INSERT INTO my_4th_order (id, order_date) values(12, '2019-04-02');
 
 

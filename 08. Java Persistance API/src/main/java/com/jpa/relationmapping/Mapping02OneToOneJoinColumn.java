@@ -286,6 +286,8 @@ public class Mapping02OneToOneJoinColumn {
 	 * 
 	 */
 	public void retrieveData() {
+		System.out.println("retrieve data");
+
 		Driver driverOne = em.find(Driver.class, 1);
 		System.out.println(driverOne);				// { 1, Matt Robinson, Male, 07-05-1998 } 
 		System.out.println(driverOne.getLicense()); // { 1, TRANSACTION-20210507-01, Car, 07-May-02025} 
@@ -297,9 +299,13 @@ public class Mapping02OneToOneJoinColumn {
 		System.out.println(licenseOne);  // { 2, TRANSACTION-20201113-21, Motorbike, 13-Nov-02026} 
 		DrivingLicense licenseTwo = em.find(DrivingLicense.class, 4);
 		System.out.println(licenseTwo); // 	{ 4, TRANSACTION-20200831-74, Car, 31-Aug-02024} 
-		
-		List<Driver> orders = em.createQuery("SELECT a FROM Driver a", Driver.class).getResultList();
-		System.out.println(orders);
+
+		List<DrivingLicense> licenses = em.createQuery("SELECT a FROM DrivingLicense a", DrivingLicense.class).getResultList();
+		System.out.println(licenses);
+
+		List<Driver> drivers = em.createQuery("SELECT a FROM Driver a", Driver.class).getResultList();
+		System.out.println(drivers);
+
 	}
 	
 	/**
@@ -322,6 +328,8 @@ public class Mapping02OneToOneJoinColumn {
 	 * 
 	 */
 	public void insertData() throws Exception {
+		System.out.println("insert data");
+		
 		em.getTransaction().begin();
 		
 		DrivingLicense newLicense = new DrivingLicense(new SimpleDateFormat("dd-MM-yyyy").parse("31-12-2030"), "Car");
@@ -338,10 +346,10 @@ public class Mapping02OneToOneJoinColumn {
 		em = factory.createEntityManager();
 
 		try {
-			System.out.println("retrieve data");
+			
+			insertData();
 			
 			retrieveData();
-			insertData();
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();

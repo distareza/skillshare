@@ -14,7 +14,7 @@ INSERT INTO driving_license (id, license_no, license_type, expiry_date) values (
 INSERT INTO driving_license (id, license_no, license_type, expiry_date) values (3, 'TRANSACTION-20190402-43', 'Bus',		'2025-04-02' );
 INSERT INTO driving_license (id, license_no, license_type, expiry_date) values (4, 'TRANSACTION-20200831-74', 'Car',		'2024-08-31' );
 INSERT INTO driver (id, license_key, name, gender, birth_date) values (1, 'TRANSACTION-20210507-01', 'Matt Robinson', 	'Male', 	'1998-05-07');
-INSERT INTO driver (id, license_key, name, gender, birth_date) values (2, 'TRANSACTION-20201113-21', 'Jack Richer', 		'Male', 	'2003-11-13');
+INSERT INTO driver (id, license_key, name, gender, birth_date) values (2, 'TRANSACTION-20201113-21', 'Jack Richer', 	'Male', 	'2003-11-13');
 INSERT INTO driver (id, license_key, name, gender, birth_date) values (3, 'TRANSACTION-20190402-43', 'Jessica Parker', 	'Female',	'2005-04-02');
 INSERT INTO driver (id, license_key, name, gender, birth_date) values (4, 'TRANSACTION-20200831-74', 'Chad Groom', 		'Male', 	'2008-08-31');
 

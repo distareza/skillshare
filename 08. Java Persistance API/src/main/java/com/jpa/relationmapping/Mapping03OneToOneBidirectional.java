@@ -61,26 +61,24 @@ import javax.persistence.TemporalType;
  * 
  *  9. Notice One-To-One Bidirectional Mapping : the owning side defines the mapping the referencing side references the mapping
  *  	notice that Annotation @OneToOne is mapped on both table
- *  		Field in Entity #1 [transactionStatement] 	is set with @OneToOne annotation and added the mappedBy attribute with "reference field name of the Entity #2" ( TransactionStatements.bills )
- *  		Field in Entity #2 [bills] 					is set with @OneToOne annotation that provided the field reference for Entity #1  (Entity #2 --> Owning Entity)
+ *  		Field in Entity #1 [Bills] 					is set with @OneToOne annotation and added the "mappedBy" attribute with "reference field name of the Entity #2" ( TransactionStatements.billing )
+ *  		Field in Entity #2 [TransactionStatement] 	is set with @OneToOne annotation and @JoinColumn Annotation to reference a column for Entity #1  (Entity #2 )
  *  
  *  Mapping : 
- *  	bills (id) <-> trans_statement (bill_Id)
+ *  	bills (id) <-> trans_statement (bill_id)
  *
  */
 public class Mapping03OneToOneBidirectional {
 
 	/**
 	 * 
-	 
-Hibernate: 
-    
+	 ==================================================================
     create table bills (
        id integer not null auto_increment,
         amount float,
         primary key (id)
     ) engine=MyISAM
-    
+	==================================================================    
 	 * 
 	 *
 	 */
@@ -93,9 +91,10 @@ Hibernate:
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
+		
 		private Float amount;
 		
-		@OneToOne(mappedBy = "bills")
+		@OneToOne(mappedBy = "billing")
 		private TransactionStatements transactionStatement;
 		
 		public Bills() {
@@ -121,24 +120,29 @@ Hibernate:
 			this.amount = amount;
 		}
 
-		
+		public TransactionStatements getTransactionStatement() {
+			return transactionStatement;
+		}
+
+		public void setTransactionStatement(TransactionStatements transactionStatement) {
+			this.transactionStatement = transactionStatement;
+		}
+
 		@Override
 		public String toString() {
-			return String.format(" { %d, %,.4f} ", this.id, this.amount);
+			return String.format(" { %d, %,.4f } ", this.id, this.amount);
 		}
 
 	}
 	
 	/**
 	 * 
-	 *   
-Hibernate: 
-    
+	==================================================================    
     create table trans_statement (
        id integer not null auto_increment,
         item varchar(255),
         payment_date date,
-        bill_Id integer,
+        bill_id integer,
         primary key (id)
     ) engine=MyISAM
     
@@ -146,9 +150,9 @@ Hibernate:
        add constraint FKag569c5ryu5mx57ck8b43njps 
        foreign key (bill_Id) 
        references bills (id)   
-       
+   ==================================================================
 	 *       
-	 *   notice : "invoice_id" is reference key    
+	 *   notice : "bill_id" is reference key    
 	 *
 	 */
 	@Entity(name = "TransStatements")
@@ -167,8 +171,8 @@ Hibernate:
 		private Date payementDate;
 		
 		@OneToOne
-		@JoinColumn(name = "bill_Id")
-		private Bills bills;
+		@JoinColumn(name = "bill_id")
+		private Bills billing;
 
 		public TransactionStatements() {
 		}
@@ -202,12 +206,12 @@ Hibernate:
 			this.payementDate = payementDate;
 		}
 
-		public Bills getBills() {
-			return bills;
+		public Bills getBilling() {
+			return billing;
 		}
 
-		public void setBills(Bills bills) {
-			this.bills = bills;
+		public void setBilling(Bills billing) {
+			this.billing = billing;
 		}
 
 		@Override
@@ -215,88 +219,183 @@ Hibernate:
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String dateText = null;
 			if (this.payementDate != null) dateText = sdf.format(payementDate);
-			
-			String billsText = null;
-			if (this.bills != null) billsText = bills.toString();
-			
-			return String.format(" { %d, %s, %s, %s } ", this.id, this.item, dateText, billsText);
+			return String.format(" { %d, %s, %s } ", this.id, this.item, dateText);
 		}
 		
 	}
 	
 	private EntityManagerFactory factory;
 	private EntityManager em;
+
+	/**
+	 * 1. Find transaction
+	 * 	  trxOne = em.find(TransactionStatements.class, 1)
+	 * 	  System.out.println(trxOne);
+	==================================================================
+    select
+        mapping03o0_.id as id1_63_0_,
+        mapping03o0_.bill_id as bill_id4_63_0_,
+        mapping03o0_.item as item2_63_0_,
+        mapping03o0_.payment_date as payment_3_63_0_,
+        mapping03o1_.id as id1_3_1_,
+        mapping03o1_.amount as amount2_3_1_ 
+    from
+        trans_statement mapping03o0_ 
+    left outer join
+        bills mapping03o1_ 
+            on mapping03o0_.bill_id=mapping03o1_.id 
+    where
+        mapping03o0_.id=?	-- notice the filter column 
+	==================================================================
+	* 
+	* 2. get the billing from transaction
+	*	 System.out.println(trxOne.getBilling());
+	==================================================================
+    select
+        mapping03o0_.id as id1_63_1_,
+        mapping03o0_.bill_id as bill_id4_63_1_,
+        mapping03o0_.item as item2_63_1_,
+        mapping03o0_.payment_date as payment_3_63_1_,
+        mapping03o1_.id as id1_3_0_,
+        mapping03o1_.amount as amount2_3_0_ 
+    from
+        trans_statement mapping03o0_ 
+    left outer join
+        bills mapping03o1_ 
+            on mapping03o0_.bill_id=mapping03o1_.id 
+    where
+        mapping03o0_.bill_id=? -- notice the filter column
+	==================================================================
+	*
+	* 3. Find The Billing Record, along with its transaction:
+	* 	 Bills billOne = em.find(Bills.class, 3);
+	* 	 System.out.println(billTwo);
+	* 	 System.out.println(billOne.getTransactionStatement());
+	==================================================================
+	select
+	   mapping03o0_.id as id1_3_0_,
+	   mapping03o0_.amount as amount2_3_0_,
+	   mapping03o1_.id as id1_63_1_,
+	   mapping03o1_.bill_id as bill_id4_63_1_,
+	   mapping03o1_.item as item2_63_1_,
+	   mapping03o1_.payment_date as payment_3_63_1_ 
+	from
+	   bills mapping03o0_ 
+	left outer join
+	   trans_statement mapping03o1_ 
+	       on mapping03o0_.id=mapping03o1_.bill_id 
+	where
+	   mapping03o0_.id=?
+	==================================================================     
+	 * 
+	 */
+
+	public void retrieveData() {
+		System.out.println("retrieve data");
+		
+		TransactionStatements trxOne = em.find(TransactionStatements.class, 1);
+		System.out.println(trxOne);					// { 1, Electricity Usage, 05-12-2020 }
+		System.out.println(trxOne.getBilling());	// { 1, 182.5500 } 
+		TransactionStatements trxTwo = em.find(TransactionStatements.class, 2);
+		System.out.println(trxTwo);					// { 2, Water Charges, 01-12-2020 } 
+		System.out.println(trxTwo.getBilling());	// { 2, 5.0000 } 
+		
+		Bills billOne = em.find(Bills.class, 3);
+		System.out.println(billOne);								// { 3, 129.1500 }
+		System.out.println(billOne.getTransactionStatement());		// { 3, Internet Charge, 07-12-2020 } 
+
+		Bills billTwo = em.find(Bills.class, 4);		
+		System.out.println(billTwo);								// { 4, 30.0000 }  
+		System.out.println(billTwo.getTransactionStatement());		// { 4, Phone Usage, 15-12-2020 } 
+
+		List<TransactionStatements> trxs = em.createQuery("SELECT a FROM TransStatements a", TransactionStatements.class).getResultList();
+		System.out.println(trxs);
+		
+		List<Bills> bills = em.createQuery("SELECT a FROM Bills a", Bills.class).getResultList();
+		System.out.println(bills);
+	}
+	
+	/**
+	 * 
+	==================================================================
+    insert 
+    into
+        trans_statement
+        (bill_id, item, payment_date) 
+    values
+        (?, ?, ?)
+    ==================================================================
+    insert 
+    into
+        bills
+        (amount) 
+    values
+        (?)
+	==================================================================
+    update
+        trans_statement 
+    set
+        bill_id=?,
+        item=?,
+        payment_date=? 
+    where
+        id=?
+   	==================================================================
+	 * 
+	 */
+	public void insertData() throws Exception {
+		em.getTransaction().begin();
+		
+		TransactionStatements newTrx = new TransactionStatements("Road Tax", new SimpleDateFormat("dd-MM-yyyy").parse("05-08-2021"));
+		Bills newBill = new Bills(249.99f);
+		newTrx.setBilling(newBill);
+		
+		em.persist(newTrx);
+		em.persist(newBill);
+		
+		em.getTransaction().commit();
+	}
 	
 	public void runMain() {
 		factory = Persistence.createEntityManagerFactory("OnlineShoopingDB_Unit");
 		em = factory.createEntityManager();
 
 		try {
-			System.out.println("retrieve data");
 			
-			/**
-			 *
-			 
-	    select
-	        mapping03o0_.id as id1_25_0_,
-	        mapping03o0_.bill_Id as bill_Id4_25_0_,
-	        mapping03o0_.item as item2_25_0_,
-	        mapping03o0_.payment_date as payment_3_25_0_,
-	        mapping03o1_.id as id1_3_1_,
-	        mapping03o1_.amount as amount2_3_1_ 
-	    from
-	        trans_statement mapping03o0_ 
-	    left outer join
-	        bills mapping03o1_ 
-	            on mapping03o0_.bill_Id=mapping03o1_.id 
-	    where
-	        mapping03o0_.id=?
-	         
-			 * 
-			 */
-			TransactionStatements orderOne = em.find(TransactionStatements.class, 1);
-			System.out.println(orderOne);
+			insertData();
+			retrieveData();
 			
-			TransactionStatements orderTwo = em.find(TransactionStatements.class, 2);
-			System.out.println(orderTwo);
-			
-			
-			List<TransactionStatements> trxs = em.createQuery("SELECT a FROM TransStatements a", TransactionStatements.class).getResultList();
-			System.out.println(trxs);
-			
-			List<Bills> bills = em.createQuery("SELECT a FROM Bills a", Bills.class).getResultList();
-			System.out.println(bills);
-			
-			/**
-			 * 
-
-select * from bills;
----------- ------------ 
-id         amount       
----------- ------------ 
-1          182.55       
-2          5.0          
-3          129.15       
-4          30.0         
-
-select * from trans_statement;
----------- ------------------------------- ----------------- ---------- 
-id         item                            payment_date      bill_Id    
----------- ------------------------------- ----------------- ---------- 
-1          Electricity Usage               2020-12-05        1          
-2          Water Charges                   2020-12-01        2          
-3          Internet Broadband Charge       2020-12-07        3          
-4          Phone Usage                     2020-12-15        4          
-
-
-			 * 
-			 */
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
 			em.close();
 			factory.close();
 		}
+
+		/**
+		 * 
+	select * from bills;
+	---------- ------------ 
+	id         amount       
+	---------- ------------ 
+	1          182.55       
+	2          5.0          
+	3          129.15       
+	4          30.0         
+	5          249.99       
+	
+	select * from trans_statement;
+	---------- -------------------------- ------------------------- ----------
+	id         item                       payment_date              bill_id    
+	---------- -------------------------- ------------------------- ---------- 
+	1          Electricity Usage          2020-12-05                1          
+	2          Water Charges              2020-12-01                2          
+	3          Internet Charge            2020-12-07                3          
+	4          Phone Usage                2020-12-15                4          
+	5          Road Tax                   2021-08-05                5          
+		 * 
+		 */
+
 	}
 	
 	

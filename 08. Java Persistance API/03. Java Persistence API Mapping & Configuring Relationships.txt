@@ -1,0 +1,127 @@
+Java Persistence API Mapping & Configuring Relationships
+==========================================================
+
+Question: Which of the following statements are true about the @JoinTable annotation?
+[ ] This sets up a foreign key reference from the entity on the one side of the relationship to the many side of the relationship
+[x] The inverseJoinColumns property specifies the foreign key relationship of the owned entity
+[ ] This avoids using an additional table to hold the mapping
+[x] The joinColumns property specifies the foreign key relationship of the owning entity
+
+Question: Which of the following is true in a one-to-many and many-to-one bidirectional mapping relationship?
+[x] The entity on the many side can be the owning side
+[x] The entity on the one side can be the owning side
+[ ] This cannot be expressed using an additional mapping table
+[ ] There is no owning side of the relationship
+
+Question: In one to many unidirectional mapping, how do you specify the owning side of the relationship?
+[ ] The owning side and inverse side are both picked at random when the entities are persisted
+[x] The entity which holds a reference to the other entity and has the @OneToMany annotation is the owning side
+[ ] There is no clear owning side and inverse side
+[ ] The entity which is held as a reference and does not have the @OneToMany annotation is the owning side
+
+Question: What is the annotation that you need to specify to have two entities in a one-to-one relationship share a primary key?
+[ ] @OneToOne
+[ ] @GeneratedValue
+[ ] @SharedKey
+[x] @MapsId
+
+Question: What is the default mechanism for representing one-to-many unidirectional relationships in JPA?
+[ ] A foreign key reference from the entity on the one side to the entity on the many side of the relationship
+[ ] A foreign key reference from the entity on the many side to the entity on the one side of the relationship
+[x] A mapping table which holds the primary keys of both entities in the relationship
+[ ] A shared primary key between the entities on the one and many side of the relationship
+
+Question: Many Variants exist for a single Product list on an e-commerce site. I use a @ManyToOne annotation in the following manner:
+ @Entity
+public class Variant {
+                …
+                @ManyToOne
+                private Product product;
+}
+ How will this relationship be modelled by default in the underlying tables?
+[ ] A separate mapping table will be set up to hold the variant-product mapping
+[ ] Every record in the Product table will hold a foreign key reference to the Variants’ primary key
+[x] Every record in the Variant table will hold a foreign key reference to the Product’s primary key
+[ ] Product and Variant will share the same primary key
+
+Question: Every vote in a voting application must be associated with exactly one phone number. What kind of mapping would you specify between a Vote entity and Phone entity in JPA?
+[ ] OneToMany
+[ ] ManyToMany
+[x] OneToOne
+[ ] ManyToOne
+
+Question: Which of the following representations are possible in order to model a one-to-many mapping relationship?
+[ ] By having entities linked by name
+[x] Using a separate mapping table to model entity associations
+[ ] By having the entities share a primary key
+[ ] By having entities live in the same table
+[x] Using a foreign key reference to associated entities
+
+Question: What annotation would you use on the entities on the many side of a one-to-many relationship so that the entities are persisted in a certain order in the underlying database?
+[ ] @OrderBy
+[ ] @RetrieveOrder
+[x] @OrderColumn
+[ ] @ReadOrder
+
+Question: Which of the following use cases will need a many-to-many relationship to model?
+[x] Customers and Bank Accounts
+[ ] People and Drivers Licenses
+[ ] People and Social Security Numbers
+[x] Customers and Products
+
+Question: By default, how does the @OneToOne mapping annotation express the relationship between two entities in the underlying tables?
+[x] Entries in one table are set up to have a foreign key reference to entries in the other table
+[ ] Entries in one table are set up to have a primary key reference to entries in the other table
+[ ] The position of the rows in each table express the relationship
+[ ] A separate mapping table is set up to hold the mapping
+
+Question: What annotation would you use if you want to retrieve a list of entities on the many side of a relationship such that the entities are ordered by some attribute?
+[ ] @OrderColumn
+[ ] @RetrieveOrder
+[x] @OrderBy
+[ ] @ReadOrder
+
+Question: I want to express a many-to-one relationship using multiple join columns to join the two tables in the underlying database. Which of the following annotations will I use?
+[x] @JoinColumn
+[x] @JoinColumns
+[ ] MapsId
+[ ] @JoinTable
+
+Question: What does it mean to eagerly load entities on the many side of a one-to-many relationship?
+[ ] The entities on the many side of the relationship will be loaded as soon as the application is run
+[ ] The entities on the many side of the relationship will be loaded when they are referenced
+[ ] The entities on the many side of the relationship will not be loaded at all
+[x] The entities on the many side of the relationship will be loaded when the entity on the one side is loaded
+
+Question: What does it mean to lazily  load entities on the many side of a one-to-many relationship?
+[ ] The entities on the many side of the relationship will not be loaded at all
+[x] The entities on the many side of the relationship will be loaded when they are referenced
+[ ] The entities on the many side of the relationship will be loaded when the entity on the one side is loaded
+[ ] The entities on the many side of the relationship will be loaded as soon as the application is run
+
+Question: Which of the following representations are possible in order to model a one-to-one mapping relationship?
+[x] Using a foreign key reference to associated entities
+[ ] By having entities live in the same table
+[x] By having the entities share a primary key
+[x] Using a separate mapping table to model entity associations
+[ ] By having entities linked by name
+
+Question: In a voting application a single phone number can cast a single vote. When would you need a bidirectional relationship between the Vote entity and the Phone entity?
+[ ] In order to get access to all phone numbers associated with a vote
+[x] In order to be able to reference the vote cast from a phone number and the phone number associated with each vote
+[ ] In order to get access to all votes cast by a phone number
+[ ] All one-to-one relationships in JPA are necessarily bidirectional
+
+Question: Which of the following is true about retrieving entities in a one-to-many bidirectional relationship?
+[ ] Entities on the many side are eagerly loaded by default
+[x] Can reference one entity from another i.e. many side to one side and one side to many side
+[ ] Retrieving entities always includes a join operation on the underlying tables
+[x] Entities on the many side are lazily loaded by default
+
+Question: Which annotations will you use to specify a one-to-many bidirectional relationship?
+[x] @OneToMany
+[ ] @OneToOne
+[ ] @ManyToMany
+[x] @ManyToOne
+
+

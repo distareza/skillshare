@@ -11,16 +11,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Demonstrate One To Many Relationship , Persists Many Entities in Order
+ * Demonstrate Many To One Relationship 
  * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owning Entity which references in Non Owning Entity 
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
@@ -49,44 +47,39 @@ import javax.persistence.TemporalType;
  *  		Temporal (TemporalType.DATE) --> Store Only Date without Time info
  *  		Temporal (TemporalType.TIME) --> Store Only Time without Date info
  *  
- *  6. Observe Annotation @OneToMany is defined on a method or field in Entity Class
+ *  6. Observe Annotation @ManyToOne is defined on a method or field
  *    	
- *  7. Observe , we can specified the Name of @JoinColuumn Annotation with following specified attribute: name as "the foreign key" of the reference target entities
- *  
- *  8. Observe , @OrderColumn Annotation allows to specify the name of the column in the reference entities which will hold the order in which the references associated with an Owning Entities
- *  	Hibernate reponsible for retrieveing in order, maintaining updated information in the right persistence order
+ *  7. Observe , we can specified the Name of @JoinColuumns Annotation with following specified attribute: name as "the foreign key" of the reference target entities  
  *  
  *  Mapping : 
- *  	my_products (order_id) --< my_order (order_id)
+ *  	my_products (order_id) -- my_order (order_id)
  *		
  *
  */
-public class Mapping12PersistManyEntitiesInOrder {
+public class Mapping13ManyToOneUnidrectionalMapping {
 
 	/**
 	 * 
-	 * Notice column "order_presistence" is automatically create by Hibernate, that is introduced by @OrderCoumn on the Owning Entity 
-	 * 
+
 Hibernate: 
     
-    create table my_6th_products (
+    create table my_7th_products (
        id integer not null auto_increment,
         name varchar(255),
         quantity integer,
         order_id integer,
-        order_persistence integer,
         primary key (id)
     ) engine=MyISAM
-    	 
-    alter table my_6th_products 
-       add constraint FK1fel7fx1rnqr5g690vy85sqr5 
+    
+    alter table my_7th_products 
+       add constraint FKnvjl88f858n2b3v56ne6wnscd 
        foreign key (order_id) 
-       references my_6th_order (id)
-           	 
+       references my_7th_order (id)    
+
 	 *
 	 */
-	@Entity(name="MyProducts6")
-	@Table(name="my_6th_products")
+	@Entity(name="MyProducts7")
+	@Table(name="my_7th_products")
 	public static class Product implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
@@ -98,11 +91,15 @@ Hibernate:
 		private String name;
 		
 		private Integer quantity;
+		
+		@ManyToOne
+		private Order order;
 
 		public Product() {
 		}
 
-		public Product(String name, Integer quantity) {
+		public Product(Order order, String name, Integer quantity) {
+			this.order = order;
 			this.name = name;
 			this.quantity = quantity;
 		}
@@ -130,6 +127,14 @@ Hibernate:
 		public void setQuantity(Integer quantity) {
 			this.quantity = quantity;
 		}
+		
+		public Order getOrder() {
+			return order;
+		}
+
+		public void setOrder(Order order) {
+			this.order = order;
+		}
 
 		@Override
 		public String toString() {
@@ -140,18 +145,19 @@ Hibernate:
 	
 	/**
 	 * 
+
 Hibernate: 
     
-    create table my_6th_order (
+    create table my_7th_order (
        id integer not null auto_increment,
         order_date date,
         primary key (id)
     ) engine=MyISAM
-                  
+     
 	 *
 	 */
-	@Entity(name = "MyOrder6")
-	@Table(name = "my_6th_order")
+	@Entity(name = "MyOrder7")
+	@Table(name = "my_7th_order")
 	public static class Order implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -159,11 +165,6 @@ Hibernate:
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
-		
-		@OneToMany
-		@JoinColumn(name = "order_id")
-		@OrderColumn(name = "order_persistence")
-		private List<Product> products;
 		
 		@Column(name = "order_date")
 		@Temporal(TemporalType.DATE)
@@ -174,7 +175,6 @@ Hibernate:
 
 		public Order(List<Product> products, Date orderDate) {
 			super();
-			this.products = products;
 			this.orderDate = orderDate;
 		}
 
@@ -184,14 +184,6 @@ Hibernate:
 
 		public void setId(Integer id) {
 			this.id = id;
-		}
-
-		public List<Product> getProducts() {
-			return products;
-		}
-
-		public void setProducts(List<Product> products) {
-			this.products = products;
 		}
 
 		public Date getOrderDate() {
@@ -204,7 +196,7 @@ Hibernate:
 
 		@Override
 		public String toString() {
-			return String.format("{ %d, %s, %s }", this.id, this.products, this.orderDate);
+			return String.format("{ %d, %s }", this.id, this.orderDate);
 		}
 		
 	}
@@ -221,74 +213,54 @@ Hibernate:
 			
 			/**
 			 * 
-			 * Observe How the 2nd Query is being generated 
+			 * Observe How the Query is being generated 
 			 * 
+
 Hibernate: 
     select
-        mapping12p0_.id as id1_29_0_,
-        mapping12p0_.order_date as order_da2_29_0_ 
+        mapping13m0_.id as id1_31_0_,
+        mapping13m0_.order_date as order_da2_31_0_ 
     from
-        my_6th_order mapping12p0_ 
+        my_7th_order mapping13m0_ 
     where
-        mapping12p0_.id=?
-
-    select
-        mapping12p0_.id as id1_29_0_,
-        mapping12p0_.order_date as order_da2_29_0_ 
-    from
-        my_6th_order mapping12p0_ 
-    where
-        mapping12p0_.id=?
+        mapping13m0_.id=?
+        
                 
 			 * 
 			 */
 			
 			Order orderOne = em.find(Order.class, 10);
 			System.out.println(orderOne);
-
-			/**
-			 * 
-output : 
-{ 10, [{ 3, iMac 24-inc M1, 1 }, { 1, iPhone 6S, 1 }, { 2, Nike Sneakers, 2 }], 2021-05-07 }
-			 * 
-			 */
 			
 			Order orderTwo = em.find(Order.class, 12);
 			System.out.println(orderTwo);
-			/**
-			 * 
-output :
-{ 12, [{ 6, Apple Watch 6, 2 }, { 5, Original AirPod, 3 }], 2019-04-02 }
-			 * 
-			 */
-
-			List<Order> orders = em.createQuery("SELECT a FROM MyOrder6 a", Order.class).getResultList();
-			System.out.println(orders);
+			
 			/**
 			 * 
 
 Hibernate: 
     select
-        mapping12p0_.id as id1_29_,
-        mapping12p0_.order_date as order_da2_29_ 
+        mapping13m0_.id as id1_32_,
+        mapping13m0_.name as name2_32_,
+        mapping13m0_.order_id as order_id4_32_,
+        mapping13m0_.quantity as quantity3_32_ 
     from
-        my_6th_order mapping12p0_
+        my_7th_products mapping13m0_
 Hibernate: 
     select
-        products0_.order_id as order_id4_30_0_,
-        products0_.id as id1_30_0_,
-        products0_.order_persistence as order_pe5_0_,
-        products0_.id as id1_30_1_,
-        products0_.name as name2_30_1_,
-        products0_.quantity as quantity3_30_1_ 
+        mapping13m0_.id as id1_31_0_,
+        mapping13m0_.order_date as order_da2_31_0_ 
     from
-        my_6th_products products0_ 
+        my_7th_order mapping13m0_ 
     where
-        products0_.order_id=?
-
+        mapping13m0_.id=?
 
 			 * 			
 			 */
+			
+			List<Product> products = em.createQuery("SELECT a FROM MyProducts7 a", Product.class).getResultList();
+			System.out.println(products);
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
@@ -299,7 +271,7 @@ Hibernate:
 	
 	
 	public static void main(String[] args) {
-		new Mapping12PersistManyEntitiesInOrder().runMain();
+		new Mapping13ManyToOneUnidrectionalMapping().runMain();
 	}
 
 }

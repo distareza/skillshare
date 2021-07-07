@@ -12,15 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Persistence;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Demonstrate One To Many Relationship , Persists Many Entities in Order
+ * Demonstrate One to Many and Many To One Bidirectional Mapping
  * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owning Entity which references in Non Owning Entity 
  * 
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
@@ -49,44 +49,43 @@ import javax.persistence.TemporalType;
  *  		Temporal (TemporalType.DATE) --> Store Only Date without Time info
  *  		Temporal (TemporalType.TIME) --> Store Only Time without Date info
  *  
- *  6. Observe Annotation @OneToMany is defined on a method or field in Entity Class
- *    	
- *  7. Observe , we can specified the Name of @JoinColuumn Annotation with following specified attribute: name as "the foreign key" of the reference target entities
+ *  6. Observe Annotation OneToMany are declared both of Entity (The owning and the owned Entity)  	
  *  
- *  8. Observe , @OrderColumn Annotation allows to specify the name of the column in the reference entities which will hold the order in which the references associated with an Owning Entities
- *  	Hibernate reponsible for retrieveing in order, maintaining updated information in the right persistence order
+ *  7. Observe when using ManyToOne and JoinColumn declared on the Entity,
+ *  	the select statement fatches the refrence data with EAGER-ly stratergy
+ *  
+ *  8.	Observe when using OneToMany with mappedBy attribute declared on Entity
+ *  	the select statement fatches the reference data with LAZY strategy
  *  
  *  Mapping : 
- *  	my_products (order_id) --< my_order (order_id)
  *		
  *
  */
-public class Mapping12PersistManyEntitiesInOrder {
+public class Mapping16OneToManyAndManyToOneBidirectional {
 
 	/**
 	 * 
-	 * Notice column "order_presistence" is automatically create by Hibernate, that is introduced by @OrderCoumn on the Owning Entity 
-	 * 
+
 Hibernate: 
     
-    create table my_6th_products (
+    create table my_10th_products (
        id integer not null auto_increment,
         name varchar(255),
         quantity integer,
-        order_id integer,
-        order_persistence integer,
+        order_id integer not null,
         primary key (id)
     ) engine=MyISAM
-    	 
-    alter table my_6th_products 
-       add constraint FK1fel7fx1rnqr5g690vy85sqr5 
+    
+    
+    alter table my_10th_products 
+       add constraint FKnsq7pj68p0rk447yhs2micfyv 
        foreign key (order_id) 
-       references my_6th_order (id)
-           	 
+       references my_10th_order (id)
+           
 	 *
 	 */
-	@Entity(name="MyProducts6")
-	@Table(name="my_6th_products")
+	@Entity(name="MyProducts10")
+	@Table(name="my_10th_products")
 	public static class Product implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
@@ -98,11 +97,16 @@ Hibernate:
 		private String name;
 		
 		private Integer quantity;
+		
+		@ManyToOne
+		@JoinColumn(name = "order_id", nullable = false)
+		private Order order;
 
 		public Product() {
 		}
 
-		public Product(String name, Integer quantity) {
+		public Product(Order order, String name, Integer quantity) {
+			this.order = order;
 			this.name = name;
 			this.quantity = quantity;
 		}
@@ -130,6 +134,14 @@ Hibernate:
 		public void setQuantity(Integer quantity) {
 			this.quantity = quantity;
 		}
+		
+		public Order getOrder() {
+			return order;
+		}
+
+		public void setOrder(Order order) {
+			this.order = order;
+		}
 
 		@Override
 		public String toString() {
@@ -140,18 +152,17 @@ Hibernate:
 	
 	/**
 	 * 
-Hibernate: 
+ Hibernate: 
     
-    create table my_6th_order (
+    create table my_10th_order (
        id integer not null auto_increment,
         order_date date,
         primary key (id)
-    ) engine=MyISAM
-                  
+    ) engine=MyISAM    
 	 *
 	 */
-	@Entity(name = "MyOrder6")
-	@Table(name = "my_6th_order")
+	@Entity(name = "MyOrder10")
+	@Table(name = "my_10th_order")
 	public static class Order implements Serializable {
 
 		private static final long serialVersionUID = 1L;
@@ -160,21 +171,19 @@ Hibernate:
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
 		
-		@OneToMany
-		@JoinColumn(name = "order_id")
-		@OrderColumn(name = "order_persistence")
-		private List<Product> products;
-		
 		@Column(name = "order_date")
 		@Temporal(TemporalType.DATE)
 		private Date orderDate;
 
+		@OneToMany(mappedBy = "order")
+		private List<Product> products;
+		
+		
 		public Order() {
 		}
 
 		public Order(List<Product> products, Date orderDate) {
 			super();
-			this.products = products;
 			this.orderDate = orderDate;
 		}
 
@@ -186,6 +195,14 @@ Hibernate:
 			this.id = id;
 		}
 
+		public Date getOrderDate() {
+			return orderDate;
+		}
+
+		public void setOrderDate(Date orderDate) {
+			this.orderDate = orderDate;
+		}
+		
 		public List<Product> getProducts() {
 			return products;
 		}
@@ -194,17 +211,9 @@ Hibernate:
 			this.products = products;
 		}
 
-		public Date getOrderDate() {
-			return orderDate;
-		}
-
-		public void setOrderDate(Date orderDate) {
-			this.orderDate = orderDate;
-		}
-
 		@Override
 		public String toString() {
-			return String.format("{ %d, %s, %s }", this.id, this.products, this.orderDate);
+			return String.format("{ %d, %s }", this.id, this.orderDate);
 		}
 		
 	}
@@ -217,78 +226,72 @@ Hibernate:
 		em = factory.createEntityManager();
 
 		try {
-			System.out.println("retrieve data");
+			System.out.println("retrieve product data");
 			
 			/**
+			 * Observe How the Query is being generated 
 			 * 
-			 * Observe How the 2nd Query is being generated 
-			 * 
+
 Hibernate: 
     select
-        mapping12p0_.id as id1_29_0_,
-        mapping12p0_.order_date as order_da2_29_0_ 
+        mapping16o0_.id as id1_20_0_,
+        mapping16o0_.name as name2_20_0_,
+        mapping16o0_.order_id as order_id4_20_0_,
+        mapping16o0_.quantity as quantity3_20_0_,
+        mapping16o1_.id as id1_19_1_,
+        mapping16o1_.order_date as order_da2_19_1_ 
     from
-        my_6th_order mapping12p0_ 
+        my_10th_products mapping16o0_ 
+    inner join
+        my_10th_order mapping16o1_ 
+            on mapping16o0_.order_id=mapping16o1_.id 
     where
-        mapping12p0_.id=?
-
-    select
-        mapping12p0_.id as id1_29_0_,
-        mapping12p0_.order_date as order_da2_29_0_ 
-    from
-        my_6th_order mapping12p0_ 
-    where
-        mapping12p0_.id=?
+        mapping16o0_.id=?
                 
 			 * 
 			 */
 			
-			Order orderOne = em.find(Order.class, 10);
-			System.out.println(orderOne);
-
-			/**
-			 * 
-output : 
-{ 10, [{ 3, iMac 24-inc M1, 1 }, { 1, iPhone 6S, 1 }, { 2, Nike Sneakers, 2 }], 2021-05-07 }
-			 * 
-			 */
+			Product productOne = em.find(Product.class, 1);
+			System.out.println(productOne);			
+			System.out.println(productOne.getOrder());
 			
-			Order orderTwo = em.find(Order.class, 12);
-			System.out.println(orderTwo);
+			Product productFive = em.find(Product.class, 5);
+			System.out.println(productFive);
+
+			System.out.println("retrieve order data");
+
 			/**
 			 * 
-output :
-{ 12, [{ 6, Apple Watch 6, 2 }, { 5, Original AirPod, 3 }], 2019-04-02 }
-			 * 
-			 */
-
-			List<Order> orders = em.createQuery("SELECT a FROM MyOrder6 a", Order.class).getResultList();
-			System.out.println(orders);
-			/**
-			 * 
-
-Hibernate: 
     select
-        mapping12p0_.id as id1_29_,
-        mapping12p0_.order_date as order_da2_29_ 
+        mapping16o0_.id as id1_19_0_,
+        mapping16o0_.order_date as order_da2_19_0_ 
     from
-        my_6th_order mapping12p0_
-Hibernate: 
-    select
-        products0_.order_id as order_id4_30_0_,
-        products0_.id as id1_30_0_,
-        products0_.order_persistence as order_pe5_0_,
-        products0_.id as id1_30_1_,
-        products0_.name as name2_30_1_,
-        products0_.quantity as quantity3_30_1_ 
-    from
-        my_6th_products products0_ 
+        my_10th_order mapping16o0_ 
     where
-        products0_.order_id=?
-
-
+        mapping16o0_.id=? 
 			 * 			
 			 */
+			Order orderOne = em.find(Order.class, 10);
+			System.out.println(orderOne);
+			
+			/**
+			 * 
+Hibernate: 
+    select
+        products0_.order_id as order_id4_20_0_,
+        products0_.id as id1_20_0_,
+        products0_.id as id1_20_1_,
+        products0_.name as name2_20_1_,
+        products0_.order_id as order_id4_20_1_,
+        products0_.quantity as quantity3_20_1_ 
+    from
+        my_10th_products products0_ 
+    where
+        products0_.order_id=?
+			 * 			
+			 */
+			System.out.println(orderOne.getProducts());
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
@@ -299,7 +302,7 @@ Hibernate:
 	
 	
 	public static void main(String[] args) {
-		new Mapping12PersistManyEntitiesInOrder().runMain();
+		new Mapping16OneToManyAndManyToOneBidirectional().runMain();
 	}
 
 }

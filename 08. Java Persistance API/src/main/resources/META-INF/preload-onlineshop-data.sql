@@ -3,20 +3,20 @@ INSERT INTO invoice (id, amount) values (1, 699.59);
 INSERT INTO invoice (id, amount) values (2, 67.20);
 INSERT INTO invoice (id, amount) values (3, 29.56);
 INSERT INTO invoice (id, amount) values (4, 125.00);
-INSERT INTO product_order (id, product, quantity, orderDate, invoice_id) values (1, "iPhone 6S", 		1, "2020-02-03", 1);
-INSERT INTO product_order (id, product, quantity, orderDate, invoice_id) values (2, "Nike Sneakers", 	2, "2020-03-05", 2);
-INSERT INTO product_order (id, product, quantity, orderDate, invoice_id) values (3, "Power Cord Cable",	4, "2020-12-15", 3);
-INSERT INTO product_order (id, product, quantity, orderDate, invoice_id) values (4, "Head Phone", 		1, "2020-08-17", 4);
+INSERT INTO orders (id, product, quantity, order_date, invoice_id) values (1, "iPhone 6S", 			1, "2020-02-03", 1);
+INSERT INTO orders (id, product, quantity, order_date, invoice_id) values (2, "Nike Sneakers", 		2, "2020-03-05", 2);
+INSERT INTO orders (id, product, quantity, order_date, invoice_id) values (3, "Power Cord Cable",	4, "2020-12-15", 3);
+INSERT INTO orders (id, product, quantity, order_date, invoice_id) values (4, "Head Phone", 			1, "2020-08-17", 4);
 
 -- initialize data for com.jpa.relationmapping.Mapping02OneToOneJoinColumn
-INSERT INTO transactions (id, transaction_no, amount) values (1, 'TRANSACTION-20210507-01', 1335);
-INSERT INTO transactions (id, transaction_no, amount) values (2, 'TRANSACTION-20201113-21', 849);
-INSERT INTO transactions (id, transaction_no, amount) values (3, 'TRANSACTION-20190402-43', 1398);
-INSERT INTO transactions (id, transaction_no, amount) values (4, 'TRANSACTION-20200831-74', 477);
-INSERT INTO purchase_products (id, invoice_key, product, quantity, order_date) values (1, 'TRANSACTION-20210507-01', 'iMac 24-inch M1', 	1, '2021-05-07');
-INSERT INTO purchase_products (id, invoice_key, product, quantity, order_date) values (2, 'TRANSACTION-20201113-21', 'iPhone 12', 			1, '2020-11-13');
-INSERT INTO purchase_products (id, invoice_key, product, quantity, order_date) values (3, 'TRANSACTION-20190402-43', 'Apple Watch 6', 		2, '2019-04-02');
-INSERT INTO purchase_products (id, invoice_key, product, quantity, order_date) values (4, 'TRANSACTION-20200831-74', 'Original AirPod', 	3, '2020-08-31');
+INSERT INTO driving_license (id, license_no, license_type, expiry_date) values (1, 'TRANSACTION-20210507-01', 'Car'	,		'2025-05-07' );
+INSERT INTO driving_license (id, license_no, license_type, expiry_date) values (2, 'TRANSACTION-20201113-21', 'Motorbike',	'2026-11-13' );
+INSERT INTO driving_license (id, license_no, license_type, expiry_date) values (3, 'TRANSACTION-20190402-43', 'Bus',		'2025-04-02' );
+INSERT INTO driving_license (id, license_no, license_type, expiry_date) values (4, 'TRANSACTION-20200831-74', 'Car',		'2024-08-31' );
+INSERT INTO driver (id, license_key, name, gender, birth_date) values (1, 'TRANSACTION-20210507-01', 'Matt Robinson', 	'Male', 	'1998-05-07');
+INSERT INTO driver (id, license_key, name, gender, birth_date) values (2, 'TRANSACTION-20201113-21', 'Jack Richer', 		'Male', 	'2003-11-13');
+INSERT INTO driver (id, license_key, name, gender, birth_date) values (3, 'TRANSACTION-20190402-43', 'Jessica Parker', 	'Female',	'2005-04-02');
+INSERT INTO driver (id, license_key, name, gender, birth_date) values (4, 'TRANSACTION-20200831-74', 'Chad Groom', 		'Male', 	'2008-08-31');
 
 -- initialize data for com.jpa.relationmapping.Mapping03OneToOneBidirectional
 INSERT INTO bills (id, amount) values (1, 182.55);

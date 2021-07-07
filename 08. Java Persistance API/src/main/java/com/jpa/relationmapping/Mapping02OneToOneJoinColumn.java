@@ -22,8 +22,12 @@ import javax.persistence.TemporalType;
 
 /**
  * Demonstrate One To One Relationship Unidirectional Join Mapping (with other than primary key)
- * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owning Entity which references in Non Owning Entity 
- * 
+ * Hibernate modeled the mapping one-to-one relationship using foreign key constraints, 
+ * The possible representations to model a one-to-one mapping relationship are
+ * 	--> 1. Using a foreign key reference to associated entities
+ * 		2. By having the entities share a primary key
+ * 		3. Using a separate mapping table to model entity associations
+ *  
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
  * 
@@ -50,7 +54,7 @@ import javax.persistence.TemporalType;
  *  		Temporal (TemporalType.DATE) --> Store Only Date without Time info
  *  		Temporal (TemporalType.TIME) --> Store Only Time without Date info
  *  
- * 	6.	Notice Annotation @OneToOne that declare in one of method/fields of "Purchases" Entity Class to reference as foreign key to Owned Entity "Transactions"
+ * 	6.	Notice Annotation @OneToOne that declare in one of method/fields of Entity "Driver" Class to reference as foreign key to Entity "DrivingLicense"
  * 
  * 	7.	To Map both table that join together which not uses a PrimaryKey Field as reference, it should uses @JoinColumn Annotation 
  *  
@@ -58,51 +62,59 @@ import javax.persistence.TemporalType;
  *  	notice the reference column is marked with Annotation @OneToOne  
  * 
  *  Mapping : 
- *  	transactions (transaction_no) <-> purchase_products (invoice_key)
+ *  	driver (license_key) -> driving_license (license_no)
  *
  */
 public class Mapping02OneToOneJoinColumn {
 
 	/**
 	 * 
-Hibernate: 
-    
-    create table transactions (
+ 	==================================================================
+    create table driving_license (
        id integer not null auto_increment,
-        amount float,
-        transaction_no varchar(255),
+        expiry_date date not null,
+        license_no varchar(255) not null,
+        license_type varchar(255) not null,
         primary key (id)
     ) engine=MyISAM
     
-    alter table transactions 
-       add constraint UK_2owah6sjdi57whllc89lox1v9 unique (transaction_no)       
+    alter table driving_license 
+       add constraint UK_bs4gktew3gee72irl8b75erhf unique (license_no)
+    ==================================================================
 	 * 
 	 *
 	 */
-	@Entity(name="Transactions")
-	@Table(name="transactions")
-	public static class Transaction implements Serializable {
+	@Entity(name="DrivingLicense")
+	@Table(name="driving_license")
+	public static class DrivingLicense implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
-		private Float amount;
+
+		@Temporal(TemporalType.DATE)
+		@Column(name = "expiry_date", nullable = false)
+		private Date expiryDate;
 		
+		@Column(name="license_no", unique = true, nullable = false)
+		private String licenseNo;
 		
-		@Column(name="transaction_no", unique = true)
-		private String transactionNumber;
+		@Column(name = "license_type", nullable = false)
+		private String licenseType;
 		
-		public Transaction() {
+		public DrivingLicense() {
 		}
 
-		public Transaction(Float amount) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-			this.amount = amount;
-			
+		public DrivingLicense(Date expiryDate, String licenseType) {
 			// make sure this column has a unique value
-			this.transactionNumber = String.format("%s%s", sdf.format(new Date()), UUID.randomUUID().toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+			this.licenseNo = String.format("%s%s", sdf.format(new Date()), UUID.randomUUID().toString());
+			
+			this.expiryDate = expiryDate;
+			this.licenseType = licenseType;
+			
 		}
 
 		public Integer getId() {
@@ -112,72 +124,78 @@ Hibernate:
 		public void setId(Integer id) {
 			this.id = id;
 		}
-
-		public Float getAmount() {
-			return amount;
+		
+		public Date getExpiryDate() {
+			return expiryDate;
 		}
 
-		public void setAmount(Float amount) {
-			this.amount = amount;
+		public void setExpiryDate(Date expiryDate) {
+			this.expiryDate = expiryDate;
+		}
+
+		public String getLicenseNo() {
+			return licenseNo;
+		}
+
+		public void setLicenseNo(String licenseNo) {
+			this.licenseNo = licenseNo;
 		}
 
 		@Override
 		public String toString() {
-			return String.format(" { %d, %s, %,.4f} ", this.id, this.transactionNumber, this.amount);
+			return String.format(" { %d, %s, %s, %s} ", this.id, this.licenseNo, this.licenseType, new SimpleDateFormat("dd-MMM-yyyyy").format(this.expiryDate));
 		}
 
 	}
 	
 	/**
 	 * 
-	 *   
-Hibernate: 
-    
-    create table purchase_products (
+	==================================================================
+    create table driver (
        id integer not null auto_increment,
-        order_date date,
-        product varchar(255),
-        quantity integer,
-        invoice_key varchar(255),
+        birth_date date,
+        gender varchar(255),
+        name varchar(255),
+        license_key varchar(255),
         primary key (id)
     ) engine=MyISAM
     
-    alter table purchase_products 
-       add constraint FKoo4rdwabgw9ngqigd4vme4fh3 
-       foreign key (invoice_key) 
-       references transactions (transaction_no) 
-       
-	 *       
-	 *   notice : "invoice_key" is reference key    
+    alter table driver 
+       add constraint FKeqk0du5uthxi7ckthuco6ptnw 
+       foreign key (license_key) 
+       references driving_license (license_no)
+    ==================================================================   
 	 *
 	 */
-	@Entity(name = "Purchases")
-	@Table(name = "purchase_products")
-	public static class Purchases implements Serializable {
+	@Entity(name = "Driver")
+	@Table(name = "driver")
+	public static class Driver implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
-		private String product;
-		private Integer quantity;
+		
+		private String name;
+		private String gender;
 		
 		@Temporal(TemporalType.DATE)
-		@Column(name = "order_date")
-		private Date orderDate;
+		@Column(name = "birth_date")
+		private Date birthDate;
 		
 		@OneToOne
-		@JoinColumn(name = "invoice_key", referencedColumnName = "transaction_no")
-		private Transaction invoice;
+		@JoinColumn(name = "license_key", referencedColumnName = "license_no")
+		private DrivingLicense license;
 
-		public Purchases() {
+		public Driver() {
 		}
-
-		public Purchases(String product, Integer quantity, Date orderDate) {
-			this.product = product;
-			this.quantity = quantity;
-			this.orderDate = orderDate;
+		
+		public Driver(String name, String gender, Date birthDate) {
+			super();
+			this.name = name;
+			this.gender = gender;
+			this.birthDate = birthDate;
 		}
 
 		public Integer getId() {
@@ -188,54 +206,132 @@ Hibernate:
 			this.id = id;
 		}
 
-		public String getProduct() {
-			return product;
+		public String getName() {
+			return name;
 		}
 
-		public void setProduct(String product) {
-			this.product = product;
+		public void setName(String name) {
+			this.name = name;
 		}
 
-		public Integer getQuantity() {
-			return quantity;
+		public String getGender() {
+			return gender;
 		}
 
-		public void setQuantity(Integer quantity) {
-			this.quantity = quantity;
+		public void setGender(String gender) {
+			this.gender = gender;
 		}
 
-		public Date getOrderDate() {
-			return orderDate;
+		public Date getBirthDate() {
+			return birthDate;
 		}
 
-		public void setOrderDate(Date orderDate) {
-			this.orderDate = orderDate;
+		public void setBirthDate(Date birthDate) {
+			this.birthDate = birthDate;
 		}
 
-		public Transaction getInvoice() {
-			return invoice;
+		public DrivingLicense getLicense() {
+			return license;
 		}
 
-		public void setInvoice(Transaction invoice) {
-			this.invoice = invoice;
+		public void setLicense(DrivingLicense license) {
+			this.license = license;
 		}
 
 		@Override
 		public String toString() {
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			String dateText = null;
-			if (this.orderDate != null) dateText = sdf.format(orderDate);
+			String birthDate = null;
+			if (this.birthDate != null) birthDate = sdf.format(this.birthDate);
 			
-			String invoiceText = null;
-			if (this.invoice != null) invoiceText = invoice.toString();
-			
-			return String.format(" { %d, %s, %d, %s, %s } ", this.id, this.product, this.quantity, dateText, invoiceText);
+			return String.format(" { %d, %s, %s, %s } ", this.id, this.name, this.gender, birthDate);
 		}
 		
 	}
 	
 	private EntityManagerFactory factory;
 	private EntityManager em;
+
+	/**
+	 * 
+	==================================================================
+    select
+        mapping02o0_.id as id1_19_0_,
+        mapping02o0_.birth_date as birth_da2_19_0_,
+        mapping02o0_.gender as gender3_19_0_,
+        mapping02o0_.license_key as license_5_19_0_,
+        mapping02o0_.name as name4_19_0_,
+        mapping02o1_.id as id1_20_1_,
+        mapping02o1_.expiry_date as expiry_d2_20_1_,
+        mapping02o1_.license_no as license_3_20_1_,
+        mapping02o1_.license_type as license_4_20_1_ 
+    from
+        driver mapping02o0_ 
+    left outer join
+        driving_license mapping02o1_ 
+            on mapping02o0_.license_key=mapping02o1_.license_no 
+    where
+        mapping02o0_.id=?	
+	==================================================================
+    select
+        mapping02o0_.id as id1_20_0_,
+        mapping02o0_.expiry_date as expiry_d2_20_0_,
+        mapping02o0_.license_no as license_3_20_0_,
+        mapping02o0_.license_type as license_4_20_0_ 
+    from
+        driving_license mapping02o0_ 
+    where
+        mapping02o0_.id=?
+    ==================================================================    
+	 * 
+	 */
+	public void retrieveData() {
+		Driver driverOne = em.find(Driver.class, 1);
+		System.out.println(driverOne);				// { 1, Matt Robinson, Male, 07-05-1998 } 
+		System.out.println(driverOne.getLicense()); // { 1, TRANSACTION-20210507-01, Car, 07-May-02025} 
+		Driver driverTwo = em.find(Driver.class, 3);
+		System.out.println(driverTwo);					// { 3, Jessica Parker, Female, 02-04-2005 } 
+		System.out.println(driverTwo.getLicense());		// { 3, TRANSACTION-20190402-43, Bus, 02-Apr-02025}
+
+		DrivingLicense licenseOne = em.find(DrivingLicense.class, 2);
+		System.out.println(licenseOne);  // { 2, TRANSACTION-20201113-21, Motorbike, 13-Nov-02026} 
+		DrivingLicense licenseTwo = em.find(DrivingLicense.class, 4);
+		System.out.println(licenseTwo); // 	{ 4, TRANSACTION-20200831-74, Car, 31-Aug-02024} 
+		
+		List<Driver> orders = em.createQuery("SELECT a FROM Driver a", Driver.class).getResultList();
+		System.out.println(orders);
+	}
+	
+	/**
+	 * 
+	==================================================================
+    insert 
+    into
+        driving_license
+        (expiry_date, license_no, license_type) 
+    values
+        (?, ?, ?)
+	==================================================================
+    insert 
+    into
+        driver
+        (birth_date, gender, license_key, name) 
+    values
+        (?, ?, ?, ?)	
+	==================================================================
+	 * 
+	 */
+	public void insertData() throws Exception {
+		em.getTransaction().begin();
+		
+		DrivingLicense newLicense = new DrivingLicense(new SimpleDateFormat("dd-MM-yyyy").parse("31-12-2030"), "Car");
+		em.persist(newLicense);
+		Driver newDriver = new Driver("Joan Kirby", "Female", new SimpleDateFormat("dd-MM-yyyy").parse("01-01-2004"));
+		newDriver.setLicense(newLicense);
+		em.persist(newDriver);
+		
+		em.getTransaction().commit();
+	}
 	
 	public void runMain() {
 		factory = Persistence.createEntityManagerFactory("OnlineShoopingDB_Unit");
@@ -244,57 +340,8 @@ Hibernate:
 		try {
 			System.out.println("retrieve data");
 			
-			/**
-			 *
-	    select
-	        mapping02o0_.id as id1_25_0_,
-	        mapping02o0_.invoice_key as invoice_5_25_0_,
-	        mapping02o0_.order_date as order_da2_25_0_,
-	        mapping02o0_.product as product3_25_0_,
-	        mapping02o0_.quantity as quantity4_25_0_,
-	        mapping02o1_.id as id1_26_1_,
-	        mapping02o1_.amount as amount2_26_1_,
-	        mapping02o1_.transaction_no as transact3_26_1_ 
-	    from
-	        purchase_products mapping02o0_ 
-	    left outer join
-	        transactions mapping02o1_ 
-	            on mapping02o0_.invoice_key=mapping02o1_.transaction_no 
-	    where
-	        mapping02o0_.id=?
-        	 
-			 * 
-			 */
-			Purchases orderOne = em.find(Purchases.class, 1);
-			System.out.println(orderOne);
-			
-			Purchases orderTwo = em.find(Purchases.class, 2);
-			System.out.println(orderTwo);
-			
-			List<Purchases> orders = em.createQuery("SELECT a FROM Purchases a", Purchases.class).getResultList();
-			System.out.println(orders);
-			
-			/**
-			 * 
-		select * from transactions;
-		---------- ------------ ------------------------------
-		id         amount       transaction_no                
-		---------- ------------ ------------------------------
-		1          1335.0       TRANSACTION-20210507-01       
-		2          849.0        TRANSACTION-20201113-21       
-		3          1398.0       TRANSACTION-20190402-43       
-		4          477.0        TRANSACTION-20200831-74       
-		
-		select * from purchase_products;
-		---------- --------------- ------------------------------------ ---------- ------------------------------
-		id         order_date      product                              quantity   invoice_key                   
-		---------- --------------- ------------------------------------ ---------- ------------------------------
-		1          2021-05-07      iMac 24-inch M1 7-core GPU 256GB     1          TRANSACTION-20210507-01       
-		2          2020-11-13      iPhone 12                            1          TRANSACTION-20201113-21       
-		3          2019-04-02      Apple Watch 6                        2          TRANSACTION-20190402-43       
-		4          2020-08-31      Original AirPod                      3          TRANSACTION-20200831-74       
-			 * 
-			 */
+			retrieveData();
+			insertData();
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -302,6 +349,31 @@ Hibernate:
 			em.close();
 			factory.close();
 		}
+		
+		/**
+		 * 
+select * from driver; 
+---------- ----------------- ------------- ------------------------ ------------------------------------------------------
+id         birth_date        gender        name                     license_key                                           
+---------- ----------------- ------------- ------------------------ ------------------------------------------------------
+1          1998-05-07        Male          Matt Robinson            TRANSACTION-20210507-01                               
+2          2003-11-13        Male          Jack Richer              TRANSACTION-20201113-21                               
+3          2005-04-02        Female        Jessica Parker           TRANSACTION-20190402-43                               
+4          2008-08-31        Male          Chad Groom               TRANSACTION-20200831-74                               
+5          2004-01-01        Female        Joan Kirby               20210707223341c71e165f-8626-48f2-a71a-a3d10d7adce0    
+
+select * from driving_license;
+---------- ----------------- ------------------------------------------------------ ---------------
+id         expiry_date       license_no                                             license_type   
+---------- ----------------- ------------------------------------------------------ ---------------
+1          2025-05-07        TRANSACTION-20210507-01                                Car            
+2          2026-11-13        TRANSACTION-20201113-21                                Motorbike      
+3          2025-04-02        TRANSACTION-20190402-43                                Bus            
+4          2024-08-31        TRANSACTION-20200831-74                                Car            
+5          2030-12-31        20210707223341c71e165f-8626-48f2-a71a-a3d10d7adce0     Car            
+
+		 * 
+		 */
 	}
 	
 	

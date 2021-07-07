@@ -21,8 +21,12 @@ import javax.persistence.TemporalType;
 
 /**
  * Demonstrate One To One Relationship with shared Primary key mapping 
- * Hibernate modeled the mapping using foreign key constraints, the foreign key is setup in the Owneing Entity which references in Non Owning Entity 
- * 
+ * Hibernate modeled the mapping one-to-one relationship using foreign key constraints, 
+ * The possible representations to model a one-to-one mapping relationship are
+ * 		1. Using a foreign key reference to associated entities
+ * 	-->	2. By having the entities share a primary key
+ * 		3. Using a separate mapping table to model entity associations
+ *   
  * 	1.	Observe how the table is drop and create back define in META-INF/persistence.xml 
  * 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
  * 

@@ -55,61 +55,63 @@ import javax.persistence.TemporalType;
  *   
  * 	6.	Notice Annotation @OneToOne that declare at method/fields in both Entity Classes to reference as foreign key 
  * 
- * 	7.	To retrieve both table that join together uses @JoinColumn Annotation
- *  
- *  8.	ReferencedColumnName attribute in @JoinColumn Annotation defined a reference a particular column from a table as foreign key constrain of other table, which not necessary to a primary key, however it must be unique column
+ * 	7.	Notice Annotation @MapsId that declare on one Entity, Id annotation as primary key will assign to the new column name with ( field name "MapsId" + "_id" )
  * 
- *  9. Notice One-To-One Bidirectional Mapping : the owning side defines the mapping the referencing side references the mapping
+ *  8. Notice One-To-One Bidirectional Mapping : the owning side defines the mapping the referencing side references the mapping
  *  	notice that Annotation @OneToOne is mapped on both table / entities
- *  		Field Entity #1 [statement] is set along with @MapsId annotation indicating that the primary key of the reference Entity #2 will be shared  ( Entity #1 --> Owning Entity ), the PK of Entity #2 will also be PK Entity #1
- *  		Field Entity #2 [bills] 	is set with additional "mappedBy" attribute with a "reference field/member name" of the Entity #2 ( statement )
+ *  		Field Entity #1 [countries] is set with @MapsId annotation indicating that the primary key of the reference Entity #2 will be shared  ( Entity #1 --> Owning Entity ), the PK of Entity #2 will also be PK Entity #1
+ *  		Field Entity #2 [city] 	is set with additional "mappedBy" attribute with a "reference field/member name" of the Entity #2 ( capital )
+ *  
  *  
  *  
  *  Mapping : 
- *  	purchases_bills (statement_id) <-> purchases_statement (id)
+ *  	countries (capital_id) = capital (id)
  *
  */
 public class Mapping04OneToOneSharedMapping {
 
 	/**
 	 * 
-Hibernate: 
-    
-    create table purchases_bills (
-       amount float,
-        statement_id integer not null,
-        primary key (statement_id)
+    ==================================================================
+    create table countries (
+       continents varchar(255),
+        name varchar(255),
+        capital_id integer not null,
+        primary key (capital_id)
     ) engine=MyISAM
     
     	 
-    alter table purchases_bills 
-       add constraint FK7ptw0i96n7cwd9q7b6lg4vga5 
-       foreign key (statement_id) 
-       references purchases_statement (id)
-           
+    alter table countries 
+       add constraint FKdixd5d2fqmfwiyw0htskq5sw 
+       foreign key (capital_id) 
+       references capital (id)
+    ==================================================================              
 	 * 
 	 *
 	 */
-	@Entity(name="PurhaseBills")
-	@Table(name="purchases_bills")
-	public static class Bills implements Serializable {
+	@Entity(name="Countries")
+	@Table(name="countries")
+	public static class Countries implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 		
 		@Id
 		private Integer id;
 		
-		private Float amount;
+		private String name;
+
+		private String continents;
 		
 		@OneToOne
 		@MapsId
-		private PurchasesStatement statement;
+		private Capital capital;
 		
-		public Bills() {
+		public Countries() {
 		}
 
-		public Bills(Float amount) {
-			this.amount = amount;
+		public Countries(String name, String continents) {
+			this.name = name;
+			this.continents = continents;
 		}
 
 		public Integer getId() {
@@ -120,28 +122,33 @@ Hibernate:
 			this.id = id;
 		}
 
-		public Float getAmount() {
-			return amount;
+		public String getName() {
+			return name;
 		}
 
-		public void setAmount(Float amount) {
-			this.amount = amount;
+		public void setName(String name) {
+			this.name = name;
 		}
 
-		
-		
-		public PurchasesStatement getStatement() {
-			return statement;
+		public String getContinents() {
+			return continents;
 		}
 
-		public void setStatement(PurchasesStatement statement) {
-			this.statement = statement;
+		public void setContinents(String continents) {
+			this.continents = continents;
+		}
+
+		public Capital getCapital() {
+			return capital;
+		}
+
+		public void setCapital(Capital capital) {
+			this.capital = capital;
 		}
 
 		@Override
 		public String toString() {
-			//return String.format(" { %d, %,.4f} ", this.id, this.amount);
-			return String.format(" { %d, %,.4f} ", this.id, this.amount);
+			return String.format(" { %d, %s, %s } ", this.id, this.name, this.continents);
 		}
 
 	}
@@ -149,42 +156,47 @@ Hibernate:
 	/**
 	 * 
 	 *   
-Hibernate: 
-    
-    create table purchases_statement (
+	==================================================================
+    create table capital (
        id integer not null auto_increment,
-        item varchar(255),
-        payment_date date,
+        establish_date date,
+        name varchar(255),
         primary key (id)
     ) engine=MyISAM
-       
+    =================================================================   
 	 *       
 	 *
 	 */
-	@Entity(name = "PurchasesStatements")
-	@Table(name = "purchases_statement")
-	public static class PurchasesStatement implements Serializable {
+	@Entity(name = "Capital")
+	@Table(name = "capital")
+	public static class Capital implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
 		@Id
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
-		private String item;
 		
-		@Column(name = "payment_date")
+		private String name;
+		
+		@Column(name = "establish_date")
 		@Temporal(TemporalType.DATE)
-		private Date payementDate;
+		private Date establishDate;
 		
-		@OneToOne(mappedBy = "statement")
-		private Bills bills;
+		@OneToOne(mappedBy = "capital")
+		private Countries countries;
 
-		public PurchasesStatement() {
+		public Capital() {
 		}
-
-		public PurchasesStatement(String product, Date paymentDate) {
-			this.item = product;
-			this.payementDate = paymentDate;
+		
+		/**
+		 * @param name
+		 * @param establishDate
+		 */
+		public Capital(String name, Date establishDate) {
+			super();
+			this.name = name;
+			this.establishDate = establishDate;
 		}
 
 		public Integer getId() {
@@ -195,118 +207,207 @@ Hibernate:
 			this.id = id;
 		}
 
-		public String getItem() {
-			return item;
+		public String getName() {
+			return name;
 		}
 
-		public void setItem(String item) {
-			this.item = item;
+		public void setName(String name) {
+			this.name = name;
 		}
 
-		public Date getPayementDate() {
-			return payementDate;
+		public Date getEstablishDate() {
+			return establishDate;
 		}
 
-		public void setPayementDate(Date payementDate) {
-			this.payementDate = payementDate;
+		public void setEstablishDate(Date establishDate) {
+			this.establishDate = establishDate;
 		}
 
-		public Bills getBills() {
-			return bills;
+		public Countries getCountries() {
+			return countries;
 		}
 
-		public void setBills(Bills bills) {
-			this.bills = bills;
+		public void setCountries(Countries countries) {
+			this.countries = countries;
 		}
 
 		@Override
 		public String toString() {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			String dateText = null;
-			if (this.payementDate != null) dateText = sdf.format(payementDate);
-			
-			String billsText = null;
-			if (this.bills != null) billsText = bills.toString();
-			
-			return String.format(" { %d, %s, %s, %s } ", this.id, this.item, dateText, billsText);
+			return String.format(" { %d, %s, %s } ", this.id, this.name, establishDate);
 		}
 		
 	}
 	
 	private EntityManagerFactory factory;
 	private EntityManager em;
+
+	/**
+	 * 
+ 	==================================================================
+    insert 
+    into
+        capital
+        (establish_date, name) 
+    values
+        (?, ?)
+	==================================================================
+    insert 
+    into
+        countries
+        (continents, name, capital_id) 
+    values
+        (?, ?, ?)
+    ==================================================================
+	 * 
+	 */
+	public void insertData() throws Exception {
+		System.out.println("insert data");
+		
+		em.getTransaction().begin();
+		
+		Capital newCapital = new Capital("Jakarta", new SimpleDateFormat("dd-MM-yyyy").parse("17-08-1945"));
+		Countries newCountries = new Countries("Indonesia", "Asia");
+		newCountries.setCapital(newCapital);
+		
+		em.persist(newCapital);
+		em.persist(newCountries);
+
+		em.getTransaction().commit();
+	}
+	
+	/**
+	 * 1. find Capital :
+	==================================================================
+    select
+        mapping04o0_.id as id1_9_0_,
+        mapping04o0_.establish_date as establis2_9_0_,
+        mapping04o0_.name as name3_9_0_,
+        mapping04o1_.capital_id as capital_3_16_1_,
+        mapping04o1_.continents as continen1_16_1_,
+        mapping04o1_.name as name2_16_1_ 
+    from
+        capital mapping04o0_ 
+    left outer join
+        countries mapping04o1_ 
+            on mapping04o0_.id=mapping04o1_.capital_id 
+    where
+        mapping04o0_.id=?
+    ==================================================================
+	 * 
+	 * 2. find Countries
+	==================================================================
+    select
+        mapping04o0_.capital_id as capital_3_16_0_,
+        mapping04o0_.continents as continen1_16_0_,
+        mapping04o0_.name as name2_16_0_ 
+    from
+        countries mapping04o0_ 
+    where
+        mapping04o0_.capital_id=?
+    ==================================================================    
+    select
+        mapping04o0_.id as id1_9_0_,
+        mapping04o0_.establish_date as establis2_9_0_,
+        mapping04o0_.name as name3_9_0_,
+        mapping04o1_.capital_id as capital_3_16_1_,
+        mapping04o1_.continents as continen1_16_1_,
+        mapping04o1_.name as name2_16_1_ 
+    from
+        capital mapping04o0_ 
+    left outer join
+        countries mapping04o1_ 
+            on mapping04o0_.id=mapping04o1_.capital_id 
+    where
+        mapping04o0_.id=?        
+    ==================================================================
+	 * 
+	 * 3. SELECT Capital Query
+	==================================================================
+    select
+        mapping04o0_.id as id1_9_,
+        mapping04o0_.establish_date as establis2_9_,
+        mapping04o0_.name as name3_9_ 
+    from
+        capital mapping04o0_
+    ==================================================================    
+     *
+     * 4. Select Countires Query
+    ==================================================================    
+    select
+        mapping04o0_.capital_id as capital_3_16_,
+        mapping04o0_.continents as continen1_16_,
+        mapping04o0_.name as name2_16_ 
+    from
+        countries mapping04o0_        
+    ==================================================================
+	 * 
+	 * 
+	 */
+	public void retrieveData() {
+		
+		System.out.println("retrieve data");
+		Capital capitalOne = em.find(Capital.class, 10);
+		System.out.println(capitalOne);						// { 10, Tokyo, 1889-12-05 } 
+		System.out.println(capitalOne.getCountries());		// { 10, Japan, Asia } 
+		Capital capitalTwo = em.find(Capital.class, 12);
+		System.out.println(capitalTwo);						// { 12, Beijing, 1754-02-01 } 
+		System.out.println(capitalTwo.getCountries());		// { 12, China, Asia } 
+		
+		Countries countriesOne = em.find(Countries.class, 13);
+		System.out.println(countriesOne);					// { 13, Germany, Europe } 
+		System.out.println(countriesOne.getCapital());		// { 13, Berlin, 1945-04-07 } 
+		Countries countriesTwo = em.find(Countries.class, 14);
+		System.out.println(countriesTwo);					// { 14, South Africa, Africa } 	
+		System.out.println(countriesTwo.getCapital());		// { 14, Cape Town, 1956-08-15 }
+		
+		List<Capital> trxs = em.createQuery("SELECT a FROM Capital a", Capital.class).getResultList();
+		System.out.println(trxs);
+		
+		List<Countries> bills = em.createQuery("SELECT a FROM Countries a", Countries.class).getResultList();
+		System.out.println(bills);
+	}
 	
 	public void runMain() {
 		factory = Persistence.createEntityManagerFactory("OnlineShoopingDB_Unit");
 		em = factory.createEntityManager();
 
 		try {
-			System.out.println("retrieve data");
-			
-			/**
-			 *
-			 
-    select
-        mapping04o0_.id as id1_26_0_,
-        mapping04o0_.item as item2_26_0_,
-        mapping04o0_.payment_date as payment_3_26_0_,
-        mapping04o1_.statement_id as statemen2_25_1_,
-        mapping04o1_.amount as amount1_25_1_ 
-    from
-        purchases_statement mapping04o0_ 
-    left outer join
-        purchases_bills mapping04o1_ 
-            on mapping04o0_.id=mapping04o1_.statement_id 
-    where
-        mapping04o0_.id=?
-	         
-			 * 
-			 */
-			PurchasesStatement orderOne = em.find(PurchasesStatement.class, 1);
-			System.out.println(orderOne);
-			
-			PurchasesStatement orderTwo = em.find(PurchasesStatement.class, 2);
-			System.out.println(orderTwo);
-			
-			
-			List<PurchasesStatement> trxs = em.createQuery("SELECT a FROM PurchasesStatements a", PurchasesStatement.class).getResultList();
-			System.out.println(trxs);
-			
-			List<Bills> bills = em.createQuery("SELECT a FROM PurhaseBills a", Bills.class).getResultList();
-			System.out.println(bills);
-			
-			/**
-			 * 
-			 * 
+		
+			insertData();
+			retrieveData();   
 
-select * from purchases_bills;
------------- ------------ 
-statement_id amount       
------------- ------------ 
-10           182.55       
-12           5.0          
-13           129.15       
-14           30.0         
-
-select * from purchases_statement;
----------- ---------------------- ---------------- 
-id         item                   payment_date     
----------- ---------------------- ---------------- 
-10         Electricity Usage      2020-12-05       
-12         Water Charges          2020-12-01       
-13         Internet Charge        2020-12-07       
-14         Phone Usage            2020-12-15       
-
-
-
-			 * 
-			 */
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {
 			em.close();
 			factory.close();
 		}
+		
+		/**
+		 * 
+
+	select * from countries;
+	------------------- ---------- 
+	continents          capital_id 
+	------------------- ---------- 
+	Asia                10         
+	Asia                12         
+	Europe              13         
+	Africa              14         
+	Asia                15         
+	
+	select * from capital;
+	---------- ------------------------- ------------------
+	id         establish_date            name              
+	---------- ------------------------- ------------------
+	10         1889-12-05                Tokyo             
+	12         1754-02-01                Beijing           
+	13         1945-04-07                Berlin            
+	14         1956-08-15                Cape Town         
+	15         1945-08-17                Jakarta           
+
+		 * 
+		 */
 	}
 	
 	

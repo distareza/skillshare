@@ -29,14 +29,14 @@ INSERT INTO trans_statement (id, item, payment_date, bill_id) values (3, 'Intern
 INSERT INTO trans_statement (id, item, payment_date, bill_id) values (4, 'Phone Usage', 		'2020-12-15', 4);
 
 -- initialize data for com.jpa.relationmapping.Mapping04OneToOneSharedMapping
-INSERT INTO purchases_bills (statement_id, amount) values (10, 182.55);
-INSERT INTO purchases_bills (statement_id, amount) values (12, 5);
-INSERT INTO purchases_bills (statement_id, amount) values (13, 129.15);
-INSERT INTO purchases_bills (statement_id, amount) values (14, 30);
-INSERT INTO purchases_statement (id, item, payment_date) values (10, 'Electricity Usage', 	'2020-12-05');
-INSERT INTO purchases_statement (id, item, payment_date) values (12, 'Water Charges', 		'2020-12-01');
-INSERT INTO purchases_statement (id, item, payment_date) values (13, 'Internet Charge', 		'2020-12-07');
-INSERT INTO purchases_statement (id, item, payment_date) values (14, 'Phone Usage', 			'2020-12-15');
+INSERT INTO countries (capital_id, name, continents) values (10, 'Japan', 			'Asia');
+INSERT INTO countries (capital_id, name, continents) values (12, 'China',  			'Asia');
+INSERT INTO countries (capital_id, name, continents) values (13, 'Germany',			'Europe');
+INSERT INTO countries (capital_id, name, continents) values (14, 'South Africa',	'Africa');
+INSERT INTO capital (id, name, establish_date) values (10, 'Tokyo', 		'1889-12-05');
+INSERT INTO capital (id, name, establish_date) values (12, 'Beijing', 		'1754-02-01');
+INSERT INTO capital (id, name, establish_date) values (13, 'Berlin', 		'1945-04-07');
+INSERT INTO capital (id, name, establish_date) values (14, 'Cape Town', 	'1956-08-15');
 
 -- initialize data for com.jpa.relationmapping.Mapping05OneToOneJoinTable
 INSERT INTO purchases_invoice (id, amount) values (1, 1335);

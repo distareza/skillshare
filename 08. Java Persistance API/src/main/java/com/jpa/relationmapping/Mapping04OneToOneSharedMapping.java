@@ -62,10 +62,21 @@ import javax.persistence.TemporalType;
  *  		Field Entity #1 [countries] is set with @MapsId annotation indicating that the primary key of the reference Entity #2 will be shared  ( Entity #1 --> Owning Entity ), the PK of Entity #2 will also be PK Entity #1
  *  		Field Entity #2 [city] 	is set with additional "mappedBy" attribute with a "reference field/member name" of the Entity #2 ( capital )
  *  
- *  
- *  
  *  Mapping : 
  *  	countries (capital_id) = capital (id)
+ *  
+ *  Table representation: "counties" table is having same "primaryKey" value as with "capital" table
+ *  				primary key of "countries" table is "capital_id", primary key of "capital" table is "id"
+ *  
+ *  JPA representation
+ *  	Countries Entity is able to retrieve its Capital Entity, with getCapital() method
+ *  	Capital Entity is able to retrieve its Country Entity, with getCountries() method
+ *
+ *  	Countries Entity declaring "OneToOne" mapping annotation with "MapsId" annotation, to reference the shared id with its reference Entity
+ *  	Capital Entity declaring "OneToOne" mapping annotation with mappedBy attribute that mapped to its Entity Name to column "capital"
+ *  		MappedBy signals hibernate that the key for the relationship is on the other side.
+ *  		This means that although you link 2 tables together, only 1 of those tables has a foreign key constraint to the other one. 
+ *  		MappedBy allows you to still link from the table not containing the constraint to the other table.
  *
  */
 public class Mapping04OneToOneSharedMapping {

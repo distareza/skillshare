@@ -58,29 +58,46 @@ import javax.persistence.TemporalType;
  *     
  *  
  *  Mapping : 
- *  	purchases_invoice (id) <- purchases_mapping_order_invoice (invoice_id, order_id) -> purchases_order (id)
+ *  	voter (id) -> elections (voter_id) 
+ *  	ballot (id) -> election (ballot_id)
+ *  
+ *  Table representation
+ *  	New table mapping "elactions" was consist of foreing key "voter_id" amd "ballot_id"
+ *  	foreign key "voter_id" is a reference to primary key of "voter" table "id"
+ *  	foreign key "ballot_id" is a reference to primary key of "ballot" table "id"
+ *  
+ *  JPA representation
+ *  	Voter Entity is able to retrieve its Ballot Entity, with getBallot() method
+ *  	Ballot Entity is able to retrieve its Voter Entity, with getVoter() method
+ *  
+ *  	Voter Entity declaring "OneToOne" mapping annotation with "mappedBy" attribute as a signals key for relationship on other side.
+ *  		MappedBy signals hibernate that the key for the relationship is on the other side.
+ *  		This means that although you link 2 tables together, only 1 of those tables has a foreign key constraint to the other one. 
+ *  		MappedBy allows you to still link from the table not containing the constraint to the other table.
+ *  	Ballot Entity declaring "OneToOne" mapping annotation with "JoinTable" annotation to mapped a "table mapping" for both Entity (its Entity and his relation Entity)
+ *  
  *
  */
 public class Mapping05OneToOneJoinTable {
 
 	/**
 	 * 
-
-Hibernate: 
-    
-    create table purchases_invoice (
+	================================================================== 
+    create table voter (
        id integer not null auto_increment,
-        amount float,
+        birth_date date,
+        birth_place varchar(255),
+        name varchar(255),
         primary key (id)
     ) engine=MyISAM
-    
-           
+    ==================================================================
+
 	 * 
 	 *
 	 */
-	@Entity(name="PurchaseInvoice")
-	@Table(name="purchases_invoice")
-	public static class Invoice implements Serializable {
+	@Entity(name="Voter")
+	@Table(name="voter")
+	public static class Voter implements Serializable {
 		
 		private static final long serialVersionUID = 1L;
 		
@@ -88,16 +105,26 @@ Hibernate:
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
 		
-		private Float amount;
+		private String name;
 		
-		@OneToOne(mappedBy = "invoice")
-		private Order order;
+		@Temporal(TemporalType.DATE)
+		@Column(name = "birth_date")
+		private Date birthDate;
 		
-		public Invoice() {
+		@Column(name = "birth_place")
+		private String birthPlace;
+		
+		@OneToOne(mappedBy = "voter")
+		private Ballot ballot;
+		
+		public Voter() {
 		}
 
-		public Invoice(Float amount) {
-			this.amount = amount;
+		public Voter(String name, Date birthDate, String birthPlace) {
+			super();
+			this.name = name;
+			this.birthDate = birthDate;
+			this.birthPlace = birthPlace;
 		}
 
 		public Integer getId() {
@@ -108,25 +135,41 @@ Hibernate:
 			this.id = id;
 		}
 
-		public Float getAmount() {
-			return amount;
+		public String getName() {
+			return name;
 		}
 
-		public void setAmount(Float amount) {
-			this.amount = amount;
+		public void setName(String name) {
+			this.name = name;
 		}
 
-		public Order getOrder() {
-			return order;
+		public Date getBirthDate() {
+			return birthDate;
 		}
 
-		public void setOrder(Order order) {
-			this.order = order;
+		public void setBirthDate(Date birthDate) {
+			this.birthDate = birthDate;
+		}
+
+		public String getBirthPlace() {
+			return birthPlace;
+		}
+
+		public void setBirthPlace(String birthPlace) {
+			this.birthPlace = birthPlace;
+		}
+
+		public Ballot getBallot() {
+			return ballot;
+		}
+
+		public void setBallot(Ballot ballot) {
+			this.ballot = ballot;
 		}
 
 		@Override
 		public String toString() {
-			return String.format(" { %d, %,.4f} ", this.id, this.amount);
+			return String.format(" { %d, %s, %s, %s } ", this.id, this.name, this.birthDate, this.birthPlace);
 		}
 
 	}
@@ -134,40 +177,36 @@ Hibernate:
 	/**
 	 * 
 	 *   
-
-Hibernate: 
-    
-    create table purchases_order (
+    create table ballot (
        id integer not null auto_increment,
-        order_date date,
-        product varchar(255),
-        quantity integer,
+        candidate varchar(255),
+        party varchar(255),
+        voting_date date,
         primary key (id)
     ) engine=MyISAM
-    
-    create table purchase_mapping_order_invoice (
-       invoice_id integer,
-        order_id integer not null,
-        primary key (order_id)
+	================================================================== 
+    create table elections (
+       ballot integer,
+        voter_id integer not null,
+        primary key (voter_id)
     ) engine=MyISAM
-    
-        
-    alter table purchase_mapping_order_invoice 
-       add constraint FK5pun02tw5jskih4j0uo7kknid 
-       foreign key (invoice_id) 
-       references purchases_invoice (id)
-    
-    alter table purchase_mapping_order_invoice 
-       add constraint FK68wgw7f3vm70bdn0w4d4fcyr7 
-       foreign key (order_id) 
-       references purchases_order (id)    
-       
+    ==================================================================
+    alter table elections 
+       add constraint FKajiijeg3v7gv0enq4dtx73mp4 
+       foreign key (ballot_id) 
+       references voter (id)
+    ==================================================================
+    alter table elections 
+       add constraint FKh3ogc9py331965m23qipb83ps 
+       foreign key (voter_id) 
+       references ballot (id)       
+    ==================================================================
 	 *       
 	 *
 	 */
-	@Entity(name = "PurchaseOrder")
-	@Table(name = "purchases_order")
-	public static class Order implements Serializable {
+	@Entity(name = "Ballot")
+	@Table(name = "ballot")
+	public static class Ballot implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 		
@@ -175,27 +214,30 @@ Hibernate:
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		private Integer id;
 		
-		private String product;
+		private String candidate;
 		
-		private Integer quantity;
+		private String party;
 		
-		@Column(name = "order_date")
+		@Column(name = "voting_date")
 		@Temporal(TemporalType.DATE)
-		private Date orderDate;
+		private Date votingDate;
 
 		@OneToOne
 		@JoinTable(	
-				name = "purchases_mapping_order_invoice", 
-				joinColumns = { @JoinColumn( name = "order_id", referencedColumnName = "id") },
-				inverseJoinColumns = { @JoinColumn( name = "invoice_id", referencedColumnName = "id") })		
-		private Invoice invoice;
+				name = "elections", 
+				joinColumns  = { @JoinColumn( name = "ballot_id", referencedColumnName = "id") },
+				inverseJoinColumns= { @JoinColumn( name = "voter_id", referencedColumnName = "id") }
+		)
+		private Voter voter;
 		
-		public Order() {
+		public Ballot() {
 		}
-
-		public Order(String product, Date orderDate) {
-			this.product = product;
-			this.orderDate = orderDate;
+		
+		public Ballot(Voter voter, String candidate, String party, Date votingDate) {
+			this.candidate = candidate;
+			this.party = party;
+			this.votingDate = votingDate;
+			this.voter = voter;
 		}
 
 		public Integer getId() {
@@ -206,148 +248,200 @@ Hibernate:
 			this.id = id;
 		}
 
-		public String getProduct() {
-			return product;
+		public String getCandidate() {
+			return candidate;
 		}
 
-		public void setProduct(String product) {
-			this.product = product;
-		}
-		
-		public Integer getQuantity() {
-			return quantity;
+		public void setCandidate(String candidate) {
+			this.candidate = candidate;
 		}
 
-		public void setQuantity(Integer quantity) {
-			this.quantity = quantity;
+		public String getParty() {
+			return party;
 		}
 
-		public Date getOrderDate() {
-			return orderDate;
+		public void setParty(String party) {
+			this.party = party;
 		}
 
-		public void setOrderDate(Date orderDate) {
-			this.orderDate = orderDate;
+		public Date getVotingDate() {
+			return votingDate;
 		}
 
-		public Invoice getInvoice() {
-			return invoice;
+		public void setVotingDate(Date votingDate) {
+			this.votingDate = votingDate;
 		}
 
-		public void setInvoice(Invoice invoice) {
-			this.invoice = invoice;
+		public Voter getVoter() {
+			return voter;
+		}
+
+		public void setVoter(Voter voter) {
+			this.voter = voter;
 		}
 
 		@Override
 		public String toString() {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			String dateText = null;
-			if (this.orderDate != null) dateText = sdf.format(orderDate);
-			
-			String invoiceText = null;
-			if (this.invoice != null) invoiceText = invoice.toString();
-			
-			return String.format(" { %d, %s, %d, %s, %s } ", this.id, this.product, this.quantity,  dateText, invoiceText);
+			return String.format(" { %d, %s, %s, %s } ", this.id, this.candidate, this.party, this.votingDate);
 		}
 		
 	}
 	
 	private EntityManagerFactory factory;
 	private EntityManager em;
+
+	/**
+	 * 
+	==================================================================
+    insert 
+    into
+        voter
+        (birth_date, birth_place, name) 
+    values
+        (?, ?, ?)
+ 	==================================================================
+    insert 
+    into
+        ballot
+        (candidate, party, voting_date) 
+    values
+        (?, ?, ?)
+	==================================================================
+    into
+        elections
+        (candidate_id, voter_id) 
+    values
+        (?, ?)        
+    ==================================================================
+	 * 
+	 */
+	public void insertData() throws Exception {
+		em.getTransaction().begin();
+		
+		Voter voterOne = new Voter("Black Jack", 	new SimpleDateFormat("dd-MM-yyyy").parse("04-03-1995"), "Aklahoma");
+		Voter voterTwo = new Voter("Chad Badwin", 	new SimpleDateFormat("dd-MM-yyyy").parse("15-07-1996"), "Barkley");
+		
+		em.persist(voterOne);
+		em.persist(voterTwo);
+		
+		Ballot ballotOne = new Ballot(voterOne, "Carol Crosby", "Liberal Democrat", new SimpleDateFormat("dd-MM-yyyy").parse("04-11-2020"));
+		Ballot ballotTwo = new Ballot(voterTwo, "Stephanie Mills", "Green Party", new SimpleDateFormat("dd-MM-yyyy").parse("05-11-2020"));
+		
+		em.persist(ballotOne);
+		em.persist(ballotTwo);
+		
+		em.getTransaction().commit();
+	}
+	
+	/**
+	 * 
+	voterOne = em.find(Voter.class, 1)
+	voterOne.getBallot()
+ 	==================================================================
+    select
+        mapping05o0_.id as id1_63_0_,
+        mapping05o0_.birth_date as birth_da2_63_0_,
+        mapping05o0_.birth_place as birth_pl3_63_0_,
+        mapping05o0_.name as name4_63_0_,
+        mapping05o0_1_.voter_id as voter_id0_24_0_,
+        mapping05o1_.id as id1_3_1_,
+        mapping05o1_.candidate as candidat2_3_1_,
+        mapping05o1_.party as party3_3_1_,
+        mapping05o1_.voting_date as voting_d4_3_1_,
+        mapping05o1_1_.ballot_id as ballot_i1_24_1_,
+        mapping05o2_.id as id1_63_2_,
+        mapping05o2_.birth_date as birth_da2_63_2_,
+        mapping05o2_.birth_place as birth_pl3_63_2_,
+        mapping05o2_.name as name4_63_2_,
+        mapping05o2_1_.voter_id as voter_id0_24_2_ 
+    from
+        voter mapping05o0_ 
+    left outer join
+        elections mapping05o0_1_ 
+            on mapping05o0_.id=mapping05o0_1_.ballot_id 
+    left outer join
+        ballot mapping05o1_ 
+            on mapping05o0_1_.voter_id=mapping05o1_.id 
+    left outer join
+        elections mapping05o1_1_ 
+            on mapping05o1_.id=mapping05o1_1_.voter_id 
+    left outer join
+        voter mapping05o2_ 
+            on mapping05o1_1_.ballot_id=mapping05o2_.id 
+    left outer join
+        elections mapping05o2_1_ 
+            on mapping05o2_.id=mapping05o2_1_.ballot_id 
+    where
+        mapping05o0_.id=?
+    ==================================================================     	
+    em.createQuery("SELECT a FROM Voter a", Voter.class).getResultList();
+    ==================================================================
+    select
+        mapping05o0_.id as id1_63_,
+        mapping05o0_.birth_date as birth_da2_63_,
+        mapping05o0_.birth_place as birth_pl3_63_,
+        mapping05o0_.name as name4_63_,
+        mapping05o0_1_.voter_id as voter_id0_24_ 
+    from
+        voter mapping05o0_ 
+    left outer join
+        elections mapping05o0_1_ 
+            on mapping05o0_.id=mapping05o0_1_.candidate_id
+	==================================================================
+	em.createQuery("SELECT a FROM Ballot a", Ballot.class).getResultList();
+	==================================================================
+    select
+        mapping05o0_.id as id1_3_,
+        mapping05o0_.candidate as candidat2_3_,
+        mapping05o0_.party as party3_3_,
+        mapping05o0_.voting_date as voting_d4_3_,
+        mapping05o0_1_.candidate_id as candidat1_24_ 
+    from
+        ballot mapping05o0_ 
+    left outer join
+        elections mapping05o0_1_ 
+            on mapping05o0_.id=mapping05o0_1_.voter_id            
+    ==================================================================
+	 * 
+	 */
+	public void retrieveData() {
+		System.out.println("retrieve data");
+		
+//		Voter voterOne = em.find(Voter.class, 1);
+//		System.out.println(voterOne);					//{ 1, John Wick, 1964-09-02, 	Jardani Jovonovich } 
+//		System.out.println(voterOne.getBallot());		//{ 10, Denis Graham, UK Independence Party, 2021-05-07 } 
+//		
+//		Voter voterTwo = em.find(Voter.class, 3);		
+//		System.out.println(voterTwo);					// { 3, Linda P. Johnson, 1951-10-21, Libya } 
+//		System.out.println(voterTwo.getBallot());		// { 12, Jim Nunn, British National Party, 2019-04-02 } 
+
+
+		Ballot ballotOne = em.find(Ballot.class, 10);
+		System.out.println(ballotOne);					// { 10, Denis Graham, UK Independence Party, 2021-05-07 } 
+		System.out.println(ballotOne.getVoter());		// { 1, John Wick, 1964-09-02, 	Jardani Jovonovich } 
+		
+		Ballot ballotTwo = em.find(Ballot.class, 12);
+		System.out.println(ballotTwo);					// { 12, Jim Nunn, British { 3, Linda P. Johnson, 1951-10-21, Libya }National Party, 2019-04-02 } 
+		System.out.println(ballotTwo.getVoter());		// 
+		
+		
+		List<Voter> voters = em.createQuery("SELECT a FROM Voter a", Voter.class).getResultList();
+		System.out.println(voters);
+		
+		List<Ballot> ballots = em.createQuery("SELECT a FROM Ballot a", Ballot.class).getResultList();
+		System.out.println(ballots);
+
+	}
 	
 	public void runMain() {
 		factory = Persistence.createEntityManagerFactory("OnlineShoopingDB_Unit");
 		em = factory.createEntityManager();
 
 		try {
-			System.out.println("retrieve data");
 			
-			/**
-			 *
-			 
-Hibernate: 
-    select
-        mapping05o0_.id as id1_28_0_,
-        mapping05o0_.order_date as order_da2_28_0_,
-        mapping05o0_.product as product3_28_0_,
-        mapping05o0_.quantity as quantity4_28_0_,
-        mapping05o0_1_.invoice_id as invoice_1_24_0_,
-        mapping05o1_.id as id1_27_1_,
-        mapping05o1_.amount as amount2_27_1_,
-        mapping05o1_1_.order_id as order_id0_24_1_,
-        mapping05o2_.id as id1_28_2_,
-        mapping05o2_.order_date as order_da2_28_2_,
-        mapping05o2_.product as product3_28_2_,
-        mapping05o2_.quantity as quantity4_28_2_,
-        mapping05o2_1_.invoice_id as invoice_1_24_2_ 
-    from
-        purchases_order mapping05o0_ 
-    left outer join
-        purchase_mapping_order_invoice mapping05o0_1_ 
-            on mapping05o0_.id=mapping05o0_1_.order_id 
-    left outer join
-        purchases_invoice mapping05o1_ 
-            on mapping05o0_1_.invoice_id=mapping05o1_.id 
-    left outer join
-        purchase_mapping_order_invoice mapping05o1_1_ 
-            on mapping05o1_.id=mapping05o1_1_.invoice_id 
-    left outer join
-        purchases_order mapping05o2_ 
-            on mapping05o1_1_.order_id=mapping05o2_.id 
-    left outer join
-        purchase_mapping_order_invoice mapping05o2_1_ 
-            on mapping05o2_.id=mapping05o2_1_.order_id 
-    where
-        mapping05o0_.id=?
-	         
-			 * 
-			 */
-			Order orderOne = em.find(Order.class, 10);
-			System.out.println(orderOne);
-			
-			Order orderTwo = em.find(Order.class, 12);
-			System.out.println(orderTwo);
-			
-			
-			List<Order> trxs = em.createQuery("SELECT a FROM PurchaseOrder a", Order.class).getResultList();
-			System.out.println(trxs);
-			
-			List<Invoice> bills = em.createQuery("SELECT a FROM PurchaseInvoice a", Invoice.class).getResultList();
-			System.out.println(bills);
-			
-			/**
-			 * 
-			 * 
+			insertData();
+			retrieveData();
 
-		select * from purchases_order;
-		---------- --------------- -------------------- ---------- 
-		id         order_date      product              quantity   
-		---------- --------------- -------------------- ---------- 
-		10         2021-05-07      iMac 24-inch M1      1          
-		11         2020-11-13      iPhone 12            1          
-		12         2019-04-02      Apple Watch 6        2          
-		13         2020-08-31      Original AirPod      3          
-		
-		select * from purchases_invoice;
-		---------- ------------ 
-		id         amount       
-		---------- ------------ 
-		1          1335.0       
-		2          849.0        
-		3          1398.0       
-		4          477.0        
-		
-		select * from purchases_mapping_order_invoice;
-		---------- ---------- 
-		invoice_id order_id   
-		---------- ---------- 
-		1          10         
-		2          11         
-		3          12         
-		4          13         
-
-			 * 
-			 */
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} finally {

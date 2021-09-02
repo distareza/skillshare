@@ -63,6 +63,12 @@ import javax.persistence.TemporalType;
  * 
  *  Mapping : 
  *  	driver (license_key) -> driving_license (license_no)
+ *  
+ *  In Table representation, "driver" table is having column "license_key", which foreign key to the unique-"license_no" column of "driving_license" table 
+ *  
+ *  In JPA representation,
+ *  	Driver Entity is able to retrieve its License Entity using getLicense() method
+ *  	Driver Entity declaring "OneToOne" mapping annotation with "JoinColumn" annotation to mapped a Reference Entity via column "license_key" 
  *
  */
 public class Mapping02OneToOneJoinColumn {

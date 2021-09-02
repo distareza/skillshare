@@ -65,7 +65,20 @@ import javax.persistence.TemporalType;
  *  		Field in Entity #2 [TransactionStatement] 	is set with @OneToOne annotation and @JoinColumn Annotation to reference a column for Entity #1  (Entity #2 )
  *  
  *  Mapping : 
- *  	bills (id) <-> trans_statement (bill_id)
+ *  	trans_statement (bill_id) <--> bills (id) 
+ *  
+ *  Table Representation, "trans_statement" table is having foreign key "bill_id", which reference to primary key of "bills" table column "id"
+ *	
+ *	JPA Entity Class representation: 
+ *		TransactionStatements Entity is able to retrieve its Bill Entity, with getBilling() method
+ *		Bills Entity is able to retrieve its TransactionStatement Entity, with getTransactionStatement() method
+ *
+ *  	TransStatements Entity declaring "OneToOne" mapping annotation with "JoinColumn" annotation to mapped a Reference Entity via column "bill_id" 
+ *  	Bills Entity declaring "OneToOne" mapping annotation with "mappedBy" attribute as a signals key for relationship on other side.
+ *  		MappedBy signals hibernate that the key for the relationship is on the other side.
+ *  		This means that although you link 2 tables together, only 1 of those tables has a foreign key constraint to the other one. 
+ *  		MappedBy allows you to still link from the table not containing the constraint to the other table.
+ *  		
  *
  */
 public class Mapping03OneToOneBidirectional {
@@ -148,7 +161,7 @@ public class Mapping03OneToOneBidirectional {
     
     alter table trans_statement 
        add constraint FKag569c5ryu5mx57ck8b43njps 
-       foreign key (bill_Id) 
+       foreign key (bill_id) 
        references bills (id)   
    ==================================================================
 	 *       

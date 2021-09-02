@@ -39,18 +39,18 @@ INSERT INTO capital (id, name, establish_date) values (13, 'Berlin', 		'1945-04-
 INSERT INTO capital (id, name, establish_date) values (14, 'Cape Town', 	'1956-08-15');
 
 -- initialize data for com.jpa.relationmapping.Mapping05OneToOneJoinTable
-INSERT INTO purchases_invoice (id, amount) values (1, 1335);
-INSERT INTO purchases_invoice (id, amount) values (2, 849);
-INSERT INTO purchases_invoice (id, amount) values (3, 1398);
-INSERT INTO purchases_invoice (id, amount) values (4, 477);
-INSERT INTO purchases_order (id, product, quantity, order_date) values (10, 'iMac 24-inch M1', 	1, '2021-05-07');
-INSERT INTO purchases_order (id, product, quantity, order_date) values (11, 'iPhone 12', 		1, '2020-11-13');
-INSERT INTO purchases_order (id, product, quantity, order_date) values (12, 'Apple Watch 6', 	2, '2019-04-02');
-INSERT INTO purchases_order (id, product, quantity, order_date) values (13, 'Original AirPod', 	3, '2020-08-31');
-INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (1, 10);
-INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (2, 11);
-INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (3, 12);
-INSERT INTO purchases_mapping_order_invoice (invoice_id, order_id) values (4, 13);
+INSERT INTO voter (id, name, birth_place, birth_date) values (1, 'John Wick', 	'	Jardani Jovonovich', '1964-09-02');
+INSERT INTO voter (id, name, birth_place, birth_date) values (2, 'Natasha Romanova', 	'Stalingrad', '1984-04-05');
+INSERT INTO voter (id, name, birth_place, birth_date) values (3, 'Linda P. Johnson',		 'Libya', '1951-10-21');
+INSERT INTO voter (id, name, birth_place, birth_date) values (4, 'Anne P. Moberly', 	'New York', '1949-10-21');
+INSERT INTO ballot (id, candidate, party, voting_date) values (10, 'Denis Graham', 'UK Independence Party', '2021-05-07');
+INSERT INTO ballot (id, candidate, party, voting_date) values (11, 'Diane Morgan', 	'Labor Party', '2020-11-13');
+INSERT INTO ballot (id, candidate, party, voting_date) values (12, 'Jim Nunn', 	'British National Party', '2019-04-02');
+INSERT INTO ballot (id, candidate, party, voting_date) values (13, 'Carol Casby', 'Liberal Democrat', '2020-08-31');
+INSERT INTO elections (voter_id, ballot_id) values (1, 10);
+INSERT INTO elections (voter_id, ballot_id) values (2, 11);
+INSERT INTO elections (voter_id, ballot_id) values (3, 12);
+INSERT INTO elections (voter_id, ballot_id) values (4, 13);
 
 
 -- initialize data for com.jpa.relationmapping.Mapping06OneToMany

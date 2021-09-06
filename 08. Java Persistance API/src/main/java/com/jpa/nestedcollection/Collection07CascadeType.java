@@ -23,6 +23,10 @@ import javax.persistence.Persistence;
  *  2. Cascade Persist : reference entity are inserted when the parent entity is inserted / saved
  *  3. Cascade Remove : reference entities are removed when the parent entity is deleted
  *  4. Cascade Merge : references entities are updated when the parent entity is merged / saved
+ *  5. Cascade Detach : Detaching an entity means to removes the entity from the persistence context.
+ *  	changes that you make to the entity after the entity has been detached, including removal of the entity, will not be synchronized to the database. Detach does not affect the database.
+ *  6. Cascade All : cascade down to child / reference entities
+ *  	Persist, Remove. Merge And Detach Operation will cascaded down to the childs or references entities
  *  
  */
 public class Collection07CascadeType {
@@ -41,7 +45,9 @@ public class Collection07CascadeType {
 		//@OneToMany --> default Cascade
 		//@OneToMany (cascade = CascadeType.PERSIST) // --> declaring persist cascade
 		//@OneToMany (cascade = CascadeType.REMOVE) // --> declaring Remove cascade
-		@OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.MERGE) // --> declaring Merge cascade
+		//@OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.MERGE) // --> declaring Merge cascade
+		//@OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.DETACH) --> declaring Detach cascade
+		@OneToMany (fetch = FetchType.EAGER, cascade = CascadeType.ALL) // --> declaring All cascade
 		@JoinColumn(name = "department_id")
 		private Set<Employee> employees;
 
@@ -248,6 +254,24 @@ id         name        department_id
 3          Cora        2             
 4          Dennis      2             
 	 * 
+	 *  3. set Cascade as All :
+	 *  	will run without issue
+	 *  	The persist operation on the department entity will cascade to the owned employee entities on the other side of this OneToMany relationship mapping.
+	 *
+SELECT * FROM department;       
+id         name              
+---------- ------------------
+1          Engineering       
+2          sales             
+
+SELECT * FROM employees;
+id         name        department_id 
+---------- ----------- ------------- 
+1          Alice       1             
+2          Ben         1             
+3          Cora        2             
+4          Dennis      2             
+	 * 
 	 * 
 	 */
 	public static void insertWithoutReference() {
@@ -319,6 +343,19 @@ id         name                  department_id
 1          Ben                   1             
 2          Alice                 1            
 	 * 
+	 * 3. Cascade ALL:
+	 * 		will remove selected department and all its referenced employee entities as well
+	 * 
+SELECT * FROM department;
+id         name                                                                                                                                                                                                                                                            
+---------- --------------------- 
+1          Engineering                                                                                                                                                                                                                                                     
+
+SELECT * FROM employees;
+id         name                  department_id 
+---------- --------------------- ------------- 
+1          Ben                   1             
+2          Alice                 1            
 	 * 
 	 */
 	public static void removeEntity() {
@@ -343,6 +380,7 @@ id         name                  department_id
 	/**
 	 * This method to demonstrate on how to update an entity references using Cascade Merge
 	 * any updates to the parent entity is propagated down to child entities
+	 * 
 SELECT * FROM department;
 id         name                                                                                                                                                                                                                                                            
 ---------- --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- 
@@ -358,6 +396,7 @@ id         name                                                                 
 4          Dennis                                                                                                                                                                                                                                                          2             
 5          Elsa                                                                                                                                                                                                                                                            2             
 
+	 * 
 	 * 
 	 */
 	public static void mergeEntity() {
@@ -381,12 +420,66 @@ id         name                                                                 
 			factory.close();
 		}
 	}
+	
+	/**
+	 * Demonstrate how Cascade Detach is working
+	 * 1. Department Cascade Type set to MERGE:
+	 * 		The Detaching entity does not affect reference entity
+	 * 2. Department Cascade Type = DETACH
+	 * 		The Detaching entity affect reference entity
+	 * 3. Department Cascade Type = ALL
+	 * 		The Detaching entity affect reference entity
+	 */
+	public static void detachEntity() {
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("CompanyDB_Unit_Read");
+		EntityManager em = factory.createEntityManager();
+
+		try {
+			em.getTransaction().begin();
+			
+			Department sales = em.find(Department.class, 2);
+			Employee cora = em.find(Employee.class, 3);
+			Employee alice = em.find(Employee.class, 1);
+			
+			em.detach(sales);
+			
+			System.out.println("is sales attached : " + em.contains(sales)); 
+			System.out.println("is Cora attached : " + em.contains(cora));
+			System.out.println("is Alice attached : " + em.contains(alice));
+
+			/**
+			 *  
+			 * 1. Cascade MERGE on Department Entity :
+			 * 	  output :
+					is sales attached : false
+					is Cora attached : true
+					is Alice attached : true
+			 * 
+			 *  2. Cascade DETACH on Department Entity :
+			 *     output :  
+					is sales attached : false
+					is Cora attached : false
+					is Alice attached : true
+			 * 
+			 * 
+			 */
+			em.getTransaction().commit();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		} finally {
+			em.close();
+			factory.close();
+		}
+		
+	}
 
 	public static void main (String[] args) {
-		//insertWithoutReference();
-		insertWithReference();
+		insertWithoutReference();
+		//insertWithReference();
 		//removeEntity();
-		mergeEntity();
+		//mergeEntity();
+		//detachEntity();
+		
 	}
 	
 }

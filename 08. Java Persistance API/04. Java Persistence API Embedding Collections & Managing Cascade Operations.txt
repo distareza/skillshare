@@ -1,0 +1,1 @@
+Java Persistence API Embedding Collections & Managing Cascade Operations

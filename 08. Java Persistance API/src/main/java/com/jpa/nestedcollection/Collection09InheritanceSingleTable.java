@@ -33,7 +33,7 @@ import javax.persistence.Persistence;
  *  @DesciminatorValue("null") When no Discriminator Value is present when the disciminator value is null , that employee automatically is instantiated as an Employeee based class object
  * 
  */
-public class Collection09SingleTable {
+public class Collection09InheritanceSingleTable {
 
 	@Entity(name = "tbl_employees")
 	@Inheritance(strategy = InheritanceType.SINGLE_TABLE)										// *) Optional to define Inheritance Type
@@ -74,10 +74,6 @@ public class Collection09SingleTable {
 		
 	}
 	
-	/**
-	 * @author mwirman2
-	 *
-	 */
 	@Entity(name = "tbl_Fulltimeemployees")
 	@DiscriminatorValue("fulltime") // Optional
 	public static class FulltimeEmployee extends Employee implements Serializable {

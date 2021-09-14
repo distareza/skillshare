@@ -1,1 +1,147 @@
 Java Persistence API Embedding Collections & Managing Cascade Operations
+==========================================================
+
+Question: Which of the following statement about nested collections of primitives are true?
+[ ] They are modelled using the @OneToMany annotation
+[x] They are loaded lazily by default
+[ ] They are loaded eagerly by default
+[x] They are modelled using the @ElementCollection annotation
+
+Question: What are the requirements of entities which are keys in a nested Map?
+[x] They should override the .equals() method of the base class
+[ ] They should override the .toString() method of the base class
+[x] They should override the .hashCode() method of the base class
+[ ] They should override the .clone() method of the base class
+
+Question: You have a one-to-many relationship mapped in a JPA application and want updates to the owned entities to be made when you update the owning entity. What CascadeType should 
+[x] CascadeType.MERGE
+[ ] CascadeType.DETACH
+[ ] CascadeType.PERSIST
+[ ] CascadeType.REMOVE
+
+Question: How does the SINGLE_TABLE inheritance work?
+[ ] All entities that are part of the inheritance relationship are stored in separate tables
+[ ] All entities that are part of the inheritance relationship are stored in separate tables with a separate mapping table
+[ ] All entities that are part of the inheritance relationship are in separate tables with a foreign key relationship
+[x] All entities that are part of the inheritance relationship are stored in the same table
+
+Question: What are discriminator values used for in SINGLE_TABLE inheritance?
+[x] To identity the entities associated with different derived classes
+[ ] To set up foreign key relationships for the different derived classes
+[ ] To set up shared primary keys for the different derived classes
+[ ] To set up entity mapping relationships between the derived classes
+
+Question: When would you choose to use the @MappedSuperclass annotation?
+[x] When you have a base class in an entity relationship and this base class should not have a separate table associated with it
+[ ] When you have a base class in an entity relationship and this base class is an abstract class
+[ ] When you have a base class in an entity relationship and this base class does not contain any member variables
+[ ] When you have a base class in an entity relationship and this base class is mapped to its own underlying table
+
+Question: Which of the following is true about nested map collections?
+[ ] Map values cannot be entities
+[ ] Map keys cannot be entities
+[x] Map values can be entities
+[x] Map keys can be entities
+
+Question: To have a nested persistent collection of objects which of the following annotations do we need to use?
+[x] @Embeddable
+[ ] @MapsId
+[ ] @OneToMany
+[x] @ElementCollection
+
+Question: Consider a base class as shown below:
+	@Entity
+	@Inheritance(strategy=InheritanceType.JOINED)
+	public class Vehicle {
+	}
+	Two classes derived from this base class
+	@Entity
+	public class Car extends Vehicle {
+	}
+	@Entity
+	public class Truck extends Vehicle {
+	}
+How many tables are created to hold this data?
+[x] 3 tables
+[ ] 4 tables
+[ ] 2 tables
+[ ] 1 table
+
+Question: Which of the following is true about nested map collections?
+[ ] Map values cannot be embeddables
+[x] Map keys can be embeddables
+[ ] Map keys cannot be embeddables
+[x] Map values can be embeddables
+
+Question: If operations on the owning entity should all be cascaded down to child entities what CascadeType would you use?
+[ ] CascadeType.PERSIST
+[x] CascadeType.ALL
+[ ] CascadeType.DETACH
+[ ] CascadeType.NONE
+
+Question: When you have an inheritance relationship specified using Java classes, what is the default inheritance type that is used for the entities which are part of this inheritance relationship? 
+[ ] MAPPED_SUPERCLASS
+[ ] JOINED
+[x] SINGLE_TABLE
+[ ] TABLE_PER_CLASS
+
+Question: Consider a base class as shown below:
+	@MappedSuperclass
+	public class Vehicle {
+	}
+	Two classes derived from this base class
+	@Entity
+	public class Car extends Vehicle {
+	}
+	@Entity
+	public class Truck extends Vehicle {
+	}
+You have a Car with id 1 stored in the underlying database. What will this method retrieve?
+entityManager.find(Vehicle.class, 1)
+[x] This will throw and exception
+[ ] The Car with primary key 1
+[ ] All Cars and Trucks in the database
+[ ] The Truck with primary key 1
+
+Question: Which of the following can be the data type used for the nested collection?
+[ ] LinkedList<>
+[x] Set<>
+[x] List<>
+[ ] HashSet<>
+[ ] ArrayList<>
+
+Question: An entity contains a nested collection which is represented using a Map<>. The name of the column of the values held in the map can be configured using which of the following annotations?
+[x] @Column
+[ ] @JoinColumn
+[ ] @MapKeyColumn
+[ ] @OrderColumn
+
+Question: What does CascadeType.PERSIST mean for the owned entity in a relationship?
+[x] When the owning entity is saved to the database, the owned entity is as well
+[ ] When the owned entity is saved to the database the owning entity is as well
+[ ] Owning and owned entities have to be persisted separately and explicitly
+[ ] Owning and owned entities have to be persisted together
+
+Question: Why is the TABLE_PER_CLASS inheritance strategy not often used in the real world?
+[x] Retrieving entities results in unnecessary union operations
+[ ] It creates more tables than needed
+[ ] It cannot be used to express complex relationships
+[ ] Retrieving entities results in unnecessary join operations
+
+Question: An entity contains a nested collection which is represented using a Map<Integer, String>. The entity’s primary key is customer_id. The primary key of the table which holds the nested collection mapping is:
+[ ] customer_id + map key + map value
+[ ] customer_id + map value
+[x] customer_id + map key
+[ ] customer_id
+
+Question: Which of the following statements about nested collections of primitives are true?
+[x] The lifecycle of the collection is tied to the lifecycle of the holding entity
+[ ] A @OneToMany mapping is used to model these collections
+[x] The collection is modelled in a separate table with a foreign key reference to the holding entity
+[ ] The collection exists independently of the entity
+
+Question: What is the default cascade type from an owning entity to an owned entity in a relationship?
+[ ] CascadeType.ALL
+[ ] CascadeType.PERSIST
+[ ] CascadeType.DETACH
+[x] CascadeType.NONE

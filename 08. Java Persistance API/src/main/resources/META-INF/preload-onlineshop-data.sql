@@ -254,6 +254,22 @@ INSERT INTO customer_products (customer_id, product_id) values (5, 3);
 INSERT INTO customer_products (customer_id, product_id) values (5, 4);
 INSERT INTO customer_products (customer_id, product_id) values (5, 5);
 
+-- initilaize data for com.jpa.query.Query01Native
+INSERT INTO tb_categories values (221, 'Mobile Phones');
+INSERT INTO tb_categories values (231, 'Fashion');
+INSERT INTO tb_categories values (241, 'Home');
+INSERT INTO tb_categories values (251, 'School');
+INSERT INTO tb_products values (1001, 'iPhone 6S', 		699, 221);
+INSERT INTO tb_products values (1002, 'Samsumg Galaxy', 299, 221);
+INSERT INTO tb_products values (1003, 'Designer Skirt',  49, 231);
+INSERT INTO tb_products values (1004, 'Jeans', 		  78.99, 231);
+INSERT INTO tb_products values (1005, 'Scarf', 		  19.99, 231);
+INSERT INTO tb_products values (1006, 'Belt', 			9.9, 231);
+INSERT INTO tb_products values (1007, 'Sporinkler', 	 89, 241);
+INSERT INTO tb_products values (1008, 'Notebook', 		  9, 241);
+INSERT INTO tb_products values (1009, 'Pen', 		   4.99, 251);
+
+
 
 
 

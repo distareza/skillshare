@@ -239,7 +239,7 @@ Hibernate:
 			 */
 			
 			Query query2 = em.createNativeQuery("select * from tb_products");
-			List<?> products = query.getResultList();
+			List<?> products = query2.getResultList();
 			products.forEach(System.out::println);
 			/**
 			 * output :

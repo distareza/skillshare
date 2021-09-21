@@ -151,6 +151,32 @@ public class Query09UsingPredefineQueries {
 		}
 		
 	}
+	
+	/**
+	 * 
+select * from Categories;
+id         name                    
+---------- ------------------------ 
+221        Mobile Phones           
+231        Fashion                 
+241        Home                    
+251        School                  
+
+select * from Product;
+id         name                     price        category_id 
+---------- ------------------------ ------------ ----------- 
+1001       iPhone 6S                699.0        221         
+1002       Samsumg Galaxy           299.0        221         
+1003       Designer Skirt           49.0         231         
+1004       Jeans                    78.99        231         
+1005       Scarf                    19.99        231         
+1006       Belt                     9.9          231         
+1007       Sporinkler               89.0         241         
+1008       Notebook                 9.0          241         
+1009       Pen                      4.99         251         
+
+	 * 
+	 */
 
 	public static void retrieveData() {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("OnlineShoopingDB_Unit_Read");

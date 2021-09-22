@@ -284,4 +284,25 @@ INSERT INTO Product values (1007, 'Sporinkler', 	 89, 241);
 INSERT INTO Product values (1008, 'Notebook', 		  9, 241);
 INSERT INTO Product values (1009, 'Pen', 		   4.99, 251);
 
-
+-- initilaize data for com.jpa.query.Query10CriteriaAPI
+INSERT INTO Categories2 values (221, 'Mobile Phones');
+INSERT INTO Categories2 values (231, 'Fashion');
+INSERT INTO Categories2 values (241, 'Home');
+INSERT INTO Categories2 values (251, 'School');
+INSERT INTO Categories2 values (261, 'Books');
+INSERT INTO Categories2 values (271, 'Groceries');
+INSERT INTO Product2 values (1001, true, 'iPhone 6S', 		699, 221);
+INSERT INTO Product2 values (1002, true, 'Samsumg Galaxy', 299, 221);
+INSERT INTO Product2 values (1003, true, 'Designer Skirt',  49, 231);
+INSERT INTO Product2 values (1004, true, 'Jeans', 		  78.99, 231);
+INSERT INTO Product2 values (1005, true, 'Scarf', 		  19.99, 231);
+INSERT INTO Product2 values (1006, false, 'Belt', 			9.9, 231);
+INSERT INTO Product2 values (1007, true, 'Sporinkler', 	 89, 241);
+INSERT INTO Product2 values (1008, true, 'Notebook', 		  9, 241);
+INSERT INTO Product2 values (1009, false, 'Pen', 		   4.99, 251);
+INSERT INTO Product2 values (1010, true, 'Diary of a Wimpy Kid', 		5.99, 261);
+INSERT INTO Product2 values (1011, true, 'Awful Anties', 		   		3.99, 261);
+INSERT INTO Product2 values (1012, false, 'Timmy Failure', 		   		4.99, 261);
+INSERT INTO Product2 values (1013, false, 'Apple', 		   2.99, 271);
+INSERT INTO Product2 values (1014, true, 'Orange', 	   1.29, 271);
+INSERT INTO Product2 values (1015, true, 'Lemons', 	   0.99, 271);

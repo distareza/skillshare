@@ -1,0 +1,115 @@
+Java Persistence API: Executing Queries & Managing the Entity Lifecycle
+
+
+Question: What callback will be invoked after saving an entity to the database?
+[ ] The method annotated with @PreSave
+[x] The method annotated with @PostPersist
+[ ] The method annotated with @PrePersist
+[ ] The method annotated with @PostSave
+
+Question: What are JPQL queries?
+[ ] Queries which rely on the underlying database’s SQL support
+[x] Queries which are independent of the platform
+[ ] Queries which JPA understands and interprets
+[ ] Queries which are not SQL but help you retrieve data
+
+Question: What is the Criteria API?
+[x] Programmatic way to create typed queries as a way of avoiding syntax errors
+[ ] API which translates programmatic access to queries
+[ ] API which allows predefined queries associated with an entity, stored in the entity manager
+[ ] Platform-independent API which runs dynamic queries
+
+Question: What callback is executed before deleting an entity in the underlying database?
+[ ] @PreEmpty
+[ ] @PreTrash
+[x] @PreRemove
+[ ] @PreDelete
+
+Question: What are native queries in JPA?
+[ ] Queries which JPA understands and interprets
+[x] Queries which rely on the underlying database’s SQL support
+[ ] Queries which are not SQL but help you retrieve data
+[ ] Queries which are independent of the platform
+
+Question: Match callback annotations to when the callbacks are invoked:
+Just after an entity is edited : @PostUpdate
+Just after an entity is retrieved : @PostLoad
+Just before an entity is saved for the first time : @PrePersist
+Just after an entity is deleted : @PreRemove
+
+Question: Which of the following is true about update and delete queries in JPQL?
+[x] JPQL can perform these queries on only one record at a time
+[ ] JPQL does not support these queries
+[x] You need to run these queries within a transaction
+[ ] You need to invoke .executeUpdate() to run these queries
+
+Question: Which of the following are types of parameters that JPQL supports?
+[x] Positional parameters
+[x] Named parameters
+[ ] Optional parameters
+[ ] Indexed parameters
+
+Question: While selecting multiple fields using JPQL how are the field records returned?
+[ ] Using a special class which is used to hold multiple fields
+[ ] Using List<> collections for field values
+[ ] Using Pair<> and Triplet<> objects
+[x] Using Object[] arrays for field values
+
+Question: What are named queries?
+[ ] Queries that are specially annotated by name
+[ ] Queries that are run very often and are cached by JPA providers
+[x] Predefined queries associated with an entity, stored in the entity manager
+[ ] Queries which used named parameters
+
+Question: I have an entity Employee which references the entity Department.
+ 
+@Entity
+public class Employee {
+ 
+       @ManyToOne
+       @JoinColumn(name=”dept_id”)      
+       private Department dept;
+}
+ 
+How do I retrieve employees who belong to a particular department?
+[ ] “select e from Employees e where e.deptartment_id = ?1”
+[ ] “select e from Employees e where e.dept_id = ?1”
+[ ] “select e from Employees e where e.dept = ?1”
+[x] “select e from Employees e where e.dept.id = ?1”
+
+
+Question: Which of the following is true about callback methods associated with entity load operations?
+[ ] There are no callbacks allowing us to hook into the loading process
+[ ] @PreLoad callbacks may sometimes be executed even when the entity is not loaded
+[ ] @PreLoad can be used to annotated methods which are executed before an object is loaded
+[x] @PostLoad can be used to annotated methods which are executed after an object is loaded
+
+Question: Why is the fetch join in JPQL more performant than regular joins?
+[x] Fetch joins retrieve records using a single query rather than multiple queries
+[ ] Fetch joins do not perform unnecessary union operations
+[ ] Fetch joins retrieve records in a paginated manner
+[ ] Fetch joins retrieve data from cache rather than the actual table
+
+Question: What callback is executed after editing an already existing entity in the underlying database?
+[x] @PostUpdate
+[ ] @PostEdit
+[ ] @PostMerge
+[ ] @PostLoad
+
+Question: You retrieve the same set of fields over and over again from an underlying database table. How will you represent the field information within your query?
+[ ] Use Object[] arrays
+[ ] Using a special Map<> class that JPQL provides
+[ ] Using a List<Object> type
+[x] Using a constructor for a custom object which holds those field values
+
+Question: How can you select multiple fields using a Criteria API query?
+[x] Using the criteriaQuery.select() method
+[ ] This is not possible using the criteria API
+[x] Using the criteriaQuery.multiselect() method
+[ ] Using the criteriaQuery.selectAll() method
+
+Question: Which of the following is a drawback of using the Criteria API to construct queries?
+[ ] The Criteria API performs many unnecessary join operations to retrieve results
+[ ] The Criteria API tends to be less performant than JPQL
+[x] The Criteria API involves writing a lot of boiler plate code
+[ ] The Criteria API requires many additional Java libraries

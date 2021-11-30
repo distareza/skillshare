@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://ww.w3.org/1999/xhtml"
+	xmlns:th="http://ww.tymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Home Page</title>
+</head>
+<body>
+	<div style="text-align: center;">
+		<h2 th:inline="text">Welcome to the home page [[${#httpServletRequest.remoteUser}]]! 
+		If You see this you have successfully logged in :)</h2>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Logout" />
+		</form>
+	</div>	
+</body>
+</html>

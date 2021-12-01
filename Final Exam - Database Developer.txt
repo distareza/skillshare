@@ -1,0 +1,918 @@
+Final Exam: Database Developer
+
+Question: You have defined a ResultSet with the properties of TYPE_SCROLL_INSENSITIVE. What is the outcome of defining this property?
+[ ] You can only move in a specific direction and cannot revert to the other direction
+[ ] You cannot navigate to any direction without completing a single ResultSet
+[x] You can navigate in both directions and jump to specific points in a ResultSet
+[ ] You can navigate only in one direction without moving to any point in a ResultSet
+
+
+Question: You are using Hibernate and MySQL, in which you have set up a products database. When you use the order column annotation, who owns the responsibility to retrieve the products in the right persistence order?
+[ ] MySQL
+[ ] Order column
+[x] Hibernate
+[ ] Products database
+
+
+Question : 
+In the given code, previously, you had used the shared primary key, which you will not use in this code. You need to remove the appropriate import from the given list:
+01 package com.skillsoft.jpa;
+02
+03 import java.io.Serializable;
+04
+05 import javax.persistence.Entity;
+06 import javax.persistence.ID;
+07 import javax.persistence.MapsId;
+08 import javax.persistence.OneToOne;
+09 import javax.persistence.GeneratedValue;
+10 import javax.persistence.GenerationType;
+Which of the following import should you remove?
+[ ] Import on Line 3
+[ ] Import on Line 8
+[ ] Import on Line 5
+[x] Import on Line 7
+
+Question : 
+In the given code, what is likely to happen to the data before the commit occurs on Line 68?
+46 webrs.moveToInsertRow();
+47
+48 webrs.updateInt("product_id", 108);
+49 webrs.updateString("product_name", "Curved LCD Monitor");
+50 webrs.updateDouble("price", 199);
+51
+52 webrs.insertRow();
+53 webrs.moveToCurrentRow();
+54
+55 String path = "ProductsXML.xml";
+56
+57 File myfile = new File(path);
+58 FileWriter writer = new FileWriter(myfile);
+59
+60 System.out.println("Writing the Products table data to an XML File: "
+61 + myfile.getAbsolutePath());
+62 webrs.writeXml(writer);
+63
+64 writer.flush();
+65 writer.close();
+66
+67 System.out.println("Saving changes to the database...");
+68 webrs.acceptChanges();
+Instruction: Choose the option that best answers the question.
+[x] WebRowSet still maintains the information about the previous state before the changes
+[ ] There will be auto-commit on the changes being made to the WebRowSet
+[ ] Only the previous state is maintained, but not the new one
+[ ] Changes are written to the WebRowSet and database automatically
+
+
+Question
+In the given code, identify the primary key.
+01 package com.skillsoft.jpa;
+02
+03 import javax.persistence.Entity;
+04 import javax.persistence.Id;
+05
+06 @Entity
+07 public class Book {
+08
+09 @Id
+10 private Integer id;
+11 private String title;
+12 private String author;
+13
+14 private Float price;
+15
+16 public Book() {
+17 }
+18
+19 public Book(Integer id, String title, String author, Float price) {
+20
+21 this.id = id;
+22 this.title = title;
+23 this.author = author;
+24 this.price = price;
+[ ] Book
+[ ] Title
+[ ] Price
+[x] Id
+[ ] Author
+
+Which of the following must be used to specify the type of persistent collection?
+[ ] Method
+[ ] Function
+[x] Interface
+[ ] Variable
+
+
+Question
+After reviewing this code, which of the following statements can be considered as true?
+17 @Id
+18 private Integer id;
+19
+20 private Float amount;
+21
+22 @OneToOne
+23 @MapsId
+24 private Order order;
+25
+26 public Invoice() {
+27
+28 }
+29
+30 public Invoice(Float amount) {
+31 this.amount = amount;
+32 }
+33
+34 public Integer getId() {
+35 return id;
+36 }
+37
+38 public void setId(Integer id) {
+39 this.id = id;
+40 }
+[x] The invoice entity will share the primary key of the Order entity in the orders table in the invoices table
+[ ] There is a bidirectional mapping of the primary key between the Order entity and the invoice entity
+[ ] The primary key of the Order entity in the orders table will be unique, and invoice entity in the invoices table will use its own
+[ ] The primary key for the invoice entity and Order entity will no longer be required
+
+You have set up a new Web application that has a database in the backend. There will be thousands of statements executions that will run in parallel. However, you want to minimize network traffic.
+Which of the following will be the most appropriate method to send the statements to the database?
+[x] Group the statements into a batch
+[ ] Queue the statements
+[ ] Discard the redundant statements
+[ ] Send one statement at a time
+
+Question
+In the given code, what does the term SENSITIVE mean on Line 33?
+25 }
+26
+27 public static void main(String[] args) throws SQLException {
+28
+29 String query = null;
+30
+31 try (Connection con = DriverManager.getConnection(dbURL, username, password)) {
+32
+33 Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+34
+35 query = "select * from employee_data";
+36
+37 ResultSet rs = stmt.executeQuery(query);
+38
+39 rs.next();
+40 displayEmpData("next()", rs);
+41
+42 Thred.sleep(120000);
+43
+44 rs.last();
+45 displayEmpData("last()", rs);
+[ ] The ResultSet should remain as is even if the data in the database changes
+[ ] The ResultSet should pick up the changes automatically when the database is refreshed
+[x] The ResultSet should be sensitive to any changes in the underlying data
+[ ] The ResultSet should only pickup changes when you refresh the code
+
+You have a file named Orders.java. You are using the OrderBy annotation. However, when using the OrderBy annotation, you do not specify the name of the member variable in the related entity that you want to use to order the product. You choose not to specify anything.
+What is likely to be the outcome?
+[ ] The default ordering is as products are stored in the database
+[ ] The default ordering will be based on the first column in the table
+[x] The default ordering is by the primary key of the related entity
+[ ] The products will be randomly displayed in any order
+
+Which of the following statements define the drawbacks of using Criteria API? [Choose all that apply.]
+[x] It requires you to write much boilerplate code
+[ ] It is complex to set up and can be error-prone
+[x] Criteria API tends to be very verbose
+[ ] It only works with specific versions of Java
+
+When installing MySQL on a Windows system, which of the following is the default port used?
+[x] 3306
+[ ] 80
+[ ] 33060
+[ ] 443
+
+
+You have set up the Hibernate and MySQL environment. Using Eclipse, you have also set up a project. You have also created a database. You want to insert data into database tables. You want to be able to query the data using the JPA application.
+In which of the following should you define the insert operations?
+[ ] Pom.xml
+[ ] Persistence.xml
+[x] Load.sql
+[ ] App.java
+
+You have downloaded and extracted Apache Maven on a Windows system. You need to be able to use Apache Maven from the command line. To be able to achieve this goal, what is the task that you must perform?
+[x] Set up the environment variable to the bin folder
+[ ] Add the Apache Maven into the Windows startup list
+[ ] Enable the Apache Maven service to start automatically
+[ ] Ensure that Apache Maven is up and running
+
+Of the given choices, which of the following import will you use to generate the primary key?
+[ ] java.persistence.GeneratedValue
+[ ] java.persistence.Id
+[x] java.persistence.GenerationType
+[ ] java.persistence.Entity
+
+Which of the following is responsible for executing SQL queries against a database?
+[x] Statement Objects
+[ ] ResultSet
+[ ] DataSource
+[ ] Connection
+[ ] DriverManager
+
+In the given code, what is the role of @Entity annotation?
+01 package com.skillsoft.jpa;
+02
+03 import javax.persistence.Entity;
+04 import javax.persistence.Id;
+05 import javax.persistence.Table;
+06
+07 @Entity
+08 @Table(name= "book_details")
+09 public class Book {
+10
+[ ] It creates the class named book
+[ ] It defines the variables for the class
+[x] It indicates that the book objects will be records
+[ ] It is used to create a new table
+
+Which of the following statements describe the features of a relational database? [Choose all that apply.]
+[ ] An object serves as a fundamental unit
+[x] Every field of a record corresponding to a column in a table
+[ ] A table can contain variables, dictionaries, and generics
+[x] There are no nested or repeated types in a table
+
+
+In the given code, what is the output that is likely to get generated?
+17 String query = null;
+18
+19 try (Connection con = DriverManager.getConnection(dbURL, username, password)) {
+20
+21 Statement stmt = con.createStatement();
+22
+23 System.out.println("Users:");
+24
+25 query = "select * from users order by first_name";
+26
+27 ResultSet rs = stmt.executeQuery(query);
+28
+29 while (rs.next()) {
+30
+31 System.out.print(rs.getString("first_Name"));
+32 System.out.print("\t" + rs.getString("last_Name"));
+33 Systemmout.println();
+34
+35 }
+36
+37 } catch (SQLException ex) {
+38 ex.printStackTrace();
+39 }
+40 }
+[ ] It will generate a list of users that have first names in the database
+[ ] It will generate a list of users ordered by first and last name
+[ ] It will generate a list of users as stored in the database
+[x] It will generate a list of users ordered by their first name
+
+Which of the following API should you use to programmatically create typed queries?
+[ ] SQL API
+[ ] Known API
+[x] Criteria API
+[ ] Defined API
+
+You are working in Hibernate and MySQL environment. Using the Eclipse IDE, you need to update an entity from the book table in the bookstoredb database.
+To be able to do this, which of the following task must you perform first?
+[ ] Create the entity first
+[ ] Perform direct update
+[ ] Pull the entity first
+[x] Retrieve the entity first
+
+You have a puppy info database that you need to query. To do this, you have written the following code:
+29
+30 while (cachedRs.next()) {
+31
+32 byte byteArray[] = cachedRs.getBytes("puppy_photo");
+33
+34 outputFile = new FileOutputStream(cachedRs.getInt("puppy_id") + ".jpg");
+35
+36 outputFile.write(byteArray);
+37
+38 System.out.println("Image of " + cachedRs.getString("Puppy_breed") + " saved to "
+39 + cachedRs.getInt("puppy_id") + ".jpg");
+40
+41 System.out.println();
+42
+43 }
+44
+45 } catch (SQLException ex) {
+46
+47 ex.printStackTrace();
+48 } catch (I0Exception ioEx) {
+49
+50 ioEx.printStackTrace();
+51 }
+52
+53 }
+What will be the correct file naming for the retrieved files?
+[ ] Puppy_photo.jpg
+[ ] Puppy_name.jpg
+[x] Puppy_id.jpg
+[ ] Puppy_breed.jpg
+
+Which type of relationship is defined in the given code?
+22 @OneToOne (mappedBy="invoice")
+23 private Order order;
+[ ] One-to-many Unidirectional Mapping
+[x] Bidirectional One-to-one Mapping
+[ ] One-to-one Unidirectional Mapping
+[ ] One-to-many Mapping Lazy Loading
+
+You are working in Hibernate and MySQL environment. Using the Eclipse IDE, you need to enter four books into the book table in the bookstoredb database. To do this, you create the load.java sql file.\
+While writing the insert statements, which of the following guidelines should you keep in mind?
+[ ] You should avoid putting a semicolon at the end of the SQL statement
+[x] You should format the SQL statements on the multiple lines
+[ ] Each SQL statement should be on its line
+[ ] All records to be inserted must be combined into a single statement
+
+If you are using the CachedRowSet, which type of RowSet are you using?
+[ ] Connected
+[ ] Concurrent
+[x] Disconnected
+[ ] Standalone
+
+Which of the following is known to be the parent interface of the JDBCRowSet?
+[ ] javax.sql.rowset.RowSetProvider
+[ ] javax.sql.rowset.RowSet
+[x] javax.sql.RowSet
+[ ] javax.sql.rowset.JDBCRowSet
+
+You have created a new database. In the persistence.xml file, you have the following code:
+<property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+What is likely to happen with this code?
+[ ] It will delete the database and recreate when the application runs
+[ ] It will allow you to create and delete tables
+[x] When you run the application, it will drop all tables and re-create them
+[ ] It will delete the database schema and re-create when the application runs
+
+
+You have installed MySQL on a Mac system. After the installation, which of the following step should you perform?
+[x] Verify if MySQL is up and running
+[ ] Initialize a database
+[ ] List the MySQL services
+[ ] Install a visual client
+
+You want to load images into a database. To be able to do this, you have created a database using MySQL Workbench and set it as the current database. You execute the following statement:
+01 create table Puppylnfo(
+02 puppy_id INT ,
+03 puppy_Breed VARCHAR(255),
+04 puppy_photo LONGBLOB,
+05 primary key (puppy_id)
+06 ) ;
+After creating the table, you execute the following statements:
+	insert into PuppyInfo (Puppy_id,Puppy_Breed) values(102,'Pug');
+	insert into PuppyInfo (Puppy_id,Puppy_Breed) values(120,'Labrador');
+Which of the following is likely to happen to the puupy_photo column in this scenario?
+[x] It will show Null as the value
+[ ] It will show Error as the value
+[ ] It will show 0 as the value
+[ ] It will show no value
+
+You are working in Hibernate and MySQL environment. You have a file named Author.java that contains the following code:
+25
+26 @Id
+27 @GeneratedValue(strategy = GenerationType.IDENTITY)
+28 public Integer getId() {
+29 return id;
+30 }
+31
+32 public void setId(Integer id) {
+33 this.id = id;
+34 }
+35
+36 public String getName() {
+37 return name;
+38 }
+39
+40 public void setName(String name) {
+41 this.name = name;
+42 }
+43
+44 public Date getBirthDate() {
+45 return birthDate;
+46 }
+With the given code, which of the following entity is responsible for generating the primary key?
+[ ] Hibernate
+[ ] MySQL
+[ ] Column
+[x] Database
+[ ] ID
+
+
+Which of the following statements are true for Java Database Connectivity (JDBC)? [Choose all that apply.]
+[ ] It is an implementation to connect to databases
+[x] It connects to the relational databases using database drivers
+[ ] It focuses on relational databases as well as NoSQL databases
+[x] It provides methods to query and update a relational database
+
+Which of the following statement describes the characteristics of connected RowSet?
+[ ] From the point of initialization, the JDBCRowSet will always be connected to the database
+[ ] It fetches the data from a query execution from the database and closes down the connection
+[ ] It automatically initializes itself and establishes a connection to the database
+[x] From the point of initialization, until the RowSet is closed, the JDBCRowSet will be connected to the database
+
+Which of the following is responsible for mapping objects from an object-oriented programming language to the database entities?
+[ ] JDBC
+[ ] API
+[ ] JPA
+[x] ORMs
+
+In the given code, which of the following line of code is responsible for loading the properties file?
+01 package com.skillsoft.jdbc;
+02
+03-import java.io.IOException;
+04 import java.io.InputStream;
+05 import java.sql.Connection;
+06 import java.sql.DriverManager;
+07 import java.sql.SQLException;
+08 import java.util.Properties;
+09 
+10 public class MySQLJDBCUtil {
+11
+12- public static Connection getConnection() throws SQLException
+13
+14 Connection con = null;
+15
+16 try (InputStream in = MySQLJDBCUtil.class.getResourceAsStream("ft
+17
+18 Properties props = new Properties();
+19 props.toad(in);
+20
+21 String url = props.getProperty(nurl");
+22 String user = props.getProperty("user");
+23 String password = props.getProperty("password");
+24
+25 con = DriverManager.getConnection(url, user, password);
+[x] Line 12
+[ ] Line 14
+[ ] Line 18
+[ ] Line 10
+[ ] Line 16
+
+You are using the Hibernate and MySQL environment. In a file named Students.java, you have the following code:
+10 import javax.persistence.Id;
+11
+12 @Entity(name="Students")
+13 public class Student implements Serializable {
+14
+15 private static final long serialVersionUID = 1L;
+16
+17 @Id
+18 @GeneratedValue(strategy = GenerationType.IDENTITY)
+19 private Integer id;
+20
+21 private String name;
+22
+23 @ElementCollection
+24 private List<String> courses;
+25
+26 public Student() {
+27 }
+28
+29 public student (String name, list<String> courses) {
+30 this.name = name;
+31 this.courses = courses;
+32 }
+33 }
+Identify the primary id in this given code?
+[x] Id
+[ ] Student
+[ ] Courses
+[ ] Name
+
+You are using the Hibernate and MySQL environment. Which of the following method is used by default while retrieving entities, which are the collections associated with entities?
+[x] Lazy
+[ ] Quick
+[ ] Eager
+[ ] Fast
+
+In the given code, when is the @PostLoad annotation is going to run?
+32
+33 public Department() {
+34 }
+35
+36 public Department(String name) {
+37 this.name = name;
+38 }
+39
+40 @PrePersist
+41 public void onPrePersist() {
+42 System.out.println("\n********* Before persisting department object: + name);
+43 }
+44
+45 @PostPersist
+46 public void onPostPersist()
+47 System.out.println("\n********* After persisting department object: " + name);
+48 }
+49
+50 @PostLoad
+51 void onPostLoad() {
+52 System.out.println("\n********* After loading the department object: " + name);
+53 }
+54
+55 public String getName() {
+56 return name:
+[ ] When the department object is created
+[ ] When the data is committed into the database
+[ ] Before the department object is loaded into the application
+[x] After the department object is loaded into the application
+
+
+Which of the following RowSet allows itself to be written as an XML document?
+[ ] JoinRowSet
+[x] WebRowSet
+[ ] FilterRowSet
+[ ] JDBCRowSet
+
+Of the given choices in import statements, which of the following package is the alternative to the driver manager?
+[x] java.sql.DataSource
+[ ] java.sql.Connection
+[ ] java.sql.SQLException
+[ ] java.sql.MySQLDataSource
+
+You are using the Hibernate and MySQL environment. You have a file named Order.java, in which you want to specify the FetchType to be able to retrieve an order as well as all of the related products as well. You should be able to retrieve the associated products even if you do not explicitly access these products using your code.
+Which FetchType should you specify?
+[ ] Urgent
+[ ] Lazy
+[x] Eager
+[ ] Related
+[ ] Quick
+
+Which of the following statement is true for embedded objects?
+[ ] An embeddable object can be the entity itself
+[ ] Embeddable objects are defined using @ElementCollection annotation
+[ ] Embeddable objects are entities that are used to define the collection mapping
+[x] Embeddable objects are embedded within an outer entity
+
+You are working with Java Persistence API (JPA). You want to model the underlying database that corresponds to the objects in your code.
+Which of the following methods can you use? [Choose all that apply.]
+[x] Use annotations
+[ ] Use the persistence.xml file
+[ ] Use object replication
+[x] Use XML mapping
+
+In the given code, what is the role of Threat.sleep on line 42?
+26
+27 public static void main(String[] args) throws SQLException, InterruptedExceptioN {
+28
+29 String query = null;
+30
+31 try (Connection con = DriverManager.getConnection(dbURL, username, password)) {
+32
+33 Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+34
+35 query = "select * from employee_data";
+36
+37 ResultSet rs = stmt.executeQuery(query);
+38
+39 rs.next();
+40 displayEmpData(“next()", rs);
+41
+42 Thread.sleep(120000);
+43
+44 rs.last();
+45 displayEmpData("last()", rs);
+46
+47 }
+48
+[ ] It puts the program to sleep for 2 minutes after it is executed
+[x] After the next function is run, it will put the program to sleep for 2 minutes and then execute the last function
+[ ] It runs the function and puts it to sleep for 2 minutes before executing the next and last functions
+[ ] It puts the program to sleep for 2 minutes before it is executed
+
+You have written a stored procedure in MySQL. You need to call this stored procedure from a Java application. To be able to do this, which of the following imports will you need to define?
+[ ] java.sql.SQLException
+[ ] java.sql.DataSource
+[ ] java.sql.Connection
+[ ] java.sql.MySQLDataSource
+[x] java.sql.CallableStatement
+
+
+In your code, you have set the CascadeType to PERSIST. What is likely to happen if you remove the CascadeType from this code?
+11 import javax.persistence.JoinColumn;
+12 import javax.persistence.OneToMany;
+Import javax.persistence.CascadeType;
+14
+15 @Entity(name=”departments”)
+16 public class Department implements Serializable {
+17
+18 private static final long serialVersionUID = 1L;
+19
+20 @Id
+21 @GeneratedValue(strategy = GenerationType.IDENTITY)
+22 private Integer id;
+23
+24 private String name;
+25
+26 @OneToMany(cascade=CascadeType.PERSIST)
+27 @JoinColumnname=”department_id”)
+28 private Set<Employee> employees;
+29
+30 public Department() {
+31 }
+32
+33 public Department(String name) {
+34 this.name – name;
+[x] The default CascadeType will be set to None
+[ ] The default CascadeType will be set to MERGE
+[ ] The default CascadeType will be set to All
+[ ] The default CascadeType will be set DETACH
+
+
+In your code, you are using the following import statements:
+02
+03 import javax.persistence.Entity;
+04 import javax.persistence.Id;
+05 import javax.persistence.GeneratedValue;
+What is the intent of using the javax.persistence.GeneratedValue import?
+[ ] It allows the user to update the values in the database
+[x] It helps to generate the unique identifiers for the primary keys
+[ ] It allows the user to access the values in the database
+[ ] It allows us to accept the unique identifier from the user
+
+You need to run an insert query from Java with the following code:
+17 String query = null;
+18
+19 try (Connection con = DriverManager.getConnection(dbURL, username, password)) {
+20
+21 Statement stmt = con.createState nt();
+22
+23 query = "insert into users values (‘Naomi’,’Miller’,’naomi_miller@live.com’,’555-991-8021’)”;
+24
+25 I ResultSet rs = stmt.executeQuery(query);I
+26
+27 while (rs.next( ) ) {
+28
+29 System.out.print(rs.getString("first_Name"));
+30 System.out.print("\t" + rs.getString("last_Name"));
+31 System.out.println();
+32
+33 }
+34
+35 System.out.println("Query executed successfully...");
+36
+37 } catch (SQLException ex) {
+38 ex.printStackTrace();
+rs('Naomi','Miller'Finaomi_miller@live.com.,'555-991-8021')";
+39 }
+40 }
+However, there is an SQLException that is generated. Which of the following line of code caused the SQLException?
+[ ] Line 27
+[ ] Line 23
+[ ] Line 37
+[x] Line 25
+[ ] Line 21
+
+What is the default FetchType for OneToMany mapping?
+[ ] Unknown
+[ ] Slow
+[x] Lazy
+[ ] Eager
+
+In the given code, which of the given code lines are using predicate?
+17 EntityManager entityManager = factory.createEntityManager();
+18
+19 try {
+20
+21 CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+22
+23 CriteriaQuery<Product> productCQ = cb.createQuery(Product.class);
+24
+25 Root<Product> rootProduct = productMfrom(Product.class);
+26
+27 productCQ select(rootproduct)
+28 .whereicb.greaterThan(rootProduct.get("price"), 5));
+29
+30
+31 TypedQuery<Product> productQuery = entityManager.createQuery(productCQ);
+32
+33 System.out.println(productQuery.getResultList());
+34
+35 } catch (Exception ex) {
+36
+37 System.err.println("An exception occurred: " + ex);
+38 } finally {
+[x] Lines 27-28
+[ ] Lines 24-25
+[ ] Line 21-24
+[ ] Line 31
+
+To which of the following methods can the @PostLoad annotation be applied? [Choose all that apply.]
+[x] Entity class
+[x] Mapped superclass
+[x] Callback listener class
+[ ] Function
+[ ] Methods
+
+When you disable AutoCommit and do not perform an explicit commit operation, which of the following outcome is likely to take place when you make changes to a ResultSet?
+[x] The changes will not be propagated to the database
+[ ] The changes will be saved only in the ResultSet
+[ ] The changes will be discarded immediately
+[ ] The changes will not be allowed to be made on the ResultSet
+
+
+You have written a code to establish a connection with a database. The code is as follows:
+12
+13 String user = "root";
+14
+15 String password = "loonycorn";
+16
+17 Connection con = null;
+18
+19 try {
+20
+21 // Class.forName("com.mysql.cj.jdbc.Driver");
+22
+23 con = DriveriManager.getConnection(databaseURL, user, password);
+24
+25 if (con != null) {
+26 System.out.println("The connection has been successfully established!");
+27 }
+28
+29 } catch (SQLException ex) {
+30 System.out.println("A connection error has occurred:");
+31 ex.printStackTrace();
+32 }
+33 }
+34
+35 }
+What is the likely outcome when you comment the code on line 21?
+[ ] The JDBC drivers will fail to load, and connection will not be initiated
+[ ] The connection to the database will fail
+[ ] Authentication will be performed but not the connection
+[x] The connection will be established successfully
+
+You are using the Hibernate and MySQL environment. You have a file named Order.java in which you want to specify the appropriate FetchType. You are not going to access the products associated with an order.
+10 import javax.persistence.Id;
+11 import javax.persistence.OneToMany;
+12 import javax.persistence.Temporal;
+13 import javax.persistence.TemporalType;
+14 import javax.persistence.FetchType;
+15
+16 @Entity(name="Orders")
+17 public class Order implements Serializable {
+18
+19 private static final long serialVersionUlD = 1L;
+20
+21 @Id
+22 @GeneratedValue(strategy = GenerationType.IDENTITY)
+23 private Integer id;
+24
+25 @OneT0Many(fetch=FetchType.EAGER)
+26 private List<product> products;
+27
+28 @Temporal(TemporalType.DATE)
+29 private Date orderDate;
+30
+31 public Order() {
+32 }
+33
+34 public Order(List<Product> products, Date orderDate) {
+Based on the given code, what should be the FetchType changed to on Line 25?
+[ ] Quick
+[ ] Urgent
+[x] Lazy
+[ ] Related
+
+If you need to interact with the persistence providers, which of the following will you use?
+[x] JPA
+[ ] API
+[ ] JDBC
+[ ] ORMs
+
+In the given code, which type of key is being defined in the employee table on lines 25-27?
+14 @EntIty(name="department
+15 public class Department implements Serializable {
+16
+17 private static final long serialVersionUlD = 1L;
+18
+19 @Id
+20 @GeneratedValue(strategy = GenerationType.IDENTITY)
+21 private Integer id;
+22
+23 private String name;
+24
+25 @OneToMany
+26 @JoinColumn(name="department_id")
+27 private set<Employee> employees;
+28
+29 public Department() {
+30 }
+31
+32 public Department(String name) {
+33 this.name = name;
+34 }
+[ ] Primary
+[x] Foreign
+[ ] Composite
+[ ] Compound
+
+You have the following code. Even though the departments were saved in the tables, but no that employees.
+25 engineering.addEmployee(alice);
+26 engineering.addEmployee(ben);
+27
+28 Department sales = new Department("Sales");
+29 sales.addEmployee(cora);
+30 sales.addEmployee(dennis);
+31
+32 entityManager.persist(engineering);
+33 entityManager.persist(sales);
+34
+35 } catch (Exception ex) {
+36
+37 System.err.println("An exception occurred: " + ex);
+38 } finally {
+39
+40 entityManager.getTransaction().commit();
+41
+42 entityManager.close();
+43 factory.close();
+44 }
+45
+46 }
+47
+48 }
+Which of the following method will be appropriate to persist all entities when cascade type is none?
+[x] You must explicitly persist each entity
+[ ] You must persist in the department and employees at once
+[ ] You must flush out the tables first and then perform a commit
+[ ] You must perform a commit at the end of the code
+
+
+You are working in Hibernate and MySQL environment. Using the Eclipse IDE, you have the following code in the persistence.xml file:
+01 <?xml version="1.0" encoding="UTF-8"?>
+02 <persistence xmlns="http://xmins.jcp.org/xmi/ns/persistence"
+03 xmlns:xsi="http://www.w3.org/2001/XMLSchema—instance"
+04 xsi:schemaLocation="http://xmins.jcp.org/xmi/ns/persistence
+05 http://xmins.jcp.org/xm1/ns/persistence/persistence_2_1.xsd"
+06 version="2.1">
+07 <persistence—unit name="BookstoreDB_Unit ">
+08 <class>com.skillsoft.jpa.Book</class>
+09
+10 <properties>
+11 <property name="javax.persistence.jdbc.urt"
+12 value="jdbc:mysq1://1oca1host:3306/bookstoredb" />
+13 <property name="javax.persistence.jdbc.user" value="root" />
+14 <property name="javax.persistence.jdbc.password"
+15 value="password123" />
+16 <property name="javax.persistence.jdbc.driver"
+17 value="com.mysq1.cj.jdbc.Driver" />
+18 <property name="javax.persistence.schema—generation.database.action" value="drop—and—create"/>
+19 <property name="javax.persistence.sql—load—script—source" value="META—INF/1oad.sql"/>
+20
+21 <property name="hibernate.show_sql" value="true" />
+22 <property name="hibernate.format_sql" value="true" />
+23
+24 </properties>
+What is the significance of the load.sql file defined as the value on Line 19?
+[ ] It reads the data from the mentioned tables in the database
+[x] It prepopulates the data into one or more tables
+[ ] It creates the dummy data based on the table fields
+[ ] It fetches the data from one or more tables
+
+On a given MySQL database, you execute the TRUNCATE EMPLOYEE statement. Which of the following is likely to be removed from the table?
+[ ] Table definition
+[ ] Constraints
+[ ] Indexes
+[ ] Columns
+[x] Rows
+
+To which of the following does the @PreRemove and @PostRemove annotations apply?
+[ ] Callback listener class
+[ ] Mapped superclass
+[ ] Database
+[ ] Tables
+[x] Entities
+
+In the given code, which of the following statement is pointing to the type and concurrency of the ResultSet to use?
+27 public static void main(String[] args) throws SQLException {
+28
+29 String query = null;
+30
+31 try (Connection con = DriverManager.getConnection(dbURL, username password)) {
+32
+33 Statement stmt = con.createStatemen ResuttSet. TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+34
+35 query = "select * from employee_data";
+36
+37 ResultSet rs = stmt.executeQuery(query);
+38
+39 System.out.println();
+40
+41 rs.first();
+42 displayEmpData("first()", rs);
+43
+44 System.out.println();
+45
+46 rs.relative(3);
+47 displayEmpData(“relative(3)", rs);
+48
+49 System.out.println();
+[x] Line 33
+[ ] Line 42
+[ ] Line 37
+[ ] Line 47
+
